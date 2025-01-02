@@ -15,6 +15,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.47.10",
     "lucide-react": "^0.344.0",
+    "openai": "^4.77.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

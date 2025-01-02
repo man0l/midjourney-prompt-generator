@@ -7,7 +7,8 @@ import {
   Camera,
   Brush,
   Shapes,
-  Users
+  Users,
+  Check
 } from 'lucide-react';
 import { ParameterGrid } from './components/ParameterGrid';
 import { generatePrompt } from './utils/promptGenerator';
@@ -22,6 +23,8 @@ import { AuthUI } from './components/Auth';
 import { Session } from '@supabase/supabase-js';
 import { useCredits } from './hooks/useCredits';
 import { AuthModal } from './components/AuthModal';
+import { optimizePrompt } from './services/openai';
+import { uploadAndAnalyzeImage } from './services/imageAnalysis';
 
 export default function App() {
   const [mainPrompt, setMainPrompt] = useState('');
@@ -47,6 +50,9 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { credits, useCredit } = useCredits(session?.user ?? null);
+  const [isOptimizing, setIsOptimizing] = useState(false);
+  const [optimizeSuccess, setOptimizeSuccess] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     // Initialize session state
@@ -86,10 +92,23 @@ export default function App() {
       return;
     }
 
-    const success = await useCredit();
-    if (success) {
-      // Implement optimize prompt logic here
-      console.log('Optimizing prompt...');
+    setIsOptimizing(true);
+    setOptimizeSuccess(false);
+
+    try {
+      const optimizedPrompt = await optimizePrompt(mainPrompt);
+      const success = await useCredit();
+      
+      if (success) {
+        setMainPrompt(optimizedPrompt);
+        setOptimizeSuccess(true);
+        setTimeout(() => setOptimizeSuccess(false), 2000); // Hide success after 2 seconds
+      }
+    } catch (error) {
+      console.error('Error optimizing prompt:', error);
+      alert('Failed to optimize prompt. Please try again.');
+    } finally {
+      setIsOptimizing(false);
     }
   };
 
@@ -195,6 +214,45 @@ export default function App() {
     }
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!session) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    if (credits === 0) {
+      alert('You have used all your credits for today. Please try again tomorrow!');
+      return;
+    }
+
+    setIsAnalyzing(true);
+
+    try {
+      const description = await uploadAndAnalyzeImage(file);
+      const success = await useCredit();
+      
+      if (success) {
+        setMainPrompt(description);
+        // Clear the file input for next use
+        event.target.value = '';
+      }
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('Failed to analyze image. Please try again with a different image.');
+      }
+      // Clear the file input on error
+      event.target.value = '';
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
     <div className="container max-w-6xl mx-auto animate-fade-in">
       <h1 className="text-4xl font-bold text-center mb-8 text-text">Midjourney Prompt Generator</h1>
@@ -229,11 +287,32 @@ export default function App() {
           </button>
           <button
             onClick={handleOptimize}
-            className="px-6 py-2 bg-[#00C853] hover:bg-[#009624] text-white rounded-md 
-            transition-colors flex items-center gap-2"
+            disabled={isOptimizing}
+            className={`px-6 py-2 ${
+              optimizeSuccess 
+                ? 'bg-[#00C853] hover:bg-[#00C853]' 
+                : 'bg-[#00C853] hover:bg-[#009624]'
+            } text-white rounded-md 
+            transition-colors flex items-center gap-2 relative ${
+              isOptimizing ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
           >
-            <Sparkles className="w-4 h-4" />
-            Optimize Prompt {credits !== null && `(${credits} left for today)`}
+            {isOptimizing ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Optimizing...
+              </>
+            ) : optimizeSuccess ? (
+              <>
+                <Check className="w-4 h-4" />
+                Optimized!
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                Optimize Prompt {credits !== null && `(${credits} left for today)`}
+              </>
+            )}
           </button>
         </div>
 
@@ -293,11 +372,28 @@ export default function App() {
 
         {/* Upload Button */}
         <div className="flex flex-col gap-4 items-center">
-          <button className="w-full flex items-center justify-center px-4 py-3 bg-emerald-600/80 backdrop-blur-glass text-text rounded-md 
-            hover:bg-emerald-600 transition-all transform hover:scale-105 border border-accent/20">
-            <Upload className="w-5 h-5 mr-2" />
-            Upload Inspirational Image
-          </button>
+          <label className={`w-full flex items-center justify-center px-4 py-3 bg-emerald-600/80 backdrop-blur-glass text-text rounded-md 
+            hover:bg-emerald-600 transition-all transform hover:scale-105 border border-accent/20 cursor-pointer
+            ${isAnalyzing ? 'opacity-75 cursor-not-allowed' : ''}`}>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={isAnalyzing}
+              className="hidden"
+            />
+            {isAnalyzing ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Analyzing Image...
+              </>
+            ) : (
+              <>
+                <Upload className="w-5 h-5 mr-2" />
+                Upload Inspirational Image {credits !== null && `(Uses 1 Credit)`}
+              </>
+            )}
+          </label>
 
           <button 
             onClick={() => {
