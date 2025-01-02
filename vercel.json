@@ -1,0 +1,9 @@
+{
+  "framework": "vite",
+  "buildCommand": "vite build",
+  "devCommand": "vite",
+  "outputDirectory": "dist",
+  "github": {
+    "silent": true
+  }
+} 

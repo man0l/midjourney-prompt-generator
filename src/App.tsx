@@ -419,13 +419,109 @@ export default function App() {
         </div>
       </div>
 
-      <div className="prose max-w-3xl mx-auto text-text">
-        <h2 className="text-text">How to Use the Midjourney Prompt Generator</h2>
-        <p className="text-text/90">
-          Midjourney's AI-powered image generation bot is incredibly powerful. But unless you have a photographic memory,
-          it can be really hard to remember all of the parameters and styling options the Midjourney bot supports!
-          That's where this prompt helper comes in handy.
-        </p>
+      <div className="prose max-w-3xl mx-auto space-y-8 px-4">
+        <section className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-text mb-6">Welcome to the Midjourney Prompt Generator</h2>
+          <h3 className="text-xl text-text/90 font-medium">Create Stunning AI Art with Ease</h3>
+        </section>
+
+        <section className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+          <p className="text-lg text-text/90 leading-relaxed">
+            Unleash your creativity and turn ideas into breathtaking art with our Midjourney Prompt Generator. Whether you're a seasoned digital artist or just starting your journey into the world of AI-generated art, our platform empowers you to craft the perfect prompts that bring your visions to life with incredible detail and style.
+          </p>
+        </section>
+
+        <section className="space-y-6">
+          <h3 className="text-2xl font-semibold text-text">Why Use Midjourney Prompts?</h3>
+          <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+            <p className="text-text/90 leading-relaxed">
+              Midjourney is an innovative and cutting-edge AI image generator that takes your text prompts and converts them into visually captivating artworks. From hyper-realistic portraits to fantastical, dream-like landscapes, the possibilities for creativity are truly limitless.
+            </p>
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <h3 className="text-2xl font-semibold text-text">What We Offer</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <h4 className="font-medium text-text mb-3">Extensive Prompt Library</h4>
+              <p className="text-text/90">Explore a rich collection of curated prompts designed to enhance lighting, materials, and photography effects.</p>
+            </div>
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <h4 className="font-medium text-text mb-3">Freemium Access</h4>
+              <p className="text-text/90">Get started at no cost with essential tools and upgrade for access to advanced features and premium content.</p>
+            </div>
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <h4 className="font-medium text-text mb-3">User-Friendly Interface</h4>
+              <p className="text-text/90">Simply describe your concept, adjust creative parameters, and let the AI bring your imagination to life.</p>
+            </div>
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <h4 className="font-medium text-text mb-3">Templates & Inspiration</h4>
+              <p className="text-text/90">Access pre-made templates and expertly crafted prompt examples that spark creativity.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <h3 className="text-2xl font-semibold text-text">How It Works</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-2xl mb-4">🎨</div>
+              <h4 className="font-medium text-text mb-2">1. Select a Style</h4>
+              <p className="text-text/90">Choose from a vast array of artistic styles, from photorealistic to surreal.</p>
+            </div>
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-2xl mb-4">✨</div>
+              <h4 className="font-medium text-text mb-2">2. Add Details</h4>
+              <p className="text-text/90">Fine-tune your image with lighting, textures, and other parameters.</p>
+            </div>
+            <div className="bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-2xl mb-4">🎯</div>
+              <h4 className="font-medium text-text mb-2">3. Generate & Refine</h4>
+              <p className="text-text/90">Create your image and iterate until it's perfect.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <h3 className="text-2xl font-semibold text-text">Popular Features</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-start space-x-4 bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-xl">💡</div>
+              <div>
+                <h4 className="font-medium text-text mb-2">Lighting Control</h4>
+                <p className="text-text/90">Design images with precision lighting and dramatic shadows.</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-4 bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-xl">🎭</div>
+              <div>
+                <h4 className="font-medium text-text mb-2">Material Prompts</h4>
+                <p className="text-text/90">Incorporate realistic textures and materials in your creations.</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-4 bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-xl">📐</div>
+              <div>
+                <h4 className="font-medium text-text mb-2">Aspect Ratio Control</h4>
+                <p className="text-text/90">Customize dimensions to fit any platform or need.</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-4 bg-background-end/10 rounded-xl p-6 backdrop-blur-sm border border-accent/10">
+              <div className="text-xl">⚡</div>
+              <div>
+                <h4 className="font-medium text-text mb-2">Advanced Upscaling</h4>
+                <p className="text-text/90">Enhance image quality with powerful upscaling tools.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="text-center bg-background-end/10 rounded-xl p-8 backdrop-blur-sm border border-accent/10">
+          <p className="text-lg font-medium text-text">
+            Start your AI art journey today and unlock new creative possibilities with Midjourney!
+          </p>
+        </section>
       </div>
 
       <StylesModal
