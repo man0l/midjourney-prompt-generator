@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { 
   Upload,
   Sparkles,
@@ -17,6 +17,11 @@ import { CameraModal } from './components/CameraModal';
 import { ColorModal } from './components/ColorModal';
 import { MaterialsModal } from './components/MaterialsModal';
 import { ArtistsModal } from './components/ArtistsModal';
+import { supabase } from './lib/supabase';
+import { AuthUI } from './components/Auth';
+import { Session } from '@supabase/supabase-js';
+import { useCredits } from './hooks/useCredits';
+import { AuthModal } from './components/AuthModal';
 
 export default function App() {
   const [mainPrompt, setMainPrompt] = useState('');
@@ -39,6 +44,26 @@ export default function App() {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [isMaterialsModalOpen, setIsMaterialsModalOpen] = useState(false);
   const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { credits, useCredit } = useCredits(session?.user ?? null);
+
+  useEffect(() => {
+    // Initialize session state
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+    });
+
+    // Set up auth state change listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      if (newSession) {
+        setIsAuthModalOpen(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const fullPrompt = generatePrompt(mainPrompt, parameters);
 
@@ -50,8 +75,22 @@ export default function App() {
     navigator.clipboard.writeText(fullPrompt);
   };
 
-  const handleOptimize = () => {
-    // Implement optimize prompt
+  const handleOptimize = async () => {
+    if (!session) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    if (credits === 0) {
+      alert('You have used all your credits for today. Please try again tomorrow!');
+      return;
+    }
+
+    const success = await useCredit();
+    if (success) {
+      // Implement optimize prompt logic here
+      console.log('Optimizing prompt...');
+    }
   };
 
   const handleStyleSelect = (style: string) => {
@@ -194,7 +233,7 @@ export default function App() {
             transition-colors flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
-            Optimize Prompt
+            Optimize Prompt {credits !== null && `(${credits} left for today)`}
           </button>
         </div>
 
@@ -328,6 +367,21 @@ export default function App() {
         onClose={() => setIsArtistsModalOpen(false)}
         onSelectArtist={handleArtistSelect}
       />
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
+
+      {session && (
+        <button
+          onClick={() => supabase.auth.signOut()}
+          className="fixed top-4 right-4 px-4 py-2 bg-red-600/80 text-white rounded-md 
+            hover:bg-red-600 transition-all"
+        >
+          Sign Out
+        </button>
+      )}
     </div>
   );
 }
