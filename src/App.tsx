@@ -11,6 +11,12 @@ import {
 } from 'lucide-react';
 import { ParameterGrid } from './components/ParameterGrid';
 import { generatePrompt } from './utils/promptGenerator';
+import { StylesModal } from './components/StylesModal';
+import { LightingModal } from './components/LightingModal';
+import { CameraModal } from './components/CameraModal';
+import { ColorModal } from './components/ColorModal';
+import { MaterialsModal } from './components/MaterialsModal';
+import { ArtistsModal } from './components/ArtistsModal';
 
 export default function App() {
   const [mainPrompt, setMainPrompt] = useState('');
@@ -27,6 +33,12 @@ export default function App() {
     seed: '',
     exclude: ''
   });
+  const [isStylesModalOpen, setIsStylesModalOpen] = useState(false);
+  const [isLightingModalOpen, setIsLightingModalOpen] = useState(false);
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+  const [isMaterialsModalOpen, setIsMaterialsModalOpen] = useState(false);
+  const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
 
   const fullPrompt = generatePrompt(mainPrompt, parameters);
 
@@ -40,6 +52,108 @@ export default function App() {
 
   const handleOptimize = () => {
     // Implement optimize prompt
+  };
+
+  const handleStyleSelect = (style: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const styleText = `in ${style} style`;
+    
+    // Check if there's already a style mentioned
+    const styleRegex = /\bin \w+(?:\s+\w+)* style\b/i;
+    const updatedPrompt = currentPrompt.replace(styleRegex, styleText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No style was replaced, so append the new style
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${styleText}` : styleText);
+    } else {
+      // Style was replaced
+      setMainPrompt(updatedPrompt);
+    }
+  };
+
+  const handleLightingSelect = (lighting: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const lightingText = `with ${lighting} lighting`;
+    
+    // Check if there's already a lighting mentioned
+    const lightingRegex = /\bwith \w+(?:\s+\w+)* lighting\b/i;
+    const updatedPrompt = currentPrompt.replace(lightingRegex, lightingText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No lighting was replaced, so append the new lighting
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${lightingText}` : lightingText);
+    } else {
+      // Lighting was replaced
+      setMainPrompt(updatedPrompt);
+    }
+  };
+
+  const handleCameraSelect = (camera: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const cameraText = `shot with ${camera}`;
+    
+    // Check if there's already a camera mentioned
+    const cameraRegex = /\bshot with \w+(?:\s+\w+)*\b/i;
+    const updatedPrompt = currentPrompt.replace(cameraRegex, cameraText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No camera was replaced, so append the new camera
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${cameraText}` : cameraText);
+    } else {
+      // Camera was replaced
+      setMainPrompt(updatedPrompt);
+    }
+  };
+
+  const handleColorSelect = (color: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const colorText = `in ${color} color`;
+    
+    // Check if there's already a color mentioned
+    const colorRegex = /\bin \w+(?:\s+\w+)* color\b/i;
+    const updatedPrompt = currentPrompt.replace(colorRegex, colorText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No color was replaced, so append the new color
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${colorText}` : colorText);
+    } else {
+      // Color was replaced
+      setMainPrompt(updatedPrompt);
+    }
+  };
+
+  const handleMaterialSelect = (material: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const materialText = `made of ${material}`;
+    
+    // Check if there's already a material mentioned
+    const materialRegex = /\bmade of \w+(?:\s+\w+)*\b/i;
+    const updatedPrompt = currentPrompt.replace(materialRegex, materialText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No material was replaced, so append the new material
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${materialText}` : materialText);
+    } else {
+      // Material was replaced
+      setMainPrompt(updatedPrompt);
+    }
+  };
+
+  const handleArtistSelect = (artist: string) => {
+    const currentPrompt = mainPrompt.trim();
+    const artistText = `in the style of ${artist}`;
+    
+    // Check if there's already an artist mentioned
+    const artistRegex = /\bin the style of \w+(?:\s+\w+)*\b/i;
+    const updatedPrompt = currentPrompt.replace(artistRegex, artistText);
+    
+    if (updatedPrompt === currentPrompt) {
+      // No artist was replaced, so append the new artist
+      setMainPrompt(currentPrompt ? `${currentPrompt}, ${artistText}` : artistText);
+    } else {
+      // Artist was replaced
+      setMainPrompt(updatedPrompt);
+    }
   };
 
   return (
@@ -94,28 +208,46 @@ export default function App() {
 
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsStylesModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Palette className="w-4 h-4 text-accent" /> Styles
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsLightingModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Lightbulb className="w-4 h-4 text-accent" /> Lighting
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsCameraModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Camera className="w-4 h-4 text-accent" /> Camera
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsColorModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Brush className="w-4 h-4 text-accent" /> Colors
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsMaterialsModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Shapes className="w-4 h-4 text-accent" /> Materials
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
-            hover:bg-background-end/50 transition-all border border-accent/20">
+          <button 
+            onClick={() => setIsArtistsModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-background-end/30 backdrop-blur-glass text-text rounded-md 
+            hover:bg-background-end/50 transition-all border border-accent/20"
+          >
             <Users className="w-4 h-4 text-accent" /> Artists
           </button>
         </div>
@@ -160,6 +292,42 @@ export default function App() {
           That's where this prompt helper comes in handy.
         </p>
       </div>
+
+      <StylesModal
+        isOpen={isStylesModalOpen}
+        onClose={() => setIsStylesModalOpen(false)}
+        onSelectStyle={handleStyleSelect}
+      />
+
+      <LightingModal
+        isOpen={isLightingModalOpen}
+        onClose={() => setIsLightingModalOpen(false)}
+        onSelectLighting={handleLightingSelect}
+      />
+
+      <CameraModal
+        isOpen={isCameraModalOpen}
+        onClose={() => setIsCameraModalOpen(false)}
+        onSelectCamera={handleCameraSelect}
+      />
+
+      <ColorModal
+        isOpen={isColorModalOpen}
+        onClose={() => setIsColorModalOpen(false)}
+        onSelectColor={handleColorSelect}
+      />
+
+      <MaterialsModal
+        isOpen={isMaterialsModalOpen}
+        onClose={() => setIsMaterialsModalOpen(false)}
+        onSelectMaterial={handleMaterialSelect}
+      />
+
+      <ArtistsModal
+        isOpen={isArtistsModalOpen}
+        onClose={() => setIsArtistsModalOpen(false)}
+        onSelectArtist={handleArtistSelect}
+      />
     </div>
   );
 }
