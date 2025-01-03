@@ -1,0 +1,37 @@
+id,action,title,slug,content_markdown,image_urls,published_at
+,create,Getting Started with React,getting-started-with-react,"# Getting Started with React
+
+React is a popular JavaScript library for building user interfaces. This guide will help you get started with React development.
+
+## Prerequisites
+- Basic knowledge of HTML and JavaScript
+- Node.js installed on your computer
+
+## Installation
+Create a new React project using Create React App:
+
+```bash
+npx create-react-app my-app
+cd my-app
+npm start
+```
+
+## Your First Component
+Here's a simple React component:",,2024-03-21T12:00:00Z
+,create,Understanding TypeScript,understanding-typescript,"# Understanding TypeScript
+
+TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. Let's explore its key features.
+
+## Why TypeScript?
+- Static typing
+- Object-oriented features
+- IDE support
+- Early error detection
+
+## Basic Types
+```typescript
+let isDone: boolean = false;
+let decimal: number = 6;
+let color: string = ""red"";
+let list: number[] = [1, 2, 3];
+```",,2024-03-21T13:00:00Z 

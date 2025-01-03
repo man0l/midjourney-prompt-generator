@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabaseClient';
 
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,

@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from '../lib/supabase'
+import { supabase } from '../lib/supabaseClient'
 
 interface AuthModalProps {
   isOpen: boolean

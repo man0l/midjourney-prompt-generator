@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import { User } from '@supabase/supabase-js'
 
 export function useCredits(user: User | null) {
