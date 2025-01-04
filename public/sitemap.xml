@@ -1,26 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://midjourney-generator.vercel.app/</loc>
-    <lastmod>2025-01-03</lastmod>
+    <loc>https://midjourney-generator-two.vercel.app/</loc>
+    <lastmod>2025-01-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator.vercel.app/posts</loc>
-    <lastmod>2025-01-03</lastmod>
+    <loc>https://midjourney-generator-two.vercel.app/posts</loc>
+    <lastmod>2025-01-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator.vercel.app/posts/understanding-typescript</loc>
-    <lastmod>2025-01-03</lastmod>
+    <loc>https://midjourney-generator-two.vercel.app/posts/how-to-write-prompts-midjourney-guide-generating-stunning-ai-art</loc>
+    <lastmod>2025-01-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator.vercel.app/posts/getting-started-with-react</loc>
-    <lastmod>2025-01-03</lastmod>
+    <loc>https://midjourney-generator-two.vercel.app/posts/30-midjourney-prompts-art-styles-illustrations</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://midjourney-generator-two.vercel.app/posts/midjourney-prompt-tools-generators</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://midjourney-generator-two.vercel.app/posts/color-palettes-pantone-mastering-vibrant-visuals-midjourney</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://midjourney-generator-two.vercel.app/posts/art-creative-prompting-techniques-ideas-inspiration-midjourney</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://midjourney-generator-two.vercel.app/posts/ai-prompt-generators-everything-you-need-to-know</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://midjourney-generator-two.vercel.app/posts/aesthetics-clothing-ultimate-style-reference-midjourney-prompts</loc>
+    <lastmod>2025-01-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

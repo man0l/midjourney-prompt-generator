@@ -1,24 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
   build: {
+    minify: true,
     rollupOptions: {
       input: {
-        app: './index.html',
-        'entry-server': './src/entry-server.tsx',
+        main: resolve(__dirname, 'index.html'),
       },
     },
   },
   ssr: {
-    target: 'node'
-  },
+    target: 'node',
+    noExternal: ['react-router-dom', '@supabase/supabase-js']
+  }
 });

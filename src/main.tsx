@@ -8,8 +8,11 @@ import PostDetail from './components/PostDetail';
 import AuthCallback from './components/AuthCallback';
 import './index.css';
 
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element not found');
+
 hydrateRoot(
-  document.getElementById('root')!,
+  rootElement,
   <StrictMode>
     <BrowserRouter>
       <Routes>

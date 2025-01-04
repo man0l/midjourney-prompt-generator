@@ -24,6 +24,7 @@ import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
 import { optimizePrompt } from '../services/openai';
 import { uploadAndAnalyzeImage } from '../services/imageAnalysis';
+import SEO from '../components/SEO';
 
 export default function HomePage() {
   const [mainPrompt, setMainPrompt] = useState('');
@@ -233,7 +234,12 @@ export default function HomePage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto animate-fade-in">
+    <>
+      <SEO 
+        title="AI Art Generator"
+        description="Create stunning AI art with our Midjourney Prompt Generator. Craft perfect prompts for breathtaking digital art, from hyper-realistic portraits to fantastical landscapes."
+      />
+      <div className="container max-w-6xl mx-auto animate-fade-in">
       
       <div className="bg-background-start/30 backdrop-blur-glass rounded-xl border border-accent/20 p-8 mb-8 shadow-lg">
         {/* Main Prompt Input */}
@@ -545,5 +551,6 @@ export default function HomePage() {
         onClose={() => setIsAuthModalOpen(false)} 
       />
     </div>
+    </>
   );
 } 

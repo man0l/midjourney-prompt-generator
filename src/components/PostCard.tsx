@@ -24,9 +24,10 @@ const PostCard: React.FC<PostCardProps> = ({
 }) => {
   const displayDate = published_at || created_at;
   
-  const getFormattedDate = (dateString: string) => {
+  const getFormattedDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
+    
     try {
-      // Parse ISO string to Date object
       const date = parseISO(dateString);
       return formatDistanceToNow(date, { addSuffix: true });
     } catch (error) {

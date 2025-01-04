@@ -6,6 +6,7 @@ import PostDetail from './components/PostDetail';
 import { AuthModal } from './components/AuthModal';
 import { supabase } from './lib/supabaseClient';
 import { Session } from '@supabase/supabase-js';
+import { SSRDataContext } from './entry-server';
 
 interface Post {
   id: string;
@@ -15,10 +16,13 @@ interface Post {
 }
 
 const FooterPosts: React.FC = () => {
-  const [posts, setPosts] = React.useState<Post[]>([]);
+  const ssrData = React.useContext(SSRDataContext);
+  const [posts, setPosts] = React.useState<Post[]>(ssrData?.footerPosts || []);
 
   React.useEffect(() => {
     const fetchPosts = async () => {
+      if (ssrData?.footerPosts) return; // Skip fetching if we have SSR data
+
       const { data, error } = await supabase
         .from('posts')
         .select('id, title, slug, published_at')
@@ -30,8 +34,10 @@ const FooterPosts: React.FC = () => {
       }
     };
 
-    fetchPosts();
-  }, []);
+    if (!ssrData?.footerPosts) {
+      fetchPosts();
+    }
+  }, [ssrData]);
 
   const columns = [
     posts.slice(0, 3),

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import PostCard from './PostCard';
+import SEO from '../components/SEO';
 
 interface Post {
   id: string;
@@ -8,8 +9,21 @@ interface Post {
   slug: string;
   published_at: string | null;
   created_at: string;
-  description: string | null;
   content_markdown: string;
+}
+
+// Helper function to get excerpt from markdown content
+function getExcerpt(markdown: string, maxLength: number = 160): string {
+  // Remove markdown syntax and get plain text
+  const plainText = markdown
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links but keep text
+    .replace(/[#*`_~]/g, '') // Remove markdown symbols
+    .replace(/\n+/g, ' ') // Replace newlines with spaces
+    .trim();
+  
+  // Get first n characters
+  const excerpt = plainText.slice(0, maxLength);
+  return excerpt.length < plainText.length ? `${excerpt}...` : excerpt;
 }
 
 const PostList: React.FC = () => {
@@ -80,22 +94,28 @@ const PostList: React.FC = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-text">All Posts</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            slug={post.slug}
-            published_at={post.published_at || undefined}
-            created_at={post.created_at}
-            description={post.content_markdown.slice(0, 150) + '...'}
-          />
-        ))}
+    <>
+      <SEO 
+        title="AI Art Prompts"
+        description="Explore our collection of Midjourney prompts and AI-generated artwork. Find inspiration and learn how to create stunning AI art."
+      />
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8 text-text">All Posts</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              id={post.id}
+              title={post.title}
+              slug={post.slug}
+              published_at={post.published_at || undefined}
+              created_at={post.created_at}
+              description={getExcerpt(post.content_markdown)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
