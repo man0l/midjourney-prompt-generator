@@ -5,6 +5,7 @@ import App from './App';
 import HomePage from './pages/HomePage';
 import PostList from './components/PostList';
 import PostDetail from './components/PostDetail';
+import AuthCallback from './components/AuthCallback';
 import './index.css';
 
 hydrateRoot(
@@ -16,6 +17,7 @@ hydrateRoot(
           <Route index element={<HomePage />} />
           <Route path="/posts" element={<PostList />} />
           <Route path="/posts/:slug" element={<PostDetail />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Route>
       </Routes>
     </BrowserRouter>
