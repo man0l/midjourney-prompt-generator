@@ -47,7 +47,7 @@ async function uploadImage(imagePath) {
 
     const fileBuffer = await fs.promises.readFile(imagePath);
     const { data, error } = await supabase.storage
-      .from('post-images')
+      .from('blog-images')
       .upload(uniqueFileName, fileBuffer, {
         contentType: mimeType,
         cacheControl: '3600',
@@ -57,7 +57,7 @@ async function uploadImage(imagePath) {
     if (error) throw error;
 
     const { data: publicUrl } = supabase.storage
-      .from('post-images')
+      .from('blog-images')
       .getPublicUrl(uniqueFileName);
 
     return publicUrl.publicUrl;
