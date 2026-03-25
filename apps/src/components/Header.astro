@@ -1,0 +1,19 @@
+---
+---
+<header class="flex items-center justify-between px-6 py-4 border-b-2 border-[#1c1c1c]">
+  <a href="/" class="text-xl font-bold text-[#1a1a1a] hover:text-[#f0b429] transition-colors">
+    Midjourney Prompt Generator
+  </a>
+  <div class="flex items-center gap-5">
+    <a href="/posts" class="text-[#1a1a1a] hover:text-[#f0b429] transition-colors font-medium">
+      Posts
+    </a>
+    <button
+      id="header-sign-in"
+      onclick="window.dispatchEvent(new CustomEvent('openAuthModal'))"
+      class="px-5 py-2 bg-[#f0b429] text-[#1a1a1a] font-semibold rounded-lg border-2 border-[#1c1c1c] hover:brightness-95 transition-all"
+    >
+      Sign In
+    </button>
+  </div>
+</header>

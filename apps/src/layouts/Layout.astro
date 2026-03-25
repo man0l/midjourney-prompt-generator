@@ -1,0 +1,31 @@
+---
+import '../index.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="min-h-screen p-6 md:p-10 flex flex-col items-center">
+      <div class="w-full max-w-5xl bg-[#ede9d8] border-2 border-[#1c1c1c] rounded-2xl overflow-hidden shadow-2xl">
+        <Header />
+        <main>
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>

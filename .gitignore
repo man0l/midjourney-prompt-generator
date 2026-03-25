@@ -31,3 +31,28 @@ dist-ssr
 
 # Vercel
 .vercel
+
+# Backup files
+backup-*.json
+migration-report-*.json
+
+# Astro
+.astro
+
+# Strapi
+content-api/.env
+content-api/.tmp
+
+# Claude Code
+.claude/
+.mcp.json
+.playwright-mcp/
+
+# Database backups
+*.backup
+*.backup.gz
+
+# Screenshots
+*.png
+*.jpg
+*.jpeg

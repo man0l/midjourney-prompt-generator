@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lighting_options",
+  "info": {
+    "singularName": "lighting-option",
+    "pluralName": "lighting-options",
+    "displayName": "Lighting Option"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "promptAddition": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    }
+  }
+}

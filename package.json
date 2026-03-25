@@ -1,54 +1,27 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "midjourney-mono",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "apps",
+    "content-api"
+  ],
   "scripts": {
-    "dev": "node server",
-    "build": "npm run build:client && npm run build:server && npm run generate-sitemap",
-    "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
-    "start": "NODE_ENV=production node server",
-    "generate-sitemap": "node scripts/generate-sitemap.js",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@headlessui/react": "^2.2.0",
-    "@remix-run/react": "^2.15.2",
-    "@remix-run/router": "^1.21.0",
-    "@supabase/auth-ui-react": "^0.4.7",
-    "@supabase/auth-ui-shared": "^0.1.8",
-    "@supabase/supabase-js": "^2.47.10",
-    "compression": "^1.7.5",
-    "csv-parse": "^5.6.0",
-    "date-fns": "^4.1.0",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "lucide-react": "^0.344.0",
-    "mime-types": "^2.1.35",
-    "openai": "^4.77.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.22.3",
-    "uuid": "^11.0.3"
+    "backup": "node scripts/backup-supabase.js",
+    "dev": "concurrently \"npm run dev:apps\" \"npm run dev:strapi\"",
+    "dev:apps": "cd apps && npm run dev",
+    "dev:strapi": "cd content-api && npm run develop",
+    "build": "npm run build:strapi && npm run build:apps",
+    "build:strapi": "cd content-api && npm run build",
+    "build:apps": "cd apps && npm run build",
+    "preview": "cd apps && npm run preview",
+    "migrate": "npm run migrate:posts && npm run migrate:options",
+    "migrate:posts": "node scripts/migrate-posts-to-strapi.js",
+    "migrate:options": "node scripts/migrate-options-to-strapi.js",
+    "verify": "node scripts/verify-sync.js"
   },
   "devDependencies": {
-    "@types/compression": "^1.7.5",
-    "@types/express": "^5.0.0",
-    "@types/node": "^20.11.28",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "autoprefixer": "^10.4.18",
-    "eslint": "^9.9.1",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.5.3",
-    "vite": "^5.4.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.7"
   }
 }

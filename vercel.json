@@ -2,30 +2,36 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "npm run build",
-        "outputDirectory": "dist/client"
+        "buildCommand": "npm run build:apps",
+        "outputDirectory": "apps/dist"
+      }
+    },
+    {
+      "src": "content-api/package.json",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "npm run build:strapi"
       }
     }
   ],
   "routes": [
     {
+      "src": "/api/:path*",
+      "dest": "/content-api/api/:path*"
+    },
+    {
       "src": "/assets/(.*)",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" },
-      "dest": "/dist/client/assets/$1"
+      "dest": "/apps/assets/$1"
     },
     {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "/server.js"
+      "dest": "/apps/$1"
     }
   ]
 } 

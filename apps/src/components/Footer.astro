@@ -1,0 +1,44 @@
+---
+import { fetchPosts } from '../lib/strapi';
+
+let posts: Awaited<ReturnType<typeof fetchPosts>> = [];
+try {
+  posts = await fetchPosts();
+} catch {}
+---
+<footer class="border-t-2 border-[#1c1c1c] bg-[#e4dfc8]">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">About</h3>
+        <p class="text-sm text-[#6b6559] leading-relaxed">
+          Create stunning AI art with our Midjourney prompt generator. Optimize your prompts and unleash your creativity.
+        </p>
+        <div class="flex flex-col space-y-2">
+          <a href="/" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors font-medium">Home</a>
+          <a href="/posts" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors font-medium">Posts</a>
+        </div>
+      </div>
+      {posts.length > 0 && (
+        <div class="space-y-4">
+          <h3 class="text-lg font-bold text-[#1a1a1a]">Latest Posts</h3>
+          <div class="space-y-2">
+            {posts.slice(0, 6).map((post) => (
+              <a href={`/posts/${post.slug}`} class="block text-sm text-[#6b6559] hover:text-[#f0b429] visited:text-[#6b6559] transition-colors">
+                {post.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+    <div class="mt-8 border-t border-[#c8c0a8] pt-6 text-center">
+      <p class="text-xs text-[#9a9080]">&copy; {new Date().getFullYear()} Midjourney Generator. We are not affiliated with Midjourney in any way.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  a, a:visited { color: #6b6559; }
+  a:hover { color: #f0b429; }
+</style>

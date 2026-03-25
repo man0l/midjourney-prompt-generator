@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "artist_options",
+  "info": {
+    "singularName": "artist-option",
+    "pluralName": "artist-options",
+    "displayName": "Artist Option"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "promptAddition": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    }
+  }
+}

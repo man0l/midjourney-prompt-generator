@@ -1,0 +1,62 @@
+---
+import { fetchPostBySlug, fetchPosts } from '../../lib/strapi';
+import { format } from 'date-fns';
+import { marked } from 'marked';
+import Layout from '../../layouts/Layout.astro';
+
+const { slug } = Astro.params;
+
+let post;
+try {
+  post = await fetchPostBySlug(slug!);
+} catch {
+  // Strapi unavailable
+}
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+let relatedPosts: Awaited<ReturnType<typeof fetchPosts>> = [];
+try {
+  const allPosts = await fetchPosts();
+  relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
+} catch {}
+---
+<Layout
+  title={post.seo?.metaTitle || post.title}
+  description={post.seo?.metaDescription || post.excerpt}
+>
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <article>
+      <header class="mb-10">
+        <h1 class="text-4xl font-bold text-[#1a1a1a] mb-4">{post.title}</h1>
+        <time class="text-sm text-[#9a9080]" datetime={post.publishedAt}>
+          {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
+        </time>
+      </header>
+
+      <div class="prose prose-lg max-w-none text-[#1a1a1a]">
+        <div set:html={marked((post.content || '').replace(/^#\s+.+\n?/, ''))} />
+      </div>
+
+      {relatedPosts && relatedPosts.length > 0 && (
+        <section class="mt-12 pt-8 border-t border-[#c8c0a8]">
+          <h2 class="text-2xl font-bold text-[#1a1a1a] mb-6">Related Posts</h2>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {relatedPosts.map((related) => (
+              <a href={`/posts/${related.slug}`} class="block bg-[#e4dfc8] hover:bg-[#ddd8c4] transition-colors rounded-xl p-4 border border-[#c8c0a8]">
+                <h3 class="text-base font-semibold text-[#1a1a1a] mb-2">{related.title}</h3>
+                {related.excerpt && (
+                  <p class="text-sm text-text/60 line-clamp-2">
+                    {related.excerpt.replace(/^#+\s+/gm, '').substring(0, 120)}...
+                  </p>
+                )}
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </article>
+  </div>
+</Layout>

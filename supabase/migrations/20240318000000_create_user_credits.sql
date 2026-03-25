@@ -3,7 +3,7 @@ create extension if not exists pgcrypto;
 
 -- Create user credits table
 create table public.user_credits (
-    id uuid default gen_random_uuid() references auth.users on delete cascade primary key,
+    user_id uuid default gen_random_uuid() references auth.users on delete cascade primary key,
     credits_remaining integer default 8,
     last_reset timestamp with time zone default now(),
     created_at timestamp with time zone default now()
@@ -15,11 +15,11 @@ alter table public.user_credits enable row level security;
 -- Create policies
 create policy "Users can view their own credits"
     on public.user_credits for select
-    using (auth.uid() = id);
+    using (auth.uid() = user_id);
 
 create policy "Users can update their own credits"
     on public.user_credits for update
-    using (auth.uid() = id);
+    using (auth.uid() = user_id);
 
 -- Create function to reset credits daily
 create or replace function public.reset_daily_credits()
@@ -43,7 +43,7 @@ create trigger reset_daily_credits
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-    insert into public.user_credits (id)
+    insert into public.user_credits (user_id)
     values (new.id);
     return new;
 end;

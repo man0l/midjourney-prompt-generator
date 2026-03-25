@@ -1,0 +1,45 @@
+import { fetchPosts } from '../lib/strapi';
+
+const posts = await fetchPosts();
+---
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">All Posts</h1>
+    <p class="text-lg text-gray-600">Explore our collection of Midjourney prompt guides and tutorials</p>
+  </div>
+  
+  {posts.length === 0 && (
+    <div class="text-center py-12">
+      <p class="text-gray-500">No posts available yet.</p>
+    </div>
+  )}
+  
+  {posts.length > 0 && (
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <article class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
+          <a href={`/posts/${post.slug}`} class="block">
+            <h2 class="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+              {post.title}
+            </h2>
+            <p class="text-gray-600 text-sm line-clamp-3">
+              {post.excerpt}
+            </p>
+            <div class="mt-4 text-xs text-gray-500">
+              Published: {new Date(post.publishedAt).toLocaleDateString()}
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

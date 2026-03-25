@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "camera_options",
+  "info": {
+    "singularName": "camera-option",
+    "pluralName": "camera-options",
+    "displayName": "Camera Option"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "promptAddition": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    }
+  }
+}

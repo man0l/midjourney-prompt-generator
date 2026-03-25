@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomePage from '../components/HomePage';
+---
+<Layout title="Midjourney Prompt Generator" description="Create stunning AI art with our Midjourney Prompt Generator. Craft perfect prompts for breathtaking digital art.">
+  <div id="root">
+    <HomePage client:only="react" />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+
+    <!-- Hero text -->
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">Midjourney Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Unleash your creativity and turn ideas into breathtaking art. Craft perfect prompts that bring visions to life with incredible detail and style.
+      </p>
+    </div>
+
+    <!-- Row 1: Why Use + What We Offer -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use Midjourney Prompts?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Midjourney is an innovative AI image generator that converts text prompts into visually captivating artworks. From hyper-realistic portraits to fantastical landscapes, the possibilities are truly limitless.
+        </p>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What We Offer</h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">📚</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Extensive Prompt Library</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Explore a rich collection of curated prompts.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">💰</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Freemium Access</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Get started at no cost with essential tools.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">🖐️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">User-Friendly Interface</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Simply describe your concept and let the AI bring it to life.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">📋</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Templates &amp; Inspiration</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Access pre-made templates and expert examples.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: How It Works -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-5">How It Works</h3>
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">🎨</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">1. Select a Style</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Choose from a vast array of artistic styles.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">✨</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">2. Add Details</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Fine-tune with specific keywords for lighting, mood, and composition.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">🎯</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">3. Generate &amp; Refine</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Create your image and iterate until it's perfect.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Row 3: Popular Features + Material Prompts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Popular Features</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">💡</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Lighting Control</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Design images with precision lighting and dramatic shadows.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">📐</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Aspect Ratio Control</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Customize dimensions to fit any platform.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Material Prompts</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🎭</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Material Prompts</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Incorporate realistic textures and materials in your creations.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">⚡</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Advanced Upscaling</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Enhance image quality with powerful upscaling tools.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Start Your Journey
+    </a>
+
+  </div>
+</Layout>

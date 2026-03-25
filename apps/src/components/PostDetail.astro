@@ -1,0 +1,68 @@
+---
+import { fetchPostBySlug } from '../lib/strapi';
+import { supabase } from '../lib/supabaseClient';
+import { format } from 'date-fns';
+import Layout from '../layouts/Layout.astro';
+
+const { slug } = Astro.params;
+const post = await fetchPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Related posts from Supabase vector search (keep existing logic)
+const { data: relatedPosts } = await supabase
+  .rpc('get_similar_posts', { post_id: post.documentId, limit: 6 })
+  .catch(() => ({ data: [] }));
+---
+<Layout 
+  title={post.seo?.metaTitle || post.title}
+  description={post.seo?.metaDescription || post.excerpt}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <article class="bg-white rounded-lg shadow-md p-8">
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
+        <div class="flex items-center text-sm text-gray-500">
+          <time datetime={post.publishedAt}>
+            Published on {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
+          </time>
+        </div>
+      </header>
+      
+      <div class="prose prose prose-lg max-w-none">
+        <div set:html={post.content} />
+      </div>
+      
+      {relatedPosts && relatedPosts.length > 0 && (
+        <section class="mt-12 pt-8 border-t border-gray-200">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Posts</h2>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {relatedPosts.map((related) => (
+              <article class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                <a href={`/posts/${related.slug}`} class="block">
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                    {related.title}
+                  </h3>
+                  <p class="text-sm text-gray-600 line-clamp-2">
+                    {related.content_markdown?.substring(0, 150)}...
+                  </p>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

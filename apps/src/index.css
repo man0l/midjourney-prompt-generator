@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #1c1c1c;
+  background-image: radial-gradient(circle, #323232 1px, transparent 1px);
+  background-size: 22px 22px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1a1a1a;
+}
+
+/* Yellow range slider */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #c8c0a8;
+  border-radius: 2px;
+  outline: none;
+  width: 100%;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f0b429;
+  cursor: pointer;
+  border: 2px solid #1c1c1c;
+}
+input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f0b429;
+  cursor: pointer;
+  border: 2px solid #1c1c1c;
+}
+
+/* Suppress browser visited link color in footer */
+footer a:visited { color: #6b6559 !important; }
+footer a:hover { color: #f0b429 !important; }
+
+/* Prose overrides for posts */
+.prose { color: #1a1a1a; }
+.prose-invert { color: #ede9d8; }

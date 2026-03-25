@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "material_options",
+  "info": {
+    "singularName": "material-option",
+    "pluralName": "material-options",
+    "displayName": "Material Option"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "promptAddition": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "json"
+    }
+  }
+}

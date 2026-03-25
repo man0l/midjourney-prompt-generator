@@ -1,0 +1,42 @@
+---
+import { fetchPosts } from '../../lib/strapi';
+import Layout from '../../layouts/Layout.astro';
+
+let posts: Awaited<ReturnType<typeof fetchPosts>> = [];
+let error = '';
+
+try {
+  posts = await fetchPosts();
+} catch (e) {
+  error = 'Could not load posts. Please try again later.';
+}
+---
+<Layout title="Posts - Midjourney Prompt Generator">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-bold text-[#1a1a1a] mb-8">Posts</h1>
+
+    {error && (
+      <p class="text-red-600">{error}</p>
+    )}
+
+    {!error && posts.length === 0 && (
+      <p class="text-[#9a9080]">No posts found.</p>
+    )}
+
+    {posts.length > 0 && (
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <a href={`/posts/${post.slug}`} class="block bg-[#e4dfc8] hover:bg-[#ddd8c4] transition-colors rounded-xl p-6 border border-[#c8c0a8]">
+            <h2 class="text-lg font-bold text-[#1a1a1a] mb-2">{post.title}</h2>
+            {post.excerpt && (
+              <p class="text-[#6b6559] text-sm mb-4 line-clamp-3">{post.excerpt.replace(/^#+\s+/gm, '').replace(/\*\*/g, '').replace(/\*/g, '')}</p>
+            )}
+            <div class="text-xs text-[#9a9080]">
+              {new Date(post.publishedAt).toLocaleDateString()}
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>
