@@ -1,37 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "buildCommand": "npm run build:apps",
-        "outputDirectory": "apps/dist"
-      }
-    },
-    {
-      "src": "content-api/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "buildCommand": "npm run build:strapi"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/:path*",
-      "dest": "/content-api/api/:path*"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/apps/assets/$1"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/apps/$1"
-    }
-  ]
-} 
+  "buildCommand": "cd apps && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "apps/dist",
+  "installCommand": "cd apps && npm install --legacy-peer-deps",
+  "framework": "astro"
+}
