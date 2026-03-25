@@ -1,6 +1,3 @@
 {
-  "buildCommand": "cd apps && npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "apps/dist",
-  "installCommand": "cd apps && npm install --legacy-peer-deps",
-  "framework": "astro"
+  "ignoreCommand": "exit 1"
 }
