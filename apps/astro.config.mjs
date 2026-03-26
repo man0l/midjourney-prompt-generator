@@ -14,7 +14,6 @@ export default defineConfig({
   ],
   vite: {
     define: {
-      'process.env': '{}',
       'process.browser': 'true',
     },
     ssr: {
