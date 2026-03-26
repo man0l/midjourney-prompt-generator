@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateGeminiPrompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Gemini Prompt Generator — Get Better Results from Google Gemini"
+  description="Transform your ideas into expertly crafted Gemini prompts. Free Gemini prompt generator that adds structure, context, and output specifications. No sign-up required."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Gemini Prompt Generator"
+      seoDescription="Generate expertly structured Gemini prompts for clearer, more detailed responses."
+      inputPlaceholder="Describe what you need from Gemini... e.g. explain quantum computing in simple terms with real-world examples"
+      buttonLabel="Generate Gemini Prompt"
+      transform={generateGeminiPrompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">Gemini Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Transform your simple ideas into expertly crafted Gemini prompts that deliver clearer, more detailed, and accurate responses. Our free Gemini prompt generator adds intelligent structure, crystal-clear instructions, rich context, and output format specifications.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use a Gemini Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Google Gemini is powerful but responds best to structured, well-formatted prompts. Our free Gemini prompt generator takes your plain request and adds the structure Gemini needs — numbered response sections, evidence requirements, practical examples, and actionable recommendations. Get custom-made responses instead of generic answers every time.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Gemini Prompt</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">📐</span><p class="text-[#6b6559] text-sm">Structured response format with numbered sections</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🔍</span><p class="text-[#6b6559] text-sm">Evidence and reasoning depth requirements</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">💡</span><p class="text-[#6b6559] text-sm">Request for practical examples and use cases</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🚀</span><p class="text-[#6b6559] text-sm">Actionable next steps and recommendations</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Gemini prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no sign-up required. Generate unlimited Gemini prompts.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with Gemini 2.0 and Gemini Ultra?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. Structured prompts work with all Gemini versions, and also improve results in ChatGPT, Claude, and other AI models.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What kinds of tasks can I use this for?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Research, writing, analysis, coding, brainstorming, explanations — any task where you want a more thorough, structured response from Gemini.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Gemini Prompt
+    </a>
+  </div>
+</Layout>

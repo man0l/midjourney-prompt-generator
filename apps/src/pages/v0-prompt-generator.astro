@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateV0Prompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free v0 Prompt Generator — Build UI Components with v0.dev"
+  description="Generate perfectly structured v0 prompts from any UI idea. Free v0 prompt generator that adds design specs, TypeScript types, and accessibility requirements. No sign-up."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="v0 Prompt Generator"
+      seoDescription="Generate v0 prompts that build complete UI components."
+      inputPlaceholder="Describe your UI component... e.g. a pricing table with three tiers, toggle between monthly/yearly billing, and a highlighted recommended plan"
+      buttonLabel="Generate v0 Prompt"
+      transform={generateV0Prompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">v0 Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Turn your UI ideas into perfectly crafted v0 prompts that generate fully-functional components. Our free v0 prompt generator adds design specifications, TypeScript types, interactive states, and accessibility requirements — so your v0 prompt builds complete, deployment-ready UI.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">What Is a v0 Prompt?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          A v0 prompt is the instruction you give to Vercel's v0.dev AI to generate a React UI component. Good v0 prompts specify the design system (Tailwind, shadcn/ui), all interactive states, TypeScript requirements, and accessibility needs. This free v0 prompt generator handles all of that automatically from your description.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your v0 Prompt</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎨</span><p class="text-[#6b6559] text-sm">Design: Tailwind CSS, shadcn/ui, responsive mobile-first</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🔷</span><p class="text-[#6b6559] text-sm">TypeScript: Full types, proper interfaces</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">⚡</span><p class="text-[#6b6559] text-sm">States: Hover, focus, active, disabled, loading, empty</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">♿</span><p class="text-[#6b6559] text-sm">Accessibility: ARIA attributes, keyboard navigation</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this v0 prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What kinds of UI can I build with v0 prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Anything from simple buttons and forms to complex dashboards, data tables, pricing pages, and full page layouts. Describe what you want and the generator structures it for v0.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with the latest v0 model?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The structured prompts work with all v0 versions, and also produce great results in Bolt, Lovable, and Cursor.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your v0 Prompt
+    </a>
+  </div>
+</Layout>

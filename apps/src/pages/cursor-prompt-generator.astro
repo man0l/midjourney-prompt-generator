@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateCursorPrompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Cursor Prompt Generator — Get Error-Free Code from Cursor AI"
+  description="Turn your coding task into a perfectly crafted Cursor prompt. Free Cursor prompt generator that adds technical context, error prevention, and quality requirements. No sign-up."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Cursor Prompt Generator"
+      seoDescription="Generate Cursor AI prompts that produce error-free, working code."
+      inputPlaceholder="Describe your coding task... e.g. add user authentication with email/password login, registration, and password reset to my Next.js app"
+      buttonLabel="Generate Cursor Prompt"
+      transform={generateCursorPrompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">Cursor Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Turn your coding task into a perfectly crafted Cursor AI prompt that generates error-free, working code. Our free Cursor prompt generator adds the technical specificity, implementation context, and quality standards Cursor needs to deliver production-ready solutions the first time.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Structure Your Cursor Prompts?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Vague coding requests produce buggy, incomplete code. The developers getting reliable results from Cursor AI write structured prompts that specify the task clearly, include implementation constraints, and define quality standards. This Cursor prompt generator adds those elements automatically so you spend less time debugging and more time shipping.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Cursor Prompt</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎯</span><p class="text-[#6b6559] text-sm">Clear task definition with no ambiguity</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🔷</span><p class="text-[#6b6559] text-sm">TypeScript types and proper imports required</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🛡️</span><p class="text-[#6b6559] text-sm">Error handling for edge cases included</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">✅</span><p class="text-[#6b6559] text-sm">No placeholder code — fully working output</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Cursor prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What types of coding tasks does it work for?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Any coding task — adding features, fixing bugs, refactoring, building APIs, creating components, database queries, and more.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with other AI coding tools?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — the structured prompts also work great in GitHub Copilot, ChatGPT, Claude, and Bolt.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Cursor Prompt
+    </a>
+  </div>
+</Layout>

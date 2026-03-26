@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { optimizeForChatGPT } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free ChatGPT Prompt Optimizer — GPT Prompt Optimizer Tool"
+  description="Optimize any ChatGPT prompt for better results. Free GPT prompt optimizer and chat GPT prompt optimizer — paste your prompt, get a superior optimized version. No sign-up."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="ChatGPT Prompt Optimizer"
+      seoDescription="Optimize any ChatGPT prompt for better, more precise results."
+      inputPlaceholder="Paste your ChatGPT prompt here to optimize it..."
+      buttonLabel="Optimize ChatGPT Prompt"
+      transform={optimizeForChatGPT}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">ChatGPT Prompt Optimizer</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Turn your basic ChatGPT prompt into an optimized version that delivers superior results. Our free GPT prompt optimizer and chat GPT prompt optimizer adds strategic architecture, precision-focused directives, and output specifications — so ChatGPT gives you exactly what you need.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">What Is ChatGPT Prompt Optimization?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          ChatGPT prompt optimization means rewriting prompts to be more specific, structured, and context-rich. Our free chatgpt prompt optimization tool — also known as a gpt prompt optimizer — transforms vague requests into precision-engineered instructions. The result: custom-tailored responses instead of generic ones. Works as both a prompt optimizer chatgpt tool and a chatgpt 5 prompt optimizer.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What the GPT Optimizer Does</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎯</span><p class="text-[#6b6559] text-sm">Adds expert role framing to direct the response</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">📋</span><p class="text-[#6b6559] text-sm">Specifies output format, length, and structure</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🔍</span><p class="text-[#6b6559] text-sm">Adds precision requirements to eliminate vague answers</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">⚡</span><p class="text-[#6b6559] text-sm">Free gpt optimizer — no account, no credits</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this ChatGPT prompt optimizer free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free GPT optimizer, no sign-up required. Unlimited prompt optimization.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What's the difference between a prompt improver and a prompt optimizer?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Both improve prompts, but a ChatGPT prompt optimizer specifically focuses on making prompts more precise, structured, and output-directed. Think of it as engineering for maximum result quality.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does this work as a ChatGPT 5 prompt optimizer?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — the optimized prompts work with all ChatGPT versions including GPT-4o, ChatGPT-5, and other AI models like Claude and Gemini.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Optimize Your Prompt Now
+    </a>
+  </div>
+</Layout>
