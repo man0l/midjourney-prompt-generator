@@ -1,0 +1,197 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BoltPromptPage from '../components/BoltPromptPage';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Bolt Prompt Generator — Build Better Apps with Bolt.new"
+  description="Generate perfectly structured Bolt.new prompts that build fully-functional apps. Free Bolt prompt generator with tech stack, UI, database and auth controls. No sign-up required."
+>
+  <div id="root">
+    <BoltPromptPage client:only="react" />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+
+    <!-- Hero -->
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">Bolt Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Stop getting half-baked apps from Bolt.new. Our free Bolt prompt generator turns your app idea into a precision-engineered bolt new prompt that builds complete, deployment-ready applications — with the right tech stack, features, and architecture specified from the start.
+      </p>
+    </div>
+
+    <!-- Row 1: What it is + Why it works -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Your Bolt Prompts Aren't Working</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Vague prompts like "build a task app" leave Bolt guessing — and the results show it. The developers getting impressive results from Bolt.new aren't better coders; they've mastered the art of writing structured bolt new prompts. Our Bolt prompt generator automatically applies the four elements every great Bolt prompt needs: architecture specs, feature requirements, UI/UX direction, and tech stack — so Bolt knows exactly what to build.
+        </p>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Who This Bolt Prompt Generator Is For</h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">🚀</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Founders & Entrepreneurs</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Build working MVPs in hours, not weeks.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">👩‍💻</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Developers</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Prototype complex apps without writing boilerplate.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">📋</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Product Managers</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Demo working features before committing dev resources.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">🎨</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">No-Code Builders</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Bridge the gap between visual builders and custom apps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: How it works -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-5">How to Use This Bolt Prompt Generator</h3>
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">💡</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">1. Describe Your App</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Type your app idea in plain language. The more specific, the better the output.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">⚙️</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">2. Select Your Tech Stack</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Choose framework, UI library, database, auth, and styling preferences.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">📋</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">3. Copy & Paste into Bolt</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Paste the engineered prompt into Bolt.new and watch a complete app get built.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Row 3: What makes a good prompt + example -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What a Great Bolt Prompt Includes</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🏗️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Architecture Specifications</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Frontend framework, backend, and database — not just "build a web app."</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">✅</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Feature Completeness</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Every feature listed explicitly so nothing gets left out of the build.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🎯</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Quality Standards</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Responsive design, error handling, loading states — no placeholder code.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Example Bolt Prompt Output</h3>
+        <div class="bg-[#f5f0e4] border border-[#c8c0a8] rounded-lg p-3 font-mono text-xs text-[#1a1a1a] leading-relaxed whitespace-pre-wrap">Build a complete, fully-functional SaaS Platform: a project management tool for remote teams
+
+Tech Stack:
+- Framework: Next.js
+- UI Library: shadcn/ui
+- Database: Supabase
+- Authentication: Supabase Auth
+- Styling: Tailwind CSS
+
+Core Features:
+- User authentication and team workspaces
+- Kanban board with drag-and-drop tasks
+- Real-time collaboration and comments
+- Deadline reminders and notifications
+
+Requirements:
+- Fully functional with no placeholder code
+- Responsive design for desktop and mobile
+- Clean, modern UI with good UX
+- Proper error handling and loading states
+- Production-ready code quality</div>
+      </div>
+
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is a Bolt prompt?</p>
+          <p class="text-[#6b6559] text-xs mt-1">A Bolt prompt is the instruction you give to Bolt.new to generate a web application. A well-structured bolt new prompt includes the app type, tech stack, feature list, and quality requirements — which this generator builds for you automatically.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Bolt prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free with no sign-up required. Generate as many Bolt prompts as you need.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with Bolt.new specifically?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes, it's optimized for Bolt.new prompts. The structured output format works especially well with Bolt's AI, and also produces great results in Cursor, Lovable, and v0.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What if I don't know which tech stack to choose?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Leave the tech stack dropdowns on "Select" and the generator will produce a clean prompt from your description and features alone. Bolt will choose sensible defaults. Adding a stack just gives you more control over the output.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How specific should my app description be?</p>
+          <p class="text-[#6b6559] text-xs mt-1">"A social media app with user profiles, image posting, comments, likes, and direct messaging" will generate a far more complete application than "a social media app." Use the features field to list everything you want included.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Bolt Prompt
+    </a>
+
+  </div>
+</Layout>
