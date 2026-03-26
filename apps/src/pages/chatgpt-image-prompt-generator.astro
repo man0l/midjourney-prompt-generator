@@ -1,0 +1,212 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ChatGPTImagePage from '../components/ChatGPTImagePage';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free ChatGPT Image Prompt Generator — No Sign-Up"
+  description="Generate perfect ChatGPT photo prompts in seconds. Free ChatGPT image prompt generator with scene presets, styles, lighting and camera controls. Works with ChatGPT-4o, DALL-E 3, Claude and Gemini. No sign-up required."
+>
+  <div id="root">
+    <ChatGPTImagePage client:only="react" />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+
+    <!-- Hero -->
+    <div class="text-center space-y-3 py-4">
+      <h2 class="text-4xl font-bold text-[#1a1a1a]">ChatGPT Image Prompt Generator</h2>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Turn any idea into a detailed, ready-to-use ChatGPT photo prompt in seconds. No prompt engineering knowledge required — just describe your subject, pick your settings, and get a prompt that actually works.
+      </p>
+    </div>
+
+    <!-- Row 1: What it is + Who it's for -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">What Is a ChatGPT Photo Prompt?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          A ChatGPT photo prompt is a detailed text description you give to ChatGPT-4o or DALL-E 3 to generate an image. The more specific your prompt — scene, style, lighting, composition — the better the result. Our free ChatGPT image prompt generator builds those details for you automatically, so you skip straight to great images.
+        </p>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Who This Tool Is For</h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">🎨</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Creatives & Artists</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Generate concept art, storyboards, and visual references.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">📣</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Marketers</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Create eye-catching social media and ad visuals fast.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">✍️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Writers & Bloggers</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Visualize scenes, characters, and book covers.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-base mt-0.5">🚀</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Founders & Builders</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Produce product mockups and landing page imagery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: How it works -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-5">How to Use This ChatGPT Prompt Generator for Images</h3>
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">💬</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">1. Describe Your Subject</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Type what you want in the image — a person, object, creature, or scene.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">🎛️</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">2. Pick Your Settings</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Select scene, style, mood, shot type, lighting, and aspect ratio.</p>
+          </div>
+        </div>
+
+        <span class="text-[#c8c0a8] font-bold text-xl hidden md:block">→</span>
+
+        <div class="flex items-start gap-3 flex-1">
+          <div class="w-9 h-9 bg-[#f0b429] border border-[#1c1c1c] rounded-lg flex items-center justify-center flex-shrink-0 text-base">📋</div>
+          <div>
+            <p class="font-semibold text-[#1a1a1a] text-sm">3. Copy & Paste into ChatGPT</p>
+            <p class="text-[#6b6559] text-xs mt-0.5">Paste your prompt into ChatGPT-4o, Claude, or Gemini and generate.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Row 3: Features + Compatible Models -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Makes a Good ChatGPT Image Prompt?</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🏞️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Scene & Environment</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Set the location and atmosphere — enchanted forest, cyberpunk city, minimalist studio.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🎭</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Art Style & Mood</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Photorealistic, cinematic, oil painting, anime — style defines how ChatGPT renders the image.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">📷</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Camera & Composition</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Shot type (close-up, wide, aerial) and lighting control the feel of the final image.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Works With All Major AI Image Models</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🤖</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">ChatGPT-4o & DALL-E 3</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Optimized for ChatGPT's image generation — the most popular use case.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🔷</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Claude & Gemini</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Natural language prompts work equally well with Anthropic and Google's image models.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">⚡</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Midjourney & Stable Diffusion</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">The descriptive prompts also produce excellent results in other AI art tools.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ChatGPT Photo Prompt Examples -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Example ChatGPT Photo Prompts</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {[
+          'A woman reading a book in an enchanted forest, photorealistic style, dreamy atmosphere, golden hour lighting, medium shot',
+          'A sleek electric sports car on an urban rooftop, cinematic style, moody atmosphere, blue hour lighting, wide establishing shot',
+          'A cozy coffee shop interior with steaming cups, watercolor style, peaceful atmosphere, overcast diffused lighting, eye-level shot',
+          'A dragon perched on ancient ruins overlooking a mountain lake, digital art style, epic atmosphere, golden hour lighting, aerial overhead view',
+        ].map((prompt) => (
+          <div class="bg-[#f5f0e4] border border-[#c8c0a8] rounded-lg p-3 font-mono text-xs text-[#1a1a1a] leading-relaxed">
+            {prompt}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this ChatGPT image prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no sign-up required. Generate as many ChatGPT photo prompts as you need.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with ChatGPT-4o image generation?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The prompts are optimized for ChatGPT-4o's image generation feature and DALL-E 3, but also work with Claude, Gemini, and Midjourney.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How is this different from the Midjourney prompt generator?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Midjourney uses special parameters like <code class="bg-[#e4dfc8] px-1 rounded">--ar</code> and <code class="bg-[#e4dfc8] px-1 rounded">--v</code>. ChatGPT needs natural language descriptions. This tool outputs natural language prompts optimized for ChatGPT's image model.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I edit the prompt before copying?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The generated prompt appears in a readable box — you can tweak any part of it and then copy it into ChatGPT.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your ChatGPT Image Prompt
+    </a>
+
+  </div>
+</Layout>
