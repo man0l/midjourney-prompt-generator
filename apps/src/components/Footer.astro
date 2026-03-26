@@ -8,17 +8,26 @@ try {
 ---
 <footer class="border-t-2 border-[#1c1c1c] bg-[#e4dfc8]">
   <div class="max-w-5xl mx-auto px-6 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <div class="space-y-4">
         <h3 class="text-lg font-bold text-[#1a1a1a]">About</h3>
         <p class="text-sm text-[#6b6559] leading-relaxed">
-          Create stunning AI art with our Midjourney prompt generator. Optimize your prompts and unleash your creativity.
+          Generate high-quality prompts for ChatGPT, Claude, Gemini and other AI models.
         </p>
         <div class="flex flex-col space-y-2">
           <a href="/" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors font-medium">Home</a>
           <a href="/posts" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors font-medium">Posts</a>
         </div>
       </div>
+
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Free Tools</h3>
+        <div class="flex flex-col space-y-2">
+          <a href="/" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors">Midjourney Prompt Generator</a>
+          <a href="/chatgpt-image-prompt-generator" class="text-sm text-[#6b6559] hover:text-[#f0b429] transition-colors">ChatGPT Image Prompt Generator</a>
+        </div>
+      </div>
+
       {posts.length > 0 && (
         <div class="space-y-4">
           <h3 class="text-lg font-bold text-[#1a1a1a]">Latest Posts</h3>
