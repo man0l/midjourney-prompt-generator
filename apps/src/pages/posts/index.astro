@@ -10,6 +10,8 @@ try {
 } catch (e) {
   error = 'Could not load posts. Please try again later.';
 }
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout title="Posts - Midjourney Prompt Generator">
   <div class="max-w-5xl mx-auto px-6 py-12">

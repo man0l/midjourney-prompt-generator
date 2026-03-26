@@ -17,6 +17,8 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+
 let relatedPosts: Awaited<ReturnType<typeof fetchPosts>> = [];
 try {
   const allPosts = await fetchPosts();
