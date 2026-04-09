@@ -129,6 +129,20 @@ Respond in a structured format:
 </output_format>`;
 }
 
+export function generateGrokPrompt(input: string, spicy = false): string {
+  if (!input.trim()) return '';
+  const toneInstruction = spicy
+    ? 'Use Grok\'s unfiltered, spicy mode: be bold, direct, and willing to engage with edgy or controversial angles without hedging. Skip the corporate disclaimers. Humor is welcome.'
+    : 'Use Grok\'s standard mode: direct, confident, and lightly irreverent — more personality than a typical AI, but still informative.';
+  return `${input.trim()}
+
+Tone: ${toneInstruction}
+Style: Be direct and get to the point fast. No filler phrases like "Great question!" or "Certainly!". Use dry wit where appropriate.
+Format: Lead with the answer, then provide supporting detail. Use bullet points or numbered lists only when they genuinely help clarity.
+Context: Draw on real-world, up-to-date knowledge where relevant. If the topic is contested, acknowledge the tension honestly rather than defaulting to a bland centrist take.
+Length: As long as the task requires — not a word more.`;
+}
+
 export function generateGeminiPrompt(input: string): string {
   if (!input.trim()) return '';
   return `${input.trim()}

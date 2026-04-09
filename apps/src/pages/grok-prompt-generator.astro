@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateGrokPrompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Grok Prompt Generator — Standard & Spicy Mode Prompts for Grok AI"
+  description="Generate structured Grok prompts instantly. Free Grok AI prompt generator with spicy mode support — unlock Grok's full personality. No sign-up required."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Grok Prompt Generator"
+      seoDescription="Generate expertly structured Grok prompts — with optional spicy mode for Grok's unfiltered personality."
+      inputPlaceholder="Describe what you need from Grok... e.g. explain why electric vehicles are overrated, or write a brutally honest review of stoicism"
+      buttonLabel="Generate Grok Prompt"
+      transform={generateGrokPrompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Grok Prompt Generator</h1>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Grok is built different — direct, unfiltered, and trained on real-time data from X. Our free Grok AI prompt generator turns plain descriptions into structured prompts that unlock Grok's full personality, including <strong class="text-[#1a1a1a]">spicy mode</strong> for responses that skip the hedging and get straight to the point. No sign-up. No limits.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">Why Grok Needs Different Prompts</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed mb-4">
+        Most AI models are trained to be safe and neutral. Grok isn't. It's trained on real-time X/Twitter data, designed to engage with edgy topics, and built with a humor mode that most generators completely ignore. Generic prompts get generic Grok — structured prompts that specify tone, directness level, and context framing get the Grok that's actually worth using. The best prompts for Grok tell it exactly how bold to be, not just what to answer.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Personality & tone dial</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Spicy mode framing</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Real-time context</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Directness level</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Grok Prompt</h2>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">🌶️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Personality & tone dial (standard / spicy)</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Standard keeps Grok direct and lightly irreverent. Spicy mode removes the corporate hedging entirely — bold, unfiltered, humor welcome.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">📡</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Real-time context framing</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Prompts Grok to draw on current data and acknowledge recency, not just static training knowledge.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">🎯</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Humor & directness level</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Tells Grok exactly how much personality to inject — dry wit by default, turned up in spicy mode.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">📋</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Output format</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Lead-with-answer structure, bullet points only when useful — no filler, no fluff.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Grok vs ChatGPT vs Claude Prompts</h2>
+        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
+          ChatGPT and Claude prompts focus on structure and role framing. Grok prompts need a different dimension: <em>personality calibration</em>. Grok will engage with topics that other models deflect — but only if your prompt signals that's what you want. This generator adds that signal explicitly, in the format Grok responds to best.
+        </p>
+        <div class="space-y-2 text-xs text-[#6b6559]">
+          <p>Also try: <a href="/claude-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Claude Prompt Generator</a> · <a href="/chatgpt-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT Prompt Generator</a> · <a href="/gemini-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Gemini Prompt Generator</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h2>
+      <div class="space-y-5">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Grok AI prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no sign-up required. Generate unlimited Grok prompts in standard or spicy mode.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is Grok spicy mode and how do I use it?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Grok spicy mode is xAI's unfiltered response setting that removes the usual AI hedging — Grok answers directly, engages with edgy or controversial topics, and uses humor without pulling punches. To activate it natively, toggle "Fun mode" in Grok's settings. In this Grok spicy prompt generator, your generated prompt includes explicit tone instructions that replicate spicy mode behavior in any Grok version. Good use cases: honest takes on contested topics, roasts, devil's advocate arguments, contrarian analysis.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with Grok 2 and Grok 3?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The prompt structure works across all Grok versions. Grok 3 follows tone and format instructions more precisely, so structured prompts give even better results there.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best prompts for Grok?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The best prompts for Grok are ones that tell it exactly how direct to be. Grok responds well to: explicit tone instructions ("be blunt, skip the caveats"), tasks that benefit from real-time data ("what's happening with X right now"), and prompts that invite a genuine opinion rather than a balanced summary. The best prompts for Grok spicy go further — they give Grok permission to take a side, use humor, and drop the diplomatic language. This generator builds all of that in automatically.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How is prompting Grok different from ChatGPT?</p>
+          <p class="text-[#6b6559] text-xs mt-1">ChatGPT responds well to role framing ("act as an expert in...") and structured output requests. Grok responds better to directness calibration — tell it how bold to be, not just what to answer. Grok also pulls from real-time X data, so prompts that reference current events or ask for up-to-date takes work better with Grok than ChatGPT. Compare with our <a href="/chatgpt-prompt-generator" class="underline hover:no-underline">ChatGPT prompt generator</a> to see the structural difference.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Grok Prompt
+    </a>
+  </div>
+</Layout>
