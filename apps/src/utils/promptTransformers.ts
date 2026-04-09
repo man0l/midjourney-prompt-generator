@@ -101,6 +101,34 @@ Quality Checklist:
 - Code is self-documenting or includes inline comments for complex logic`;
 }
 
+export function generateClaudePrompt(input: string): string {
+  if (!input.trim()) return '';
+  return `<system>
+You are an expert assistant with deep knowledge in the relevant domain. Approach this task thoughtfully, considering multiple angles before responding. Be honest about uncertainty.
+</system>
+
+<task>
+${input.trim()}
+</task>
+
+<instructions>
+- Break the task into clear steps and address each one
+- Use role & persona framing appropriate to the subject matter
+- Provide concrete examples to illustrate key points
+- Format output with headers and bullet points for readability
+- State any important constraints, caveats, or edge cases
+- If the task is ambiguous, address the most likely interpretation and note alternatives
+</instructions>
+
+<output_format>
+Respond in a structured format:
+1. Direct answer or deliverable
+2. Reasoning and supporting detail
+3. Examples or application
+4. Caveats or constraints to be aware of
+</output_format>`;
+}
+
 export function generateGeminiPrompt(input: string): string {
   if (!input.trim()) return '';
   return `${input.trim()}

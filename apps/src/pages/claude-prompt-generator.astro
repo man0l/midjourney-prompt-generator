@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateClaudePrompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Claude Prompt Generator — Get Better Results from Claude AI"
+  description="Transform plain language into expert-structured Claude prompts. Free Claude prompt generator with system prompt structure, role framing, and output format control. No sign-up required."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Claude Prompt Generator"
+      seoDescription="Generate expertly structured Claude prompts for clearer, more detailed responses."
+      inputPlaceholder="Describe what you need from Claude... e.g. analyze the pros and cons of microservices vs monoliths for a startup"
+      buttonLabel="Generate Claude Prompt"
+      transform={generateClaudePrompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Claude Prompt Generator</h1>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        Turn plain language into expert-structured Claude prompts — instantly. Our free Claude prompt generator adds system prompt structure, role framing, task decomposition, and output format control so you get precise, well-reasoned answers every time. Built for Claude, Anthropic's AI model, it naturally handles the constitutional AI framing and XML-tag patterns that make Claude perform at its best.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">Why Claude Needs Structured Prompts</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed mb-4">
+        Claude is trained to follow instructions carefully — which means the quality of your prompt directly determines the quality of the response. A well-structured Claude prompt uses system prompt framing, clear task decomposition, explicit output format requirements, and role-appropriate tone. Our free Anthropic prompt generator handles all of that automatically, so you spend less time engineering and more time getting results.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">System prompt structure</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Extended thinking support</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Output format control</span>
+        <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Constitutional AI framing</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Claude Prompt</h2>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">🎭</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Role &amp; persona framing</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Sets Claude's expertise level and perspective for the task at hand</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">🧩</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Task decomposition</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Breaks complex requests into ordered steps Claude can follow precisely</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">📋</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Output format control</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Specifies structure, length, and formatting so responses are immediately usable</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">⚖️</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Tone &amp; constraints</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Adds caveats, scope limits, and honesty instructions aligned with Claude's values</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Claude vs ChatGPT vs Gemini Prompts</h2>
+        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
+          Claude responds especially well to XML-style tags (<code class="bg-[#fdf6e3] px-1 rounded text-xs">&lt;task&gt;</code>, <code class="bg-[#fdf6e3] px-1 rounded text-xs">&lt;instructions&gt;</code>) and explicit system prompts — patterns that differ from ChatGPT's role-play style or Gemini's numbered-section format. This generator outputs Claude-native structure so you get the model's full capability.
+        </p>
+        <div class="space-y-2 text-xs text-[#6b6559]">
+          <p>Also try: <a href="/chatgpt-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT Prompt Generator</a> · <a href="/gemini-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Gemini Prompt Generator</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h2>
+      <div class="space-y-5">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Claude AI prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no account or sign-up required. Generate unlimited Claude prompts instantly.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it work with Claude 3.5 Sonnet and Claude 4?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The structured format works across all Claude versions — Claude 3 Haiku, Claude 3.5 Sonnet, Claude 3 Opus, and the Claude 4 family. The XML-tag pattern and system prompt structure are consistent across Anthropic's model lineup.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What's the difference between a Claude prompt and a ChatGPT prompt?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Claude is trained to interpret XML-style tags and system-level instructions more precisely than most models. ChatGPT prompts lean on role-play ("Act as...") while Claude prompts benefit from explicit <code class="bg-[#fdf6e3] px-1 rounded">&lt;task&gt;</code> and <code class="bg-[#fdf6e3] px-1 rounded">&lt;instructions&gt;</code> blocks. Both work, but native structure gets better results from Claude. Compare our <a href="/chatgpt-prompt-generator" class="underline hover:no-underline">ChatGPT prompt generator</a> side by side to see the difference.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How is this different from Anthropic's own prompt guide?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Anthropic's prompt engineering documentation is a reference guide — this is an instant generator. Rather than reading through best practices and applying them manually, you describe what you need and get a production-ready Claude prompt in seconds. Think of it as the practical companion to Anthropic's prompt engineering guide.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I use generated prompts in the Claude API?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The output is structured with a <code class="bg-[#fdf6e3] px-1 rounded">&lt;system&gt;</code> block and a <code class="bg-[#fdf6e3] px-1 rounded">&lt;task&gt;</code> block — you can split those directly into the <code class="bg-[#fdf6e3] px-1 rounded">system</code> and <code class="bg-[#fdf6e3] px-1 rounded">user</code> message fields of the Claude API, or paste the whole thing as a user message.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Claude Prompt
+    </a>
+  </div>
+</Layout>
