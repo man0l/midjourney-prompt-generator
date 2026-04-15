@@ -1,5 +1,4 @@
 {
   "framework": "astro",
-  "buildCommand": "astro build",
-  "outputDirectory": "dist"
+  "buildCommand": "rm -rf node_modules/.vite .astro .vercel/output && astro build"
 }
