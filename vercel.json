@@ -1,3 +1,3 @@
 {
-  "buildCommand": "rm -rf node_modules/.vite apps/.astro apps/.vercel/output && npm run build"
+  "buildCommand": "echo '[DIAG] source heading:' && grep -n 'text-4xl font-bold' apps/src/pages/chatgpt-prompt-generator.astro && echo '[DIAG] clearing caches' && rm -rf node_modules/.vite apps/.astro apps/.vercel/output && echo '[DIAG] build start' && npm run build:apps"
 }
