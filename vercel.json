@@ -1,1 +1,3 @@
-{}
+{
+  "buildCommand": "rm -rf node_modules/.vite apps/.astro apps/.vercel/output && npm run build"
+}
