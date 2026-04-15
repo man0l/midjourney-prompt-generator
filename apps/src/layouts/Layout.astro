@@ -8,6 +8,7 @@ interface Props {
   description?: string;
 }
 const { title, description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, 'https://midjourney-prompt-generator.eu');
 ---
 <!doctype html>
 <html lang="en">
@@ -15,6 +16,7 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
     <!-- Google tag (gtag.js) -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-843XX9JN0R"></script>
