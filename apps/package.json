@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "rm -rf .vercel/output && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "old-dev": "node ../server.js",
