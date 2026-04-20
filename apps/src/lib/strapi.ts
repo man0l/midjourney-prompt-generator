@@ -1,6 +1,16 @@
 const STRAPI_URL = import.meta.env.STRAPI_URL || 'http://localhost:1337';
 const STRAPI_API_TOKEN = import.meta.env.STRAPI_API_TOKEN || 'missing_token';
 
+export function fixContentImageUrls(content: string): string {
+  return content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+    if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/')) {
+      return match;
+    }
+    const encodedSrc = src.split('/').map((seg: string) => encodeURIComponent(seg)).join('/');
+    return `![${alt}](${STRAPI_URL}/uploads/${encodedSrc})`;
+  });
+}
+
 export async function fetchStrapi<T>(options: {
   endpoint: string;
   query?: Record<string, any>;

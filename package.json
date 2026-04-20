@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "apps",
-    "content-api"
+    "content-api",
+    "extension"
   ],
   "scripts": {
     "backup": "node scripts/backup-supabase.js",

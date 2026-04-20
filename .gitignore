@@ -56,3 +56,4 @@ content-api/.tmp
 *.png
 *.jpg
 *.jpeg
+.env*.local
