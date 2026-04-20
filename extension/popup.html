@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Picker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-mark">/</div>
+      <span class="brand-name">Prompt Picker</span>
+    </div>
+    <button id="add-btn">+ Add Prompt</button>
+  </header>
+
+  <div id="search-bar">
+    <input id="search" type="text" placeholder="Search prompts…" autocomplete="off">
+  </div>
+
+  <div id="prompt-list"></div>
+
+  <div id="modal" class="hidden">
+    <div id="modal-box">
+      <h2 id="modal-heading">Add Prompt</h2>
+      <label for="form-title">Title</label>
+      <input id="form-title" type="text" placeholder="e.g. SEO Meta Description">
+      <label for="form-body">Body</label>
+      <textarea id="form-body" placeholder="Write your prompt here…"></textarea>
+      <div id="modal-footer">
+        <button id="cancel-btn">Cancel</button>
+        <button id="save-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
