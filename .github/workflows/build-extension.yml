@@ -1,0 +1,46 @@
+name: Build Chrome Extension
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extension/**'
+      - '.github/workflows/build-extension.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate PNG icons from SVG
+        run: |
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin
+          mkdir -p extension/icons
+          for size in 16 32 48 128; do
+            rsvg-convert -w $size -h $size extension/icon.svg -o extension/icons/icon-${size}.png
+          done
+
+      - name: Package extension zip
+        run: |
+          cd extension
+          zip -r ../prompt-picker-extension.zip \
+            manifest.json \
+            content.js \
+            content.css \
+            popup.html \
+            popup.js \
+            popup.css \
+            icons/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prompt-picker-extension
+          path: prompt-picker-extension.zip
+          retention-days: 90
