@@ -155,12 +155,31 @@
   display: none;
 }
 
+.pp-chatgpt-btn.loading {
+  background-size: 100% 200%;
+  background-image: linear-gradient(
+    to top,
+    #f59e0b 0%,
+    #fb923c 35%,
+    #a855f7 65%,
+    #6366f1 100%
+  );
+  animation: ppFillUpDown 1.4s ease-in-out infinite;
+  color: white;
+  opacity: 1;
+}
+
 .pp-chatgpt-btn.loading svg {
-  animation: ppSpin 0.9s linear infinite;
+  filter: brightness(0) invert(1); /* keep icon white over gradient */
+}
+
+@keyframes ppFillUpDown {
+  0%   { background-position: 0% 100%; }
+  50%  { background-position: 0% 0%;   }
+  100% { background-position: 0% 100%; }
 }
 
 .pp-chatgpt-btn[disabled] {
-  opacity: 0.4;
   cursor: default;
 }
 

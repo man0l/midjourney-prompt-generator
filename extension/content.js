@@ -4,6 +4,8 @@
   const MIN_CHARS_FOR_TOOLBAR = 15;
   const MIN_CHARS_FOR_CHATGPT_BTN = 3;
   const IS_CHATGPT = location.hostname === 'chatgpt.com';
+  const IS_CLAUDE  = location.hostname === 'claude.ai';
+  const IS_INLINE  = IS_CHATGPT || IS_CLAUDE;
 
   let state = null; // { el } when slash menu is open
   let dropdown = null;
@@ -182,7 +184,7 @@
   }
 
   function showToolbar(el) {
-    if (IS_CHATGPT) return; // ChatGPT uses inline button instead
+    if (IS_INLINE) return; // inline sites use injected button instead
     if (!toolbar) { toolbar = buildToolbar(); document.body.appendChild(toolbar); }
     toolbarEl = el;
     toolbar.classList.add('visible');
@@ -205,7 +207,7 @@
   }
 
   function refreshToolbar(el) {
-    if (IS_CHATGPT) return;
+    if (IS_INLINE) return;
     if (!isEditable(el)) { hideToolbar(); return; }
     const text = getEditableText(el).trim();
     if (text.length < MIN_CHARS_FOR_TOOLBAR) { hideToolbar(); return; }
@@ -322,6 +324,113 @@
     chatgptImproveBtn.hidden = text.trim().length < MIN_CHARS_FOR_CHATGPT_BTN;
   }
 
+  // ── Claude.ai inline improve button ───────────────────────
+
+  let claudeImproveBtn = null;
+
+  function findClaudeEditor() {
+    return document.querySelector('[aria-label="Write your prompt to Claude"]') ||
+           document.querySelector('div[contenteditable="true"]');
+  }
+
+  function findClaudeInsertionTarget() {
+    // When text is typed: send button appears
+    const send = document.querySelector('[aria-label="Send message"]') ||
+                 document.querySelector('[aria-label="Send Message"]') ||
+                 document.querySelector('button[data-testid="send-button"]');
+    if (send) {
+      console.log('[PP] Claude: found send button');
+      return { parent: send.parentElement, before: send };
+    }
+
+    // Fallback: voice/mic button (always present in bottom-right bar)
+    const voice = document.querySelector('[aria-label*="oice"]') ||
+                  document.querySelector('[aria-label*="icrophone"]') ||
+                  document.querySelector('[aria-label*="udio"]');
+    if (voice) {
+      console.log('[PP] Claude: found voice button, label:', voice.getAttribute('aria-label'));
+      return { parent: voice.parentElement, before: voice };
+    }
+
+    // Log all buttons to debug
+    const allBtns = Array.from(document.querySelectorAll('button')).map(b => b.getAttribute('aria-label')).filter(Boolean);
+    console.log('[PP] Claude: no target found. All button labels:', allBtns);
+    return null;
+  }
+
+  function injectClaudeButton() {
+    if (document.querySelector('[data-pp-btn]')) return; // already injected
+
+    const target = findClaudeInsertionTarget();
+    if (!target || !target.parent) return;
+
+    const btn = document.createElement('button');
+    btn.setAttribute('data-pp-btn', '1');
+    btn.setAttribute('aria-label', 'Improve prompt with AI');
+    btn.setAttribute('title', 'Improve prompt (AI)');
+    btn.type = 'button';
+    btn.className = 'pp-chatgpt-btn';
+    btn.hidden = true;
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l3.5 7.5L24 14l-7.5 3.5L13 25l-3.5-7.5L2 14l7.5-3.5z"/></svg>`;
+
+    btn.addEventListener('mousedown', (e) => e.preventDefault());
+    btn.addEventListener('click', () => {
+      const editor = findClaudeEditor();
+      if (editor) doImprove(btn, editor);
+    });
+
+    target.parent.insertBefore(btn, target.before || null);
+    claudeImproveBtn = btn;
+
+    // Start hidden; updateClaudeButton shows it when text is present
+    btn.hidden = true;
+    console.log('[PP] Claude button injected before:', target.before?.getAttribute?.('aria-label') || target.before?.tagName);
+  }
+
+  function updateClaudeButton(text) {
+    const hasText = text && text.trim().length >= MIN_CHARS_FOR_CHATGPT_BTN;
+
+    if (!hasText) {
+      if (claudeImproveBtn) claudeImproveBtn.hidden = true;
+      return;
+    }
+
+    // When text is present, send button appears — re-inject next to it if needed
+    const send = document.querySelector('[aria-label="Send message"]') ||
+                 document.querySelector('[aria-label="Send Message"]') ||
+                 document.querySelector('button[data-testid="send-button"]');
+
+    if (claudeImproveBtn && document.contains(claudeImproveBtn)) {
+      // Re-inject if send button exists but our button isn't right before it
+      if (send && claudeImproveBtn.nextElementSibling !== send) {
+        claudeImproveBtn.remove();
+        claudeImproveBtn = null;
+      }
+    } else {
+      claudeImproveBtn = null;
+    }
+
+    if (!claudeImproveBtn) injectClaudeButton();
+    if (claudeImproveBtn) claudeImproveBtn.hidden = false;
+  }
+
+  function setupClaude() {
+    console.log('[PP] setupClaude — hostname:', location.hostname);
+    // Try immediately, then retry for slow Claude renders
+    injectClaudeButton();
+    setTimeout(() => { if (!claudeImproveBtn) injectClaudeButton(); }, 600);
+    setTimeout(() => { if (!claudeImproveBtn) injectClaudeButton(); }, 1500);
+    setTimeout(() => { if (!claudeImproveBtn) injectClaudeButton(); }, 3000);
+
+    let timer = null;
+    const observer = new MutationObserver(() => {
+      if (claudeImproveBtn && document.contains(claudeImproveBtn)) return;
+      clearTimeout(timer);
+      timer = setTimeout(() => { claudeImproveBtn = null; injectClaudeButton(); }, 300);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function setupChatGPT() {
     console.log('[PP] setupChatGPT — hostname:', location.hostname);
     // Try immediately
@@ -367,7 +476,7 @@
       chrome.runtime.sendMessage({ type: 'improve', prompt: original }, (response) => {
         btn.classList.remove('loading');
         btn.disabled = false;
-        if (!IS_CHATGPT) positionToolbar();
+        if (!IS_INLINE) positionToolbar();
 
         if (chrome.runtime.lastError) {
           showToast('Improve failed: ' + chrome.runtime.lastError.message, 'error');
@@ -445,6 +554,9 @@
       if (IS_CHATGPT) {
         const editor = findChatGPTEditor();
         updateChatGPTButton(editor ? getEditableText(editor) : '');
+      } else if (IS_CLAUDE) {
+        const editor = findClaudeEditor();
+        updateClaudeButton(editor ? getEditableText(editor) : '');
       } else {
         refreshToolbar(el);
       }
@@ -456,13 +568,16 @@
     if (IS_CHATGPT) {
       const editor = findChatGPTEditor();
       updateChatGPTButton(editor ? getEditableText(editor) : '');
+    } else if (IS_CLAUDE) {
+      const editor = findClaudeEditor();
+      updateClaudeButton(editor ? getEditableText(editor) : '');
     } else {
       refreshToolbar(e.target);
     }
   }, true);
 
   document.addEventListener('focusout', (e) => {
-    if (IS_CHATGPT) return; // ChatGPT button stays visible while text is present
+    if (IS_INLINE) return; // inline sites keep button visible while text is present
     setTimeout(() => {
       const active = document.activeElement;
       const inToolbar = toolbar && toolbar.contains(active);
@@ -489,12 +604,13 @@
     if (dropdown && !dropdown.contains(e.target)) hideDropdown();
   }, true);
 
-  // Keep toolbar glued to its editable on scroll/resize (non-ChatGPT)
-  const reposition = () => { if (!IS_CHATGPT && toolbarEl) positionToolbar(); };
+  // Keep toolbar glued to its editable on scroll/resize (non-inline sites)
+  const reposition = () => { if (!IS_INLINE && toolbarEl) positionToolbar(); };
   window.addEventListener('scroll', reposition, true);
   window.addEventListener('resize', reposition);
 
   // ── Init ───────────────────────────────────────────────────
 
   if (IS_CHATGPT) setupChatGPT();
+  else if (IS_CLAUDE) setupClaude();
 })();

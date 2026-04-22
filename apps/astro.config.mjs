@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel/serverless';
 export default defineConfig({
   site: 'https://midjourney-prompt-generator.eu',
   output: 'server',
-  adapter: vercel({ nodeVersion: '20' }),
+  adapter: vercel({ nodeVersion: '20', maxDuration: 30 }),
   integrations: [
     react(),
     tailwind({
