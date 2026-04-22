@@ -31,6 +31,7 @@ jobs:
           cd extension
           zip -r ../prompt-picker-extension.zip \
             manifest.json \
+            background.js \
             content.js \
             content.css \
             popup.html \

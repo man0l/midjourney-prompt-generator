@@ -10,6 +10,15 @@ const ALLOWED_ORIGINS = [
   'https://grok.com',
 ];
 
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  // Allow any Chrome/Firefox extension origin
+  if (origin.startsWith('chrome-extension://')) return true;
+  if (origin.startsWith('moz-extension://')) return true;
+  return false;
+}
+
 const RATE_LIMIT = 10;
 const RATE_WINDOW_MS = 60_000;
 const rateBuckets = new Map<string, { count: number; resetAt: number }>();
@@ -27,7 +36,7 @@ function rateCheck(ip: string): boolean {
 }
 
 function cors(origin: string | null): Record<string, string> {
-  const allow = origin && ALLOWED_ORIGINS.includes(origin) ? origin : '';
+  const allow = isAllowedOrigin(origin) ? origin! : '';
   return {
     'Access-Control-Allow-Origin': allow,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -45,7 +54,7 @@ function json(body: unknown, status: number, extra: Record<string, string>) {
 
 export const OPTIONS: APIRoute = ({ request }) => {
   const origin = request.headers.get('origin');
-  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return new Response(null, { status: 403 });
   }
   return new Response(null, { status: 204, headers: cors(origin) });
@@ -55,7 +64,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const origin = request.headers.get('origin');
   const headers = cors(origin);
 
-  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return json({ error: 'Forbidden' }, 403, headers);
   }
 
@@ -80,7 +89,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return json({ error: 'Prompt too long (max 4000 chars)' }, 400, headers);
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.VITE_OPENAI_API_KEY;
   if (!apiKey) return json({ error: 'Server not configured' }, 500, headers);
 
   try {

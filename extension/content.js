@@ -1,16 +1,16 @@
 (function () {
   'use strict';
 
-  const API_ENDPOINT = 'https://midjourney-prompt-generator.eu/api/improve';
   const MIN_CHARS_FOR_TOOLBAR = 15;
+  const MIN_CHARS_FOR_CHATGPT_BTN = 3;
+  const IS_CHATGPT = location.hostname === 'chatgpt.com';
 
   let state = null; // { el } when slash menu is open
   let dropdown = null;
   let selectedIndex = 0;
 
   let toolbar = null;
-  let toolbarEl = null; // currently attached editable
-  let toolbarTrackTimer = null;
+  let toolbarEl = null; // currently attached editable (non-ChatGPT sites)
 
   // ── Helpers ────────────────────────────────────────────────
 
@@ -149,7 +149,7 @@
     hideDropdown();
   }
 
-  // ── Floating toolbar ───────────────────────────────────────
+  // ── Floating toolbar (non-ChatGPT sites) ───────────────────
 
   function buildToolbar() {
     const t = document.createElement('div');
@@ -170,18 +170,19 @@
         <span class="pp-tb-label">Save</span>
       </button>
     `;
-    t.addEventListener('mousedown', (e) => e.preventDefault()); // keep focus on editable
+    t.addEventListener('mousedown', (e) => e.preventDefault());
     t.addEventListener('click', (e) => {
       const btn = e.target.closest('.pp-tb-btn');
       if (!btn || !toolbarEl) return;
       const action = btn.dataset.action;
-      if (action === 'improve') doImprove(btn);
-      else if (action === 'save') doSave(btn);
+      if (action === 'improve') doImprove(btn, toolbarEl);
+      else if (action === 'save') doSave(toolbarEl);
     });
     return t;
   }
 
   function showToolbar(el) {
+    if (IS_CHATGPT) return; // ChatGPT uses inline button instead
     if (!toolbar) { toolbar = buildToolbar(); document.body.appendChild(toolbar); }
     toolbarEl = el;
     toolbar.classList.add('visible');
@@ -204,12 +205,142 @@
   }
 
   function refreshToolbar(el) {
+    if (IS_CHATGPT) return;
     if (!isEditable(el)) { hideToolbar(); return; }
     const text = getEditableText(el).trim();
     if (text.length < MIN_CHARS_FOR_TOOLBAR) { hideToolbar(); return; }
-    if (dropdown) { hideToolbar(); return; } // avoid overlap with slash menu
+    if (dropdown) { hideToolbar(); return; }
     showToolbar(el);
   }
+
+  // ── ChatGPT inline improve button ─────────────────────────
+
+  let chatgptImproveBtn = null;
+
+  function findChatGPTEditor() {
+    // Prefer the visible ProseMirror div; fall back to the hidden textarea
+    return document.querySelector('#prompt-textarea') ||
+           document.querySelector('[aria-label="Chat with ChatGPT"]') ||
+           document.querySelector('[aria-label="Message ChatGPT"]');
+  }
+
+  function findChatGPTComposer() {
+    const editor = findChatGPTEditor();
+    if (!editor) return null;
+    // Walk up looking for grid-cols (logged-out) or form (logged-in)
+    let el = editor.parentElement;
+    while (el && el !== document.body) {
+      const cls = el.nodeType === 1 ? (el.getAttribute('class') || '') : '';
+      if (cls.includes('grid-cols') || el.tagName === 'FORM') return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+
+  function findFlexRow(el) {
+    // Walk up from el to find the nearest flex-row container
+    let p = el?.parentElement;
+    while (p) {
+      const cls = p.getAttribute('class') || '';
+      if (cls.includes('flex') && cls.includes('items-center')) return p;
+      p = p.parentElement;
+    }
+    return el?.parentElement;
+  }
+
+  function findInsertionTarget(composer) {
+    // 1. Trailing area: find via CSS attribute substring selector (safe — no SVGAnimatedString)
+    const trailing = composer.querySelector('[class*="grid-area:trailing"]');
+    if (trailing) {
+      // The flex row is the first child of the trailing div
+      const flexRow = trailing.firstElementChild;
+      if (flexRow) {
+        // Insert before the first child of the flex row (voice container or send wrapper)
+        return { parent: flexRow, before: flexRow.firstElementChild };
+      }
+    }
+
+    // 2. Fallback: walk up from the send button to the flex row
+    const send = composer.querySelector('[data-testid="send-button"]') ||
+                 composer.querySelector('[aria-label="Send prompt"]') ||
+                 composer.querySelector('[aria-label="Send message"]') ||
+                 composer.querySelector('button[type="submit"]');
+    if (send) {
+      const flexRow = findFlexRow(send);
+      // insertBefore = the direct child of flexRow that contains the send button
+      let insertBefore = send;
+      while (insertBefore.parentElement !== flexRow && insertBefore.parentElement) {
+        insertBefore = insertBefore.parentElement;
+      }
+      return { parent: flexRow, before: insertBefore };
+    }
+
+    return null;
+  }
+
+  function injectChatGPTButton() {
+    const composer = findChatGPTComposer();
+    if (!composer) return;
+    if (composer.querySelector('[data-pp-btn]')) return; // already injected
+
+    const target = findInsertionTarget(composer);
+    if (!target || !target.parent) return;
+
+    const btn = document.createElement('button');
+    btn.setAttribute('data-pp-btn', '1');
+    btn.setAttribute('aria-label', 'Improve prompt with AI');
+    btn.setAttribute('title', 'Improve prompt (AI)');
+    btn.type = 'button';
+    btn.className = 'pp-chatgpt-btn';
+    btn.hidden = true;
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l3.5 7.5L24 14l-7.5 3.5L13 25l-3.5-7.5L2 14l7.5-3.5z"/></svg>`;
+
+    btn.addEventListener('mousedown', (e) => e.preventDefault());
+    btn.addEventListener('click', () => {
+      const editor = findChatGPTEditor();
+      if (editor) doImprove(btn, editor);
+    });
+
+    target.parent.insertBefore(btn, target.before || null);
+    chatgptImproveBtn = btn;
+
+    // Set initial visibility from current editor text (don't start always-hidden)
+    const editor = findChatGPTEditor();
+    const currentText = editor ? getEditableText(editor).trim() : '';
+    btn.hidden = currentText.length < MIN_CHARS_FOR_CHATGPT_BTN;
+
+    console.log('[PP] Injected improve button. text.length:', currentText.length, 'hidden:', btn.hidden);
+  }
+
+  function updateChatGPTButton(text) {
+    // Re-inject if ejected by React re-render
+    if (!chatgptImproveBtn || !document.contains(chatgptImproveBtn)) {
+      chatgptImproveBtn = null;
+      injectChatGPTButton();
+    }
+    if (!chatgptImproveBtn) return;
+    chatgptImproveBtn.hidden = text.trim().length < MIN_CHARS_FOR_CHATGPT_BTN;
+  }
+
+  function setupChatGPT() {
+    console.log('[PP] setupChatGPT — hostname:', location.hostname);
+    // Try immediately
+    injectChatGPTButton();
+
+    // Re-inject on DOM changes, but throttled so typing doesn't fight visibility
+    let observerTimer = null;
+    const observer = new MutationObserver(() => {
+      if (chatgptImproveBtn && document.contains(chatgptImproveBtn)) return; // still alive
+      clearTimeout(observerTimer);
+      observerTimer = setTimeout(() => {
+        chatgptImproveBtn = null;
+        injectChatGPTButton();
+      }, 300);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // ── Shared improve / save actions ──────────────────────────
 
   function replaceEditableText(el, newText) {
     el.focus();
@@ -217,48 +348,50 @@
       document.execCommand('selectAll', false);
       document.execCommand('insertText', false, newText);
     } else {
-      el.select();
-      document.execCommand('insertText', false, newText);
+      // TEXTAREA — use native input setter to trigger React's synthetic events
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;
+      nativeInputValueSetter.call(el, newText);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
 
-  async function doImprove(btn) {
-    const el = toolbarEl;
-    if (!el) return;
-    const original = getEditableText(el).trim();
+  function doImprove(btn, editableEl) {
+    if (!editableEl) return;
+    const original = getEditableText(editableEl).trim();
     if (!original) return;
 
     btn.classList.add('loading');
     btn.disabled = true;
 
     try {
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: original }),
+      chrome.runtime.sendMessage({ type: 'improve', prompt: original }, (response) => {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        if (!IS_CHATGPT) positionToolbar();
+
+        if (chrome.runtime.lastError) {
+          showToast('Improve failed: ' + chrome.runtime.lastError.message, 'error');
+          return;
+        }
+        if (!response?.ok) {
+          showToast('Improve failed: ' + (response?.error || 'unknown'), 'error');
+          return;
+        }
+        if (response.improved) {
+          replaceEditableText(editableEl, response.improved);
+          showToast('Improved ✨', 'success');
+        }
       });
-      if (!res.ok) {
-        const { error } = await res.json().catch(() => ({ error: 'Request failed' }));
-        throw new Error(error || `HTTP ${res.status}`);
-      }
-      const { improved } = await res.json();
-      if (improved && typeof improved === 'string') {
-        replaceEditableText(el, improved);
-        showToast('Improved ✨', 'success');
-      }
-    } catch (err) {
-      showToast('Improve failed: ' + (err?.message || 'unknown'), 'error');
-    } finally {
+    } catch (e) {
       btn.classList.remove('loading');
       btn.disabled = false;
-      positionToolbar();
+      showToast('Reload the page to use the extension (context reset)', 'error');
     }
   }
 
-  function doSave(btn) {
-    const el = toolbarEl;
-    if (!el) return;
-    const text = getEditableText(el).trim();
+  function doSave(editableEl) {
+    if (!editableEl) return;
+    const text = getEditableText(editableEl).trim();
     if (!text) return;
 
     const title = deriveTitle(text);
@@ -309,16 +442,27 @@
       showDropdown(el, match[1]);
     } else {
       hideDropdown();
-      refreshToolbar(el);
+      if (IS_CHATGPT) {
+        const editor = findChatGPTEditor();
+        updateChatGPTButton(editor ? getEditableText(editor) : '');
+      } else {
+        refreshToolbar(el);
+      }
     }
   }, true);
 
   document.addEventListener('focusin', (e) => {
-    if (isEditable(e.target)) refreshToolbar(e.target);
+    if (!isEditable(e.target)) return;
+    if (IS_CHATGPT) {
+      const editor = findChatGPTEditor();
+      updateChatGPTButton(editor ? getEditableText(editor) : '');
+    } else {
+      refreshToolbar(e.target);
+    }
   }, true);
 
   document.addEventListener('focusout', (e) => {
-    // Delay so button clicks can land first
+    if (IS_CHATGPT) return; // ChatGPT button stays visible while text is present
     setTimeout(() => {
       const active = document.activeElement;
       const inToolbar = toolbar && toolbar.contains(active);
@@ -345,8 +489,12 @@
     if (dropdown && !dropdown.contains(e.target)) hideDropdown();
   }, true);
 
-  // Keep toolbar glued to its editable on scroll/resize
-  const reposition = () => { if (toolbarEl) positionToolbar(); };
+  // Keep toolbar glued to its editable on scroll/resize (non-ChatGPT)
+  const reposition = () => { if (!IS_CHATGPT && toolbarEl) positionToolbar(); };
   window.addEventListener('scroll', reposition, true);
   window.addEventListener('resize', reposition);
+
+  // ── Init ───────────────────────────────────────────────────
+
+  if (IS_CHATGPT) setupChatGPT();
 })();

@@ -127,6 +127,43 @@
 
 .pp-tb-label { white-space: nowrap; }
 
+/* ── ChatGPT inline improve button ────────────────────────── */
+
+.pp-chatgpt-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;       /* h-9 */
+  min-width: 2rem;       /* min-w-8 */
+  padding: 0.5rem;       /* p-2 */
+  border-radius: 9999px; /* rounded-full */
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.pp-chatgpt-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.pp-chatgpt-btn[hidden] {
+  display: none;
+}
+
+.pp-chatgpt-btn.loading svg {
+  animation: ppSpin 0.9s linear infinite;
+}
+
+.pp-chatgpt-btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
 /* ── Toast ─────────────────────────────────────────────────── */
 
 #pp-toast {
