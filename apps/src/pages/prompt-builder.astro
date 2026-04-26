@@ -1,137 +1,128 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generatePromptMaker } from '../utils/promptTransformers';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout
-  title="Prompt Builder — Free AI Prompt Builders for ChatGPT, Claude, Gemini & More"
-  description="Free prompt builders for ChatGPT, Claude, Gemini, Grok, Cursor, Bolt, and more. No sign-up required. Describe your task and get a structured AI prompt in seconds."
+  title="Prompt Maker — Free AI Prompt Builder for ChatGPT, Claude, Gemini & More"
+  description="Free prompt maker that converts plain language into structured AI prompts — with role framing, task clarity, output format, and tone. Works with ChatGPT, Claude, Gemini, and every major model. No sign-up."
 >
-  <div class="px-6 py-12 space-y-6 max-w-3xl mx-auto">
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Prompt Maker"
+      seoDescription="Describe your task and get a structured, ready-to-use AI prompt in seconds."
+      inputPlaceholder="Describe what you want to build a prompt for... e.g. write a product launch email for a SaaS tool targeting startup founders"
+      buttonLabel="Build Prompt"
+      transform={generatePromptMaker}
+    />
+  </div>
 
+  <div class="px-6 py-12 space-y-6">
     <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Prompt Builder</h1>
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Prompt Maker</h1>
       <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        A prompt builder takes a plain-language description of what you need from an AI and returns a structured, ready-to-use prompt — with role framing, output format, and context already built in. This site is a collection of free prompt builders for every major AI model. No sign-up. No limits. Works with GPT-4o, ChatGPT-5, Claude, Gemini, Grok, and AI coding tools like Cursor and Bolt. Most people don't need to study prompt engineering — they need a prompt builder that does the work for them.
+        A prompt maker takes your plain-language description and builds a structured, expert-level prompt — with role framing, task clarity, output format, and tone baked in. This AI prompt builder works with ChatGPT, Claude, Gemini, Midjourney, and every major model. Free, no sign-up required.
       </p>
     </div>
 
     <div class="border border-[#c8c0a8] rounded-xl p-6">
-      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">What Is a Prompt Builder?</h2>
+      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">What is a prompt maker?</h2>
       <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-        A prompt builder is a tool that converts a simple task description into a structured AI prompt. Where you might type "write a product description," a prompt builder returns something like: <em>"You are an experienced copywriter specialising in DTC e-commerce. Write a 100-word product description for [product]. Lead with the primary benefit. Use second-person voice. End with one sentence CTA. Avoid jargon."</em>
+        A prompt maker is a free tool that converts a plain-language description into a structured AI prompt. It adds role framing, task clarity, output format, and tone — giving any AI model exactly what it needs to respond precisely.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
+        Most people type raw questions into ChatGPT or Claude and get generic, padded responses. A prompt maker fixes that by restructuring your intent into the format AI models actually follow. Writers use it for emails and copy. Developers use it as an OpenAI prompt builder for GPT-4o API system prompts. Analysts use it for research synthesis. The common thread: every use case benefits from structured input.
       </p>
       <p class="text-[#6b6559] text-sm leading-relaxed">
-        The difference in output quality is consistent and significant. AI models respond to the structure of the input — vague requests produce generic answers, structured prompts produce responses you can actually use. Prompt builders close the gap between knowing you should write better prompts and actually doing it every time.
+        Here's what this prompt builder adds to every input:
       </p>
     </div>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6">
-      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-4">What a Good Prompt Engineering Platform Provides</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed mb-4">
-        Not all prompt builders are equal. The best ones handle all four layers of a well-structured prompt — every tool on this site is built on this principle.
-      </p>
-      <div class="space-y-3">
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 text-lg">🎭</span>
-          <div>
-            <p class="font-semibold text-[#1a1a1a] text-sm">Role framing</p>
-            <p class="text-[#6b6559] text-xs mt-0.5">Sets the model's expertise and perspective — e.g. "You are a senior product manager at a B2B SaaS company"</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">What This Prompt Builder Adds to Your Input</h2>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">&#127917;</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Role &amp; persona</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Assigns the AI an expert role before the task begins — the single highest-impact addition to any prompt</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">&#129513;</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Task clarity</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Defines the exact goal, scope, and constraints so the model knows where to stop and what to prioritize</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">&#128203;</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Output format</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Specifies structure — list, paragraph, table, code — so responses are immediately usable without reformatting</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 text-lg">&#127919;</span>
+            <div>
+              <p class="font-semibold text-[#1a1a1a] text-sm">Tone &amp; audience</p>
+              <p class="text-[#6b6559] text-xs mt-0.5">Sets the voice and identifies who the output is written for — critical for emails, marketing, and documentation</p>
+            </div>
           </div>
         </div>
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 text-lg">🧩</span>
-          <div>
-            <p class="font-semibold text-[#1a1a1a] text-sm">Task clarity</p>
-            <p class="text-[#6b6559] text-xs mt-0.5">Breaks the request into specific, unambiguous steps — e.g. "First outline, then draft, then suggest three headline variants"</p>
-          </div>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 text-lg">📋</span>
-          <div>
-            <p class="font-semibold text-[#1a1a1a] text-sm">Output format</p>
-            <p class="text-[#6b6559] text-xs mt-0.5">Specifies structure, length, and formatting — e.g. "Return as three bullet points, max 20 words each"</p>
-          </div>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 text-lg">🎯</span>
-          <div>
-            <p class="font-semibold text-[#1a1a1a] text-sm">Tone &amp; constraints</p>
-            <p class="text-[#6b6559] text-xs mt-0.5">Calibrates directness, formality, and exclusions — e.g. "Direct tone. Skip caveats. Do not use the word 'leverage'"</p>
-          </div>
+      </div>
+
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Works as an OpenAI Prompt Builder</h2>
+        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
+          This tool doubles as an OpenAI prompt builder for GPT-4o, ChatGPT-5, and the OpenAI API. The structured output maps directly to the <code class="bg-[#fdf6e3] px-1 rounded text-xs">system</code> and <code class="bg-[#fdf6e3] px-1 rounded text-xs">user</code> message fields in the API — paste the role and instructions into your system prompt, and the task into the user message. No restructuring needed.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">GPT-4o</span>
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">ChatGPT-5</span>
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Claude</span>
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Gemini</span>
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">Grok</span>
+          <span class="px-3 py-1 bg-[#fdf6e3] border border-[#c8c0a8] rounded-full text-xs font-medium text-[#1a1a1a]">OpenAI API</span>
         </div>
       </div>
     </div>
 
     <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-6">
-      <h2 class="text-2xl font-bold text-[#1a1a1a]">Prompt Builders for Every AI Model</h2>
+      <h2 class="text-2xl font-bold text-[#1a1a1a]">Prompt Makers for Every AI Model</h2>
       <p class="text-[#6b6559] text-sm leading-relaxed">
-        Different models respond to different prompt structures. Each builder below is tuned for the model it targets — use the one matched to wherever you're working.
+        Different models respond best to differently structured prompts. Use the model-specific version for best results:
       </p>
 
-      <div>
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">ChatGPT Prompt Builder</h3>
-        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-          The most-used tool on the site. Generates structured prompts with role framing and format control for GPT-4o and ChatGPT-5. Also includes a prompt improver for existing prompts and an optimizer for iteration.
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <a href="/chatgpt-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">ChatGPT Prompt Generator →</a>
-          <a href="/chatgpt-prompt-improver" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">ChatGPT Prompt Improver →</a>
-          <a href="/chatgpt-prompt-optimizer" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">ChatGPT Prompt Optimizer →</a>
-          <a href="/chatgpt-image-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">ChatGPT Image Prompt Generator →</a>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">Claude Prompt Builder</h3>
-        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-          Claude responds to XML-style tags and system prompt structure more precisely than most models. This builder outputs Claude-native format with <code class="bg-[#fdf6e3] px-1 rounded text-xs">&lt;task&gt;</code> and <code class="bg-[#fdf6e3] px-1 rounded text-xs">&lt;instructions&gt;</code> blocks — the patterns that get Claude performing at its ceiling.
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <a href="/claude-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Claude Prompt Generator →</a>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">Gemini Prompt Builder</h3>
-        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-          Built for Google Gemini. Structures prompts with numbered response sections, evidence requirements, and practical examples — the format Gemini follows most precisely. Works with Gemini 2.0 and Gemini Ultra.
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <a href="/gemini-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Gemini Prompt Generator →</a>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">Grok Prompt Builder</h3>
-        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-          Grok is the only mainstream AI with a built-in personality dial. This builder adds directness calibration and optional spicy mode framing — the dimension generic prompt builders completely ignore.
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <a href="/grok-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Grok Prompt Generator →</a>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">AI Coding Tool Prompt Builders</h3>
-        <p class="text-[#6b6559] text-sm leading-relaxed mb-3">
-          Cursor, Bolt, Lovable, and v0 interpret prompts differently from conversational AI. These builders are tuned for code generation and UI scaffolding — structured for the specific way each tool processes instructions.
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <a href="/cursor-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Cursor Prompt Generator →</a>
-          <a href="/bolt-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Bolt Prompt Generator →</a>
-          <a href="/lovable-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">Lovable Prompt Generator →</a>
-          <a href="/v0-prompt-generator" class="px-3 py-1.5 bg-[#fdf6e3] border border-[#c8c0a8] rounded-lg text-xs font-medium text-[#1a1a1a] hover:bg-[#f0e8d0] transition-colors">v0 Prompt Generator →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="border border-[#c8c0a8] rounded-xl p-6">
-      <h2 class="text-2xl font-bold text-[#1a1a1a] mb-4">How to Use a Prompt Builder Effectively</h2>
-      <div class="space-y-4 text-[#6b6559] text-sm leading-relaxed">
-        <p><strong class="text-[#1a1a1a]">Be specific before you generate.</strong> "Write an email" produces a weaker generated prompt than "Write a follow-up email to a client who hasn't responded in two weeks — professional tone, 100 words max." The builder structures what you give it. Specific input returns specific prompts.</p>
-        <p><strong class="text-[#1a1a1a]">Mention the audience and the format you need.</strong> If you know the response should be a numbered list, a table, or under 200 words, include that in your description. Format constraints are one of the four layers every good prompt includes — giving that information upfront means the generated prompt will already have it baked in.</p>
-        <p><strong class="text-[#1a1a1a]">Edit before you paste.</strong> A prompt builder gets you 80% of the way in seconds. The remaining 20% — adding context the tool couldn't know, adjusting for your specific situation — takes 30 seconds and meaningfully improves the output. Don't treat generated prompts as final.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a href="/chatgpt-prompt-generator" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">ChatGPT prompt maker</p>
+          <p class="text-[#6b6559] text-xs">Structured prompts for GPT-4o and ChatGPT-5</p>
+        </a>
+        <a href="/claude-prompt-generator" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">Claude prompt maker</p>
+          <p class="text-[#6b6559] text-xs">XML-tagged prompts with system prompt structure</p>
+        </a>
+        <a href="/gemini-prompt-generator" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">Gemini prompt maker</p>
+          <p class="text-[#6b6559] text-xs">Numbered-section format for Gemini 2.0 and Ultra</p>
+        </a>
+        <a href="/" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">Midjourney prompt builder</p>
+          <p class="text-[#6b6559] text-xs">Visual art prompts with style, lighting, and camera</p>
+        </a>
+        <a href="/grok-prompt-generator" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">Grok prompt maker</p>
+          <p class="text-[#6b6559] text-xs">Directness calibration and spicy mode framing</p>
+        </a>
+        <a href="/chatgpt-image-prompt-generator" class="block bg-[#fdf6e3] border border-[#c8c0a8] rounded-xl p-4 hover:bg-[#f0e8d0] transition-colors">
+          <p class="font-semibold text-[#1a1a1a] text-sm mb-1">Image prompt maker</p>
+          <p class="text-[#6b6559] text-xs">DALL-E and image generation prompts</p>
+        </a>
       </div>
     </div>
 
@@ -139,31 +130,30 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h2>
       <div class="space-y-5">
         <div>
-          <p class="font-semibold text-[#1a1a1a] text-sm">What is a prompt builder?</p>
-          <p class="text-[#6b6559] text-xs mt-1">A prompt builder is a free tool that converts a plain-language task description into a structured AI prompt — adding role framing, output format, and tone instructions automatically so you get better results from ChatGPT, Claude, Gemini, or Grok without writing the structure yourself.</p>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is a prompt maker?</p>
+          <p class="text-[#6b6559] text-xs mt-1">A prompt maker is a free tool that converts a plain-language task description into a structured AI prompt — adding role framing, output format, and tone automatically so you get better results from any AI model without writing the structure yourself.</p>
         </div>
         <div>
-          <p class="font-semibold text-[#1a1a1a] text-sm">Are these prompt builders really free?</p>
-          <p class="text-[#6b6559] text-xs mt-1">Yes — all tools on this site are completely free with no sign-up, no account required, and no generation limits. Open the tool, describe your task, generate.</p>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this prompt maker free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free with no sign-up, no account, and no generation limits. Describe your task, click "Build Prompt," and get a ready-to-use structured prompt in seconds.</p>
         </div>
         <div>
-          <p class="font-semibold text-[#1a1a1a] text-sm">Which prompt builder should I use?</p>
-          <p class="text-[#6b6559] text-xs mt-1">Use the one matched to the model you're prompting. ChatGPT and GPT-4o → <a href="/chatgpt-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT prompt generator</a>. Claude → <a href="/claude-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Claude prompt generator</a>. Gemini → <a href="/gemini-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Gemini prompt generator</a>. Grok → <a href="/grok-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Grok prompt generator</a>. For coding tools, use the builder for Cursor, Bolt, Lovable, or v0.</p>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What's the difference between a prompt maker and a prompt builder?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Same tool, different search term. Both refer to a tool that takes plain language and outputs a structured AI prompt. "Prompt maker" and "prompt builder" are used interchangeably — this page covers both.</p>
         </div>
         <div>
-          <p class="font-semibold text-[#1a1a1a] text-sm">Do generated prompts work with ChatGPT-5 and GPT-4o?</p>
-          <p class="text-[#6b6559] text-xs mt-1">Yes. Generated prompts are model-agnostic structured instructions — they work with any model that follows natural language directions. No adjustments needed when switching between GPT-4o, ChatGPT-5, Claude, or Gemini.</p>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does this work as a prompt builder for ChatGPT and Claude?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The output is model-agnostic — structured instructions that work with any AI that follows natural language directions. For model-specific optimizations, use the <a href="/chatgpt-prompt-generator" class="underline hover:no-underline">ChatGPT prompt builder</a> or <a href="/claude-prompt-generator" class="underline hover:no-underline">Claude prompt builder</a>.</p>
         </div>
         <div>
-          <p class="font-semibold text-[#1a1a1a] text-sm">What's the difference between a prompt builder and a prompt engineering platform?</p>
-          <p class="text-[#6b6559] text-xs mt-1">A prompt engineering platform is the broader category — it includes tools for building, testing, iterating, and managing prompts at scale, often with team features, version control, and analytics. A prompt builder is the entry-level tool in that stack: fast, single-use, no configuration required. If you're an individual or small team, a prompt builder covers most use cases. If you're managing prompts across a product with multiple models and need systematic testing, a full prompt engineering platform like PromptLayer or Langfuse adds the infrastructure layer.</p>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I use this as an OpenAI prompt builder for API use?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes. The generated prompt separates role and instructions from the core task — map the role block into your <code class="bg-[#fdf6e3] px-1 rounded">system</code> message and the task block into your <code class="bg-[#fdf6e3] px-1 rounded">user</code> message in the OpenAI API. Works with GPT-4o, GPT-4o-mini, and the Assistants API. For system prompt tuning and multi-turn conversations, use the ChatGPT-specific builder which adds additional API-compatible structure.</p>
         </div>
       </div>
     </div>
 
-    <a href="/chatgpt-prompt-generator" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
-      Start with the ChatGPT Prompt Builder
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Build Your Prompt
     </a>
-
   </div>
 </Layout>

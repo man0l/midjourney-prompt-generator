@@ -143,6 +143,25 @@ Context: Draw on real-world, up-to-date knowledge where relevant. If the topic i
 Length: As long as the task requires — not a word more.`;
 }
 
+export function generatePromptMaker(input: string): string {
+  if (!input.trim()) return '';
+  return `You are an expert assistant with deep domain knowledge relevant to this task. ${input.trim()}
+
+Instructions:
+- Approach this as a specialist would — bring precision and depth
+- Break the task into clear, ordered steps
+- Provide concrete examples or evidence where relevant
+- Be direct and actionable — skip filler and hedging
+
+Format:
+- Use headers and bullet points for readability
+- Lead with the deliverable, then support with reasoning
+- Keep output immediately usable — no vague summaries
+
+Tone: Professional, direct, specific to the audience described in the task.
+Length: As detailed as the task requires — not longer.`;
+}
+
 export function generateGeminiPrompt(input: string): string {
   if (!input.trim()) return '';
   return `${input.trim()}
