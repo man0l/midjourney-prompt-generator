@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Prompt Picker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Type / to insert saved prompts into any AI chat",
   "background": {
     "service_worker": "background.js"

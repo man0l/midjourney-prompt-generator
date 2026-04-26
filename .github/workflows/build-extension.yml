@@ -12,11 +12,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from manifest
+        id: version
+        run: echo "version=v$(jq -r .version extension/manifest.json)" >> "$GITHUB_OUTPUT"
 
       - name: Generate PNG icons from SVG
         run: |
@@ -38,6 +44,32 @@ jobs:
             popup.js \
             popup.css \
             icons/
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Prompt Picker Extension ${{ steps.version.outputs.version }}
+          body: |
+            Chrome extension build for **Prompt Picker** ${{ steps.version.outputs.version }}.
+
+            ### Installation
+            1. Download `prompt-picker-extension.zip`
+            2. Unzip
+            3. Go to `chrome://extensions` → enable Developer mode → Load unpacked → select the unzipped folder
+          files: prompt-picker-extension.zip
+          draft: false
+          prerelease: false
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
