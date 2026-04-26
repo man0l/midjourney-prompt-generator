@@ -1,57 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://www.midjourney-prompt-generator.eu</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://www.midjourney-prompt-generator.eu/prompt-builder</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/claude-prompt-generator</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/how-to-write-prompts-midjourney-guide-generating-stunning-ai-art</loc>
-    <lastmod>2025-01-04</lastmod>
+    <loc>https://www.midjourney-prompt-generator.eu/chatgpt-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/chatgpt-prompt-improver</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/chatgpt-prompt-optimizer</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/chatgpt-image-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/gemini-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/grok-prompt-generator</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/cursor-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/30-midjourney-prompts-art-styles-illustrations</loc>
-    <lastmod>2025-01-04</lastmod>
+    <loc>https://www.midjourney-prompt-generator.eu/bolt-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/midjourney-prompt-tools-generators</loc>
-    <lastmod>2025-01-04</lastmod>
+    <loc>https://www.midjourney-prompt-generator.eu/lovable-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/color-palettes-pantone-mastering-vibrant-visuals-midjourney</loc>
-    <lastmod>2025-01-04</lastmod>
+    <loc>https://www.midjourney-prompt-generator.eu/v0-prompt-generator</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/art-creative-prompting-techniques-ideas-inspiration-midjourney</loc>
-    <lastmod>2025-01-04</lastmod>
+    <loc>https://www.midjourney-prompt-generator.eu/posts</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/claude-prompt-engineering-guide</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/openai-prompt-engineering-guide-best-practices-2026</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/grok-spicy-mode-prompts</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/best-free-chatgpt-prompt-generators</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/ai-prompt-generators-everything-you-need-to-know</loc>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/ai-prompt-generators-everything-you-need-to-know</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/30-midjourney-prompts-art-styles-illustrations</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://midjourney-generator-two.vercel.app/posts/aesthetics-clothing-ultimate-style-reference-midjourney-prompts</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/color-palettes-pantone-mastering-vibrant-visuals-midjourney</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/aesthetics-clothing-ultimate-style-reference-midjourney-prompts</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/art-creative-prompting-techniques-ideas-inspiration-midjourney</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/how-to-write-prompts-midjourney-guide-generating-stunning-ai-art</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.midjourney-prompt-generator.eu/posts/midjourney-prompt-tools-generators</loc>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>
