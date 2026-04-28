@@ -1,0 +1,94 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+
+<Layout
+  title="Perplexity vs DeepSeek: Which AI Search Tool Wins in 2026?"
+  description="Perplexity vs DeepSeek compared for research, coding, and general use. Verdict table, key differences, and privacy considerations."
+>
+  <div class="px-6 py-12 max-w-3xl mx-auto space-y-8">
+
+    <!-- H1 -->
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Perplexity vs DeepSeek: which AI search tool wins?</h1>
+      <p class="text-[#6b6559] text-base leading-relaxed">
+        Both are used for research and information retrieval, but from different angles. Perplexity is a US-built AI search engine with real-time web access and cited answers. DeepSeek is a Chinese-built LLM with strong reasoning and coding capabilities — and a price tag of zero. Here is where each one wins, and where the choice is obvious.
+      </p>
+    </div>
+
+    <!-- H2 #1: Quick verdict -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Quick verdict: Perplexity vs DeepSeek</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-[#1a1a1a] text-white">
+              <th class="text-left p-3 rounded-tl-lg">Use case</th>
+              <th class="text-left p-3">Winner</th>
+              <th class="text-left p-3 rounded-tr-lg">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-[#f5f0e8] border-b border-[#c8c0a8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">Research</td>
+              <td class="p-3 font-semibold">Perplexity</td>
+              <td class="p-3 text-[#6b6559]">Real-time web access with verifiable citations</td>
+            </tr>
+            <tr class="bg-white border-b border-[#c8c0a8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">Coding</td>
+              <td class="p-3 font-semibold">DeepSeek</td>
+              <td class="p-3 text-[#6b6559]">Strong reasoning model, free to use</td>
+            </tr>
+            <tr class="bg-[#f5f0e8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">General use</td>
+              <td class="p-3 font-semibold">Perplexity</td>
+              <td class="p-3 text-[#6b6559]">More reliable for non-sensitive everyday tasks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- H2 #2: Key differences -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Key differences</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        <strong class="text-[#1a1a1a]">Real-time web access.</strong> Perplexity's defining feature is live search — every answer pulls from the current web with citations you can verify. DeepSeek has no real-time web access. Its knowledge has a training cutoff, which makes it unreliable for current events, recent product releases, or anything that changes frequently. For research that needs to be accurate today, Perplexity is the only option of the two.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        <strong class="text-[#1a1a1a]">Cost.</strong> DeepSeek is free via its web interface and extremely cheap via API — it undercut every major model on cost when it launched and remains one of the cheapest reasoning models available. Perplexity has a functional free tier but its best research features (deep research mode, academic search) sit behind the $20/month Pro plan. For budget-conscious users doing non-sensitive tasks, DeepSeek is a serious option. For a full three-way cost comparison, see <a href="/compare/chatgpt-vs-perplexity" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT vs Perplexity</a>.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        <strong class="text-[#1a1a1a]">Data privacy.</strong> This is the most important difference for many users. DeepSeek is a Chinese company subject to Chinese data laws. Its privacy policy allows data to be stored on servers in China and shared with authorities under applicable law. For personal use or low-sensitivity tasks this may be acceptable — but for anything involving confidential business information, proprietary code, client data, or sensitive research, DeepSeek is a real risk. Perplexity is a US company governed by US privacy law. Neither is zero-risk, but the risk profile is meaningfully different.
+      </p>
+    </div>
+
+    <!-- FAQ + CTA -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Frequently asked questions</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is DeepSeek safer than Perplexity?</p>
+          <p class="text-[#6b6559] text-xs mt-1">No. DeepSeek stores data in China and is subject to Chinese data laws. For sensitive queries, Perplexity is the safer choice. For non-sensitive personal tasks, the practical difference is lower — but the risk is real.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Which is better for research — Perplexity or DeepSeek?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Perplexity, clearly. Real-time web access with citations is Perplexity's core feature. DeepSeek has no live web access, so any research it produces reflects its training data cutoff — not the current state of the world.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <a href="/chatgpt-prompt-generator" class="flex-1 py-3 px-6 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm text-center">
+        ChatGPT Prompt Generator →
+      </a>
+      <a href="/compare" class="flex-1 py-3 px-6 bg-[#e4dfc8] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm text-center">
+        Compare more AI models →
+      </a>
+    </div>
+
+  </div>
+</Layout>
