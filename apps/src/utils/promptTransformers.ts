@@ -162,6 +162,18 @@ Tone: Professional, direct, specific to the audience described in the task.
 Length: As detailed as the task requires — not longer.`;
 }
 
+export function generateImagePrompt(input: string): string {
+  if (!input.trim()) return '';
+  return `${input.trim()}
+
+Art style & medium: photorealistic, ultra-detailed, cinematic
+Lighting: golden hour, soft diffused light, dramatic shadows
+Camera & composition: eye-level shot, 35mm lens, shallow depth of field, rule of thirds
+Colour palette: warm tones, rich contrast, vibrant saturation
+Mood & atmosphere: cinematic, immersive, breathtaking
+Quality parameters: 8K resolution, 16:9 aspect ratio, sharp focus, high detail, rendered in Unreal Engine 5`;
+}
+
 export function generateGeminiPrompt(input: string): string {
   if (!input.trim()) return '';
   return `${input.trim()}
