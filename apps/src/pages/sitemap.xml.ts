@@ -18,6 +18,7 @@ const staticPages = [
   { url: '/lovable-prompt-generator',     lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/v0-prompt-generator',          lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/image-prompt-generator',        lastmod: '2026-04-28', priority: '0.8', changefreq: 'weekly'  },
+  { url: '/compare/gemini-vs-chatgpt',    lastmod: '2026-04-28', priority: '0.9', changefreq: 'monthly' },
   { url: '/posts',                        lastmod: '2026-04-26', priority: '0.5', changefreq: 'weekly'  },
 ];
 

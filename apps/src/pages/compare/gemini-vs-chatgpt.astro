@@ -1,0 +1,168 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+
+<Layout
+  title="Gemini vs ChatGPT: Which AI is Better in 2026?"
+  description="Gemini vs ChatGPT compared across writing, coding, research, and image generation. Verdict table, before/after examples, and pricing breakdown for 2026."
+>
+  <div class="px-6 py-12 max-w-3xl mx-auto space-y-8">
+
+    <!-- H1 -->
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT: which AI is better in 2026?</h1>
+      <p class="text-[#6b6559] text-base leading-relaxed">
+        Both are capable, but they're built for different things. Gemini is Google's model — strong at structured output, real-time search, and multimodal tasks. ChatGPT is OpenAI's — stronger at creative writing, coding, and extended conversation. This comparison covers writing, coding, research, and image generation so you can pick the right tool for your workflow.
+      </p>
+    </div>
+
+    <!-- H2 #1: Quick verdict -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT: quick verdict</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Neither model wins everything. Here is where each one leads — pick the category that matches your main use case.
+      </p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-[#1a1a1a] text-white">
+              <th class="text-left p-3 rounded-tl-lg">Use case</th>
+              <th class="text-left p-3">Winner</th>
+              <th class="text-left p-3 rounded-tr-lg">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-[#f5f0e8] border-b border-[#c8c0a8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">Writing</td>
+              <td class="p-3 font-semibold">ChatGPT</td>
+              <td class="p-3 text-[#6b6559]">Better tone control and creative range</td>
+            </tr>
+            <tr class="bg-white border-b border-[#c8c0a8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">Coding</td>
+              <td class="p-3 font-semibold">ChatGPT</td>
+              <td class="p-3 text-[#6b6559]">GPT-4o leads on complex debugging</td>
+            </tr>
+            <tr class="bg-[#f5f0e8] border-b border-[#c8c0a8]">
+              <td class="p-3 font-medium text-[#1a1a1a]">Research</td>
+              <td class="p-3 font-semibold">Gemini</td>
+              <td class="p-3 text-[#6b6559]">Real-time grounded search built in</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="p-3 font-medium text-[#1a1a1a]">Image generation</td>
+              <td class="p-3 font-semibold">ChatGPT</td>
+              <td class="p-3 text-[#6b6559]">DALL·E 3 offers wider style range</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- H2 #2: Writing -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT for writing</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        ChatGPT edges Gemini for creative and emotional writing — it handles tone shifts, narrative structure, and stylistic nuance more naturally. Ask it to write in the voice of a specific author and it delivers convincingly. Ask Gemini the same thing and the output tends toward competent but slightly generic prose.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Gemini is stronger for structured, evidence-based writing — reports, summaries, and research-backed documents where it can pull live sources. It also handles long-form structured output (numbered sections, hierarchical documents) more consistently than ChatGPT, which can drift in format over very long responses.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Same prompt → ChatGPT</p>
+          <p class="text-xs text-[#6b6559] italic">"Write a product launch email with dry wit and a conversational tone." → On-brand, punchy, reads like a human wrote it.</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Same prompt → Gemini</p>
+          <p class="text-xs text-[#6b6559] italic">"Write a product launch email with dry wit and a conversational tone." → Structurally sound, but the wit lands lighter — more professional newsletter than voice-led copy.</p>
+        </div>
+      </div>
+      <p class="text-xs font-semibold text-[#1a1a1a] mt-1">Verdict: ChatGPT for creative writing. Gemini for structured reports.</p>
+    </div>
+
+    <!-- H2 #3: Coding -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT for coding</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        ChatGPT (GPT-4o) remains the stronger choice for most coding tasks — particularly complex debugging, refactoring legacy code, and explaining subtle logic errors. Its ability to hold a long debugging context across multiple exchanges is still ahead of Gemini's, and it covers a wider range of languages and frameworks with more consistent accuracy.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Gemini 2.0 has closed the gap significantly on code generation and multi-language support. Where Gemini genuinely leads is Google Cloud and Workspace integration tasks — it understands the GCP ecosystem natively, produces accurate Terraform configs, and handles Google APIs more reliably than GPT-4o. For teams already inside the Google stack, Gemini is the better daily driver.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        For API integration outside Google's ecosystem — OpenAI, Stripe, AWS, Vercel — ChatGPT's broader training data gives it an edge. Both models handle Python, TypeScript, and SQL confidently; the gap shows most on niche frameworks and complex multi-file refactors.
+      </p>
+      <p class="text-xs font-semibold text-[#1a1a1a]">Verdict: ChatGPT for general debugging and most stacks. Gemini for Google Cloud and Workspace tasks.</p>
+    </div>
+
+    <!-- H2 #4: Research -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT for research</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Gemini leads on real-time research. Its Search grounding feature pulls live web results directly into the response — useful for market data, current events, recent publications, and anything where freshness matters. The deep research mode produces sourced, structured reports that cite real URLs, which makes fact-checking straightforward.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        ChatGPT's deep research mode (available on Plus/Pro) is also capable of grounded, cited output, but Gemini's integration with Google Search gives it a structural advantage on recency. Where ChatGPT pulls ahead is synthesis of large documents — paste in a 50-page PDF and ask for a structured analysis, and GPT-4o handles the long context more consistently.
+      </p>
+      <p class="text-xs font-semibold text-[#1a1a1a]">Verdict: Gemini for real-time and web-grounded research. ChatGPT for large document synthesis.</p>
+    </div>
+
+    <!-- H2 #5: Image generation -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Gemini vs ChatGPT for image generation</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        ChatGPT uses DALL·E 3 and — since early 2026 — GPT-4o's native image generation. The output range is wide: photorealism, illustration, concept art, and product mockups all work well. The GPT-4o image model handles text-in-image accurately, which has historically been a weak point for all AI image tools.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Gemini uses Imagen 3 for image generation. Quality is competitive with DALL·E 3, particularly for photorealistic outputs, but the style range is narrower and creative/abstract prompts produce less surprising results. Gemini's edge is multimodal input — you can pass an existing image and ask it to extend or modify the scene.
+      </p>
+      <p class="text-xs font-semibold text-[#1a1a1a]">Verdict: ChatGPT for style range and text-in-image. Gemini for multimodal editing tasks.</p>
+      <p class="text-[#6b6559] text-xs mt-1">
+        For either model, a structured prompt dramatically improves output quality. Try our <a href="/image-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">image prompt generator</a> or the dedicated <a href="/chatgpt-image-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT image prompt generator</a>.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently asked questions</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is Gemini better than ChatGPT?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Neither is universally better. ChatGPT leads on creative writing, coding, and image generation. Gemini leads on real-time research and Google Workspace integration. The best choice depends on your primary use case.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Gemini vs ChatGPT vs Claude — who wins?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Claude (Anthropic) is the strongest for long-document analysis, nuanced reasoning, and following complex multi-step instructions. ChatGPT leads on coding and creative tasks. Gemini leads on real-time research. For most general-purpose use, Claude Sonnet or GPT-4o are the two to try first.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Gemini vs ChatGPT vs Copilot — which should I use?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Microsoft Copilot is primarily an enterprise productivity tool — strongest for Microsoft 365 workflows (Word, Excel, Teams). For standalone AI tasks, ChatGPT and Gemini are both more capable and more flexible. Use Copilot if you live in the Microsoft stack; use ChatGPT or Gemini for everything else.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Which is better for studying — Gemini or ChatGPT?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Gemini is better for research-heavy studying where source accuracy matters — it cites live sources so you can verify. ChatGPT is better for explaining concepts, working through problems step by step, and generating practice questions. For most students, ChatGPT is the easier daily tool.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Gemini vs ChatGPT pricing — what's the difference?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Both offer free tiers with meaningful capability limits. ChatGPT Plus costs $20/month and unlocks GPT-4o, image generation, and advanced data analysis. Google Gemini Advanced also costs $19.99/month (via Google One AI Premium) and includes Gemini Ultra with Workspace integration. Both are comparable value — choose based on your ecosystem.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 text-center space-y-3">
+      <h2 class="text-lg font-bold text-[#1a1a1a]">Use the right prompt generator for your chosen model</h2>
+      <p class="text-[#6b6559] text-sm">Whichever model you choose, a structured prompt gets better results from both.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
+        <a href="/gemini-prompt-generator" class="py-3 px-6 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          Gemini Prompt Generator →
+        </a>
+        <a href="/chatgpt-prompt-generator" class="py-3 px-6 bg-[#e4dfc8] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          ChatGPT Prompt Generator →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</Layout>
