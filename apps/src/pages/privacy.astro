@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Privacy Policy — PromptBuilder Chrome Extension"
+  description="Privacy policy for the PromptBuilder Chrome extension. We do not collect, store, or transmit any personal data."
+>
+  <div class="px-6 py-12 max-w-3xl mx-auto space-y-8">
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Privacy Policy</h1>
+      <p class="text-[#6b6559] text-sm">Last updated: April 28, 2026</p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Overview</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        PromptBuilder (the "Extension") is a Chrome browser extension that helps you build, save, and insert AI prompts into ChatGPT, Claude, Gemini, and Grok. This policy describes what data the Extension accesses and how it is handled.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed font-medium">
+        We do not collect, transmit, sell, or share any personal data.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Data We Store Locally</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The Extension uses the browser's built-in <code class="bg-[#f5f0e8] px-1 rounded">chrome.storage</code> API to save the prompts you create. This data is stored entirely on your device and is never transmitted to any server. You can clear it at any time by removing the Extension or clearing your browser's extension storage.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Host Permissions</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The Extension requests access to the following websites:
+      </p>
+      <ul class="list-disc list-inside text-[#6b6559] text-sm space-y-2">
+        <li><strong>midjourney-prompt-generator.eu</strong> — to load prompt templates displayed in the extension popup. No user data is sent to this domain.</li>
+        <li><strong>chatgpt.com, claude.ai, gemini.google.com, grok.com</strong> — to inject the selected prompt text into the chat input field. The Extension only writes to the input box; it does not read, store, or transmit any content from these pages.</li>
+      </ul>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Data We Do Not Collect</h2>
+      <ul class="list-disc list-inside text-[#6b6559] text-sm space-y-2">
+        <li>No personally identifiable information</li>
+        <li>No browsing history or web activity</li>
+        <li>No chat content or AI conversation data</li>
+        <li>No analytics or telemetry</li>
+        <li>No cookies</li>
+      </ul>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Third Parties</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        We do not share any data with third parties. The Extension does not include any advertising networks, tracking SDKs, or analytics services.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Changes to This Policy</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        If we ever change how data is handled, we will update this page and the date above. Material changes will also be noted in the Chrome Web Store listing.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Contact</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Questions? Email us at <a href="mailto:manol.trendafilov@gmail.com" class="underline text-[#1a1a1a]">manol.trendafilov@gmail.com</a>.
+      </p>
+    </div>
+  </div>
+</Layout>
