@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+
+const comparisons = [
+  {
+    href: '/compare/gemini-vs-chatgpt',
+    title: 'Gemini vs ChatGPT',
+    description: 'Writing, coding, research, and image generation — full breakdown with verdict table.',
+    vol: '60,500 searches/mo',
+  },
+  {
+    href: '/compare/chatgpt-vs-perplexity',
+    title: 'ChatGPT vs Perplexity',
+    description: 'When to use each for research, writing, and everyday Q&A.',
+    vol: '6,600 searches/mo',
+  },
+];
+---
+
+<Layout
+  title="AI Model Comparisons — ChatGPT vs Gemini, Perplexity & More"
+  description="Side-by-side AI model comparisons with verdict tables and use-case breakdowns. Find which AI is best for writing, coding, research, and image generation."
+>
+  <div class="px-6 py-12 max-w-3xl mx-auto space-y-8">
+
+    <div class="space-y-3">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">AI model comparisons</h1>
+      <p class="text-[#6b6559] text-base leading-relaxed">
+        Side-by-side breakdowns of the major AI models — with opinionated verdicts, not just balanced summaries. Pick the comparison that matches the question you're actually trying to answer.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {comparisons.map((c) => (
+        <a href={c.href} class="block border border-[#c8c0a8] rounded-xl p-6 hover:bg-[#ede8d8] transition-colors">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-bold text-[#1a1a1a] mb-1">{c.title}</h2>
+              <p class="text-[#6b6559] text-sm">{c.description}</p>
+            </div>
+            <span class="text-xs text-[#9a9080] whitespace-nowrap mt-1">{c.vol}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</Layout>
