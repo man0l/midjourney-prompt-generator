@@ -1,0 +1,169 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+
+<Layout
+  title="GitHub Copilot Prompts: How to Get Better Code Completions"
+  description="Real GitHub Copilot prompt examples for function generation, unit tests, code review, refactoring, and documentation. Before/after examples showing how prompt quality affects output."
+>
+  <div class="max-w-3xl mx-auto px-6 py-12 space-y-8">
+
+    <header class="space-y-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">GitHub Copilot prompts: how to get better code completions</h1>
+      <p class="text-[#6b6559] text-base leading-relaxed">
+        GitHub Copilot reads the code and comments above your cursor as context. The more specific your comments — function purpose, input types, edge cases, expected output — the more accurate the completion. This guide shows the prompt patterns that produce production-ready code, with before/after examples for each use case.
+      </p>
+    </header>
+
+    <!-- H2 #1: How GitHub Copilot reads your prompts -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">How GitHub Copilot reads your prompts</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        GitHub Copilot reads the code and comments above your cursor as context. The more specific your comments — function purpose, input types, edge cases, expected output — the more accurate the completion. A vague comment like "// sort the array" gets a basic bubble sort. A specific comment like "// sort users by lastLogin descending, nulls last, stable sort" gets exactly what you need.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Copilot also uses the file's existing imports, type definitions, and surrounding function signatures as context. A well-typed codebase with clear interfaces produces better completions than a loosely-typed one. The prompt isn't just your comment — it's everything Copilot can see in the file and related files.
+      </p>
+    </div>
+
+    <!-- H2 #2: Prompt examples by use case -->
+    <div class="space-y-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">GitHub Copilot prompt examples by use case</h2>
+
+      <!-- Function generation -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Function generation</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Vague comment → weak output</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// validate the form"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces a generic function that checks if fields are empty. No specific validation rules, no error messages, no type safety.</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Specific comment → accurate output</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// Validate registration form:\n// - email: valid format, max 254 chars\n// - password: min 12 chars, 1 uppercase,\n//   1 number, 1 special char\n// - name: 2-100 chars, letters only\n// Return field-level errors object"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces a typed validation function with regex checks, field-specific error messages, and the exact return shape you specified.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit tests -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Unit tests</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Vague comment → shallow tests</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// test the calculateTotal function"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces 2-3 tests with obvious inputs. Misses edge cases like empty arrays, negative values, or rounding errors.</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Specific comment → thorough tests</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// Test calculateTotal(items: CartItem[]):\n// - empty array returns 0\n// - single item matches item.price * qty\n// - mixed taxable/non-taxable items\n// - quantity > 1000 doesn't overflow\n// - rounding to 2 decimal places\n// Use describe/it blocks, name each test"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces named test cases covering all specified scenarios, including the edge cases that cause production bugs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code review -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Code review</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Vague comment → surface review</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// review this code"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces generic feedback about naming and formatting. Misses logic errors and performance issues.</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Specific comment → actionable review</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// Review for:\n// - race conditions in concurrent access\n// - SQL injection vectors\n// - memory leaks from unclosed connections\n// - error handling gaps\n// List each issue with severity and fix"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces a structured review identifying specific issues with severity ratings and suggested fixes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refactoring -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Refactoring</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Vague comment → cosmetic changes</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// refactor this"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Renames variables and adds comments. Doesn't change the structure or address the real problem.</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Specific comment → structural refactor</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// Refactor to extract the validation\n// logic into a separate validateInput()\n// function. The main handler should\n// only orchestrate: validate -> process\n// -> respond. Keep existing error codes."}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces a clean separation of concerns with the validation extracted and the handler simplified.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documentation -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Documentation</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Vague comment → generic docs</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// add comments"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces obvious comments that restate the code. "Returns true if valid" above a function called isValid.</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-4">
+            <p class="text-xs font-semibold text-[#9a9080] uppercase mb-2">Specific comment → useful docs</p>
+            <pre class="text-xs text-[#6b6559] overflow-x-auto whitespace-pre-wrap"><code>{"// JSDoc for public API:\n// - document purpose, params, return type\n// - include @example with real usage\n// - note side effects and thrown errors\n// - reference related functions"}</code></pre>
+            <p class="text-xs text-[#9a9080] mt-2">Produces complete JSDoc with typed params, an example call, and notes on edge cases and side effects.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2 #3: Copilot Chat vs inline prompts -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Copilot Chat vs inline prompts — which to use</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        GitHub Copilot has two prompting modes. <strong>Inline comments</strong> are best for generation tasks — write functions, generate tests, produce documentation, create boilerplate. The comment sits above the cursor, Copilot reads it and completes. <strong>Copilot Chat</strong> (the sidebar) is best for review and explanation tasks — "explain this function," "find the bug in this file," "suggest how to handle this edge case." Chat gives you a multi-turn conversation; inline gives you a single completion.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        For autonomous multi-file tasks where you want to describe the outcome and let an agent work across your codebase, consider Cursor — our <a href="/cursor-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">Cursor prompt generator</a> is built for that workflow.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently asked questions</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are GitHub Copilot prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">GitHub Copilot prompts are the comments and code context above your cursor that Copilot reads to generate completions. Specific, detailed comments produce more accurate code. Vague comments produce generic output.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How to write better GitHub Copilot prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Include the function purpose, input types, edge cases to handle, expected output format, and constraints. The more context you provide in the comment, the more accurate the completion. Think of it as writing a mini-spec, not a wish.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">GitHub Copilot vs Cursor — which should I use?</p>
+          <p class="text-[#6b6559] text-xs mt-1">GitHub Copilot is best for inline code completions as you type — fast, lightweight, integrated into VS Code and other IDEs. Cursor is better for autonomous multi-file tasks where you describe what you want changed and the agent works across your codebase. Many developers use both: Copilot for daily coding flow, Cursor for larger refactors and feature work.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 text-center space-y-3">
+      <h2 class="text-lg font-bold text-[#1a1a1a]">Write better prompts for any AI coding tool</h2>
+      <p class="text-[#6b6559] text-sm">Structured prompts get better results from every model. Try our free generators.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
+        <a href="/cursor-prompt-generator" class="py-3 px-6 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          Cursor Prompt Generator →
+        </a>
+        <a href="/copilot-prompt-generator" class="py-3 px-6 bg-[#e4dfc8] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          Copilot Prompt Generator →
+        </a>
+        <a href="/chatgpt-prompt-generator" class="py-3 px-6 bg-[#e4dfc8] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          ChatGPT Prompt Generator →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</Layout>

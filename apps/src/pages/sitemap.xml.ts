@@ -25,6 +25,8 @@ const staticPages = [
   { url: '/compare/perplexity-vs-deepseek', lastmod: '2026-04-28', priority: '0.7', changefreq: 'monthly' },
   { url: '/compare/grok-vs-chatgpt',       lastmod: '2026-04-28', priority: '0.9', changefreq: 'monthly' },
   { url: '/compare/chatgpt-vs-claude',     lastmod: '2026-04-29', priority: '0.9', changefreq: 'monthly' },
+  { url: '/posts/codex-prompts',            lastmod: '2026-04-29', priority: '0.8', changefreq: 'monthly' },
+  { url: '/posts/github-copilot-prompts',   lastmod: '2026-04-29', priority: '0.8', changefreq: 'monthly' },
   { url: '/posts',                        lastmod: '2026-04-26', priority: '0.5', changefreq: 'weekly'  },
 ];
 

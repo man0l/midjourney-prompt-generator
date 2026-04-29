@@ -1,0 +1,187 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+
+<Layout
+  title="Codex Prompts: How to Get the Most from OpenAI Codex"
+  description="20 real Codex prompts for feature implementation, bug fixing, refactoring, and testing. Learn how to write Codex prompts that produce correct, production-ready code."
+>
+  <div class="max-w-3xl mx-auto px-6 py-12 space-y-8">
+
+    <header class="space-y-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Codex prompts: how to get the most from OpenAI Codex</h1>
+      <p class="text-[#6b6559] text-base leading-relaxed">
+        OpenAI relaunched Codex in mid-2025 as a terminal-based agentic coding agent — not a chat model. It reads your codebase, executes tasks autonomously across multiple files, runs tests, and commits. The prompt is a task instruction, not a conversation. This guide covers what makes a Codex prompt effective and provides 20 real prompts you can copy and adapt.
+      </p>
+    </header>
+
+    <!-- H2 #1: What makes a good Codex prompt -->
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">What makes a good Codex prompt</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        A good Codex prompt specifies scope, the files involved, acceptance criteria, and constraints. Unlike a ChatGPT prompt, Codex prompts are task instructions for an autonomous agent — vague prompts produce unexpected changes across your codebase.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The four elements every Codex prompt needs:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Scope</p>
+          <p class="text-xs text-[#6b6559]">Which files, directories, or modules to touch — and which to leave alone.</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Acceptance criteria</p>
+          <p class="text-xs text-[#6b6559]">What "done" looks like — tests pass, specific behaviour, output format.</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Constraints</p>
+          <p class="text-xs text-[#6b6559]">What not to change, which libraries to use, performance requirements.</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Context</p>
+          <p class="text-xs text-[#6b6559]">Relevant patterns, existing conventions, or documentation to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2 #2: 20 Codex prompts -->
+    <div class="space-y-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">20 Codex prompts across 4 use cases</h2>
+
+      <!-- H3: Feature implementation -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Feature implementation</h3>
+        <div class="space-y-2">
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Add rate limiting middleware to src/middleware/. Limit each IP to 100 requests per 15 minutes, return 429 with a Retry-After header, store state in Redis. Don't modify existing middleware files."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Implement CSV export for the reports table in src/pages/reports.tsx. Add an 'Export CSV' button next to the existing filters. Use the server-side data, not the client-side table state. Handle up to 50k rows without blocking the UI."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Add email verification to the registration flow in src/auth/. Send a verification link via the existing SendGrid integration, store the token hash in a new verification_tokens table, and block login until verified. Update the Prisma schema."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Implement dark mode toggle in the settings page. Use CSS variables defined in globals.css, persist the preference in localStorage, and respect the system preference on first visit. Update all components that use hardcoded colour values."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Add pagination to the /api/users endpoint. Accept page and limit query params, default to page=1 and limit=20. Return total count and total pages in the response. Update the corresponding React component to render page controls."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- H3: Bug fixing -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Bug fixing</h3>
+        <div class="space-y-2">
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Fix the race condition in src/services/orderService.ts where concurrent requests overwrite the cart total. Use an atomic update or pessimistic lock. Don't change the public API surface."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Fix the memory leak in src/workers/notificationWorker.ts. The event listeners are being added on each reconnect but never removed. Clean up listeners in the disconnect handler. Add a test that verifies listener count stays stable over 100 reconnect cycles."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Fix the timezone handling in src/utils/scheduler.ts. Events created in UTC+1 are showing an hour late in UTC. Use date-fns-tz to parse and format dates consistently. Ensure all existing tests still pass after the fix."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Fix the Safari-specific layout break in src/components/Dashboard.tsx. The CSS grid collapses on viewports between 768px and 1024px. Use a flexbox fallback for that breakpoint range. Don't change the desktop or mobile layouts."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Fix the flaky test in tests/integration/payment.test.ts that fails intermittently on CI. The mock server timing is the likely cause — increase the timeout and add retry logic for the webhook delivery assertion."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- H3: Refactoring -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Refactoring</h3>
+        <div class="space-y-2">
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Refactor src/routes/api.ts into separate route modules under src/routes/api/. Split by domain: users, orders, products, auth. Each module gets its own validation schema. Keep all existing endpoints responding on the same paths."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Convert src/store/ from Redux class-based actions to Redux Toolkit slices. Keep the same state shape and action names so consuming components don't need changes. Run all tests after conversion."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Replace all instances of moment.js in src/ with date-fns. Update imports, rewrite formatting chains, and ensure the 40+ date displays in the app produce identical output. Remove moment from package.json when done."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Extract the repeated pagination logic from src/handlers/ into a shared src/utils/pagination.ts helper. Accept page, limit, and total as params, return offset, hasNext, and hasPrev. Update all 8 handlers that duplicate this logic."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Migrate the database queries in src/reports/ from raw SQL to the existing Prisma ORM. Keep query performance within 10% of the raw SQL baseline. Don't touch the report calculation logic."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- H3: Testing -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-bold text-[#1a1a1a]">Testing</h3>
+        <div class="space-y-2">
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Write integration tests for src/routes/auth.ts covering: successful registration, duplicate email rejection, successful login, wrong password rejection, token refresh, and token expiry. Use the existing test database setup in tests/helpers/."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Write unit tests for src/utils/validators.ts. Cover every exported function with valid inputs, invalid inputs, edge cases (empty strings, unicode, very long values), and the exact error messages returned. Aim for 100% branch coverage."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Add snapshot tests for all 12 components in src/components/forms/. Render each with default props and with error states. Store snapshots in __snapshots__/ alongside each component."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Write E2E tests for the checkout flow: add item to cart, proceed to checkout, fill shipping info, select payment, confirm order, verify success page. Use Playwright with the existing config in playwright.config.ts."</p>
+          </div>
+          <div class="bg-[#f5f0e8] rounded-lg p-3">
+            <p class="text-xs text-[#6b6559] font-mono">"Add load tests for the /api/search endpoint using k6. Test with 50, 200, and 1000 concurrent users. Measure p50, p95, and p99 latency. Write the test script to tests/load/search.js."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2 #3: Codex vs GitHub Copilot -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-3">
+      <h2 class="text-xl font-bold text-[#1a1a1a]">Codex vs GitHub Copilot — which to use</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        They serve different purposes. <strong>Codex</strong> is an autonomous agent — you give it a task and it executes across multiple files, runs tests, and commits. Best for feature implementation, multi-file refactors, and any task where you want to describe the outcome and let the agent work. <strong>GitHub Copilot</strong> is an inline suggestion tool — it completes the code at your cursor based on context. Best for writing functions line by line, generating boilerplate, and getting suggestions as you type.
+      </p>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Most developers use both: Copilot for the flow of daily coding, Codex for larger autonomous tasks. For a deeper comparison across AI coding tools including Claude Code, see our <a href="/compare/chatgpt-vs-claude" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT vs Claude comparison</a> and our <a href="/posts/github-copilot-prompts" class="text-[#1a1a1a] underline hover:no-underline">GitHub Copilot prompts guide</a>.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">Frequently asked questions</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are Codex prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Codex prompts are task instructions for OpenAI's Codex agent — a terminal-based tool that autonomously reads, edits, and tests code across your codebase. Unlike chat prompts, they specify scope, files, constraints, and acceptance criteria.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is Codex the same as ChatGPT?</p>
+          <p class="text-[#6b6559] text-xs mt-1">No. ChatGPT is a conversational AI that responds to messages. Codex is an agentic coding tool that executes tasks autonomously in your codebase — it reads files, makes edits, runs tests, and commits. The prompting style is completely different.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How do Codex prompts differ from regular prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Regular AI prompts ask for information or generation in a chat interface. Codex prompts are task specifications — they define what to change, where to change it, what constraints to follow, and how to verify the result. Think of them as brief engineering tickets, not questions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6 text-center space-y-3">
+      <h2 class="text-lg font-bold text-[#1a1a1a]">Write better prompts for any AI coding tool</h2>
+      <p class="text-[#6b6559] text-sm">Structured prompts get better results from every model. Try our free generators.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
+        <a href="/chatgpt-prompt-generator" class="py-3 px-6 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          ChatGPT Prompt Generator →
+        </a>
+        <a href="/cursor-prompt-generator" class="py-3 px-6 bg-[#e4dfc8] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] hover:brightness-95 transition-all text-sm">
+          Cursor Prompt Generator →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</Layout>
