@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import { generateCopilotPrompt } from '../utils/promptTransformers';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Copilot Prompt Generator — Free Microsoft Copilot Prompts"
+  description="Free Copilot prompt generator for Microsoft 365 Copilot. Structured prompts for Word, Excel, Teams, Outlook, and PowerPoint. Plus GitHub Copilot prompts for developers."
+>
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Copilot Prompt Generator"
+      seoDescription="Generate Microsoft Copilot prompts that produce precise, structured results."
+      inputPlaceholder="Describe what you need from Copilot... e.g. summarise this email thread and draft a professional reply declining the meeting"
+      buttonLabel="Generate Copilot Prompt"
+      transform={generateCopilotPrompt}
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="text-center space-y-3 py-4">
+      <h1 class="text-4xl font-bold text-[#1a1a1a]">Copilot prompt generator</h1>
+      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
+        This free Copilot prompt generator builds structured Microsoft Copilot prompts — the AI assistant built into Microsoft 365, Windows, and Bing. It adds role framing, task clarity, and format instructions automatically, so your Microsoft Copilot prompts deliver precise results instead of generic responses. Works with Microsoft 365 Copilot, Windows Copilot, and Bing Copilot. <a href="#github-copilot" class="text-[#1a1a1a] underline hover:no-underline">Looking for GitHub Copilot prompts? Jump to the developer section below.</a>
+      </p>
+    </div>
+
+    <!-- H2 #1: Why Microsoft Copilot needs structured prompts -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Why Microsoft Copilot needs structured prompts</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        Microsoft Copilot is embedded in Word, Excel, Teams, Outlook, and the Windows taskbar — the prompts need to reflect that workplace context. A raw question in Copilot gets a generic answer. A structured prompt that specifies the document type, audience, tone, and output format gets a draft that's actually usable. The Microsoft 365 Copilot integration is the key differentiator: Copilot reads your calendar, emails, and documents as context, so prompts that reference that context get dramatically better results. Instead of "summarise this meeting," a structured Microsoft Copilot prompt specifies which meeting, what to extract, and who the output is for.
+      </p>
+    </div>
+
+    <!-- H2 #2: What this generator adds -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-4">What this Copilot prompt generator adds</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Workplace context</p>
+          <p class="text-xs text-[#6b6559]">Specifies the Microsoft 365 app, document type, and business context</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Task clarity</p>
+          <p class="text-xs text-[#6b6559]">Defines the exact goal — summarise, draft, analyse, reformat, or extract</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Audience &amp; tone</p>
+          <p class="text-xs text-[#6b6559]">Sets the recipient, formality level, and communication style</p>
+        </div>
+        <div class="bg-[#f5f0e8] rounded-lg p-4">
+          <p class="text-sm font-bold text-[#1a1a1a] mb-1">Output format</p>
+          <p class="text-xs text-[#6b6559]">Specifies length and structure — bullet list, email, table, report, slide outline</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2 #3: GitHub Copilot prompts -->
+    <div id="github-copilot" class="border-2 border-[#1a1a1a] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">GitHub Copilot prompts for developers</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed mb-4">
+        GitHub Copilot lives in your IDE and responds to inline code comments and natural language instructions — the prompting style is completely different from Microsoft 365 Copilot. Here are six ready-to-use GitHub Copilot prompt examples across three common use cases.
+      </p>
+
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm font-bold text-[#1a1a1a] mb-2">Code generation</p>
+          <div class="bg-[#f5f0e8] rounded-lg p-3 space-y-2">
+            <p class="text-xs text-[#6b6559] font-mono">"Write a Python function that [specific task] with error handling and type hints"</p>
+            <p class="text-xs text-[#6b6559] font-mono">"Generate unit tests for this function covering edge cases"</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm font-bold text-[#1a1a1a] mb-2">Code review</p>
+          <div class="bg-[#f5f0e8] rounded-lg p-3 space-y-2">
+            <p class="text-xs text-[#6b6559] font-mono">"Review this function for performance issues and suggest improvements"</p>
+            <p class="text-xs text-[#6b6559] font-mono">"Explain what this code does in plain language"</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm font-bold text-[#1a1a1a] mb-2">Refactoring</p>
+          <div class="bg-[#f5f0e8] rounded-lg p-3 space-y-2">
+            <p class="text-xs text-[#6b6559] font-mono">"Refactor this to use async/await instead of .then() chains"</p>
+            <p class="text-xs text-[#6b6559] font-mono">"Extract the repeated logic into a reusable helper function"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently asked questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is a Copilot prompt generator?</p>
+          <p class="text-[#6b6559] text-xs mt-1">A tool that takes your plain-language task description and wraps it in structured instructions — role, context, format, and constraints — so Microsoft Copilot delivers precise, usable output instead of generic responses.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What's the difference between Microsoft Copilot and GitHub Copilot?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Microsoft Copilot is a workplace AI assistant embedded in Microsoft 365 apps (Word, Excel, Teams, Outlook) for productivity tasks. GitHub Copilot is a developer tool embedded in IDEs (VS Code, Visual Studio) for code completion and generation. Same brand, completely different tools and prompting styles.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Are Microsoft Copilot prompts the same as ChatGPT prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Similar structure, but Microsoft Copilot prompts can reference your 365 context — emails, calendar, documents — which ChatGPT can't access by default. This makes Copilot prompts more effective for workplace tasks where existing context matters. For general-purpose prompts, see our <a href="/chatgpt-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT prompt generator</a>.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Copilot prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best Microsoft Copilot prompts for productivity?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Three examples that save the most time: 1) "Summarise this email thread and list the action items assigned to me" — turns a 30-message thread into a bullet list. 2) "Draft a project update email to [stakeholder] based on the notes in this document, professional tone, under 200 words" — produces a send-ready draft. 3) "Compare the data in these two Excel tables and highlight discrepancies in a summary table" — surfaces inconsistencies that manual review misses.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="space-y-4">
+      <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+        Generate Your Copilot Prompt
+      </a>
+      <div class="text-center space-y-1">
+        <p class="text-[#6b6559] text-xs">Describe your task in plain language — this Copilot prompt generator adds workplace context, task clarity, and output format automatically. Free, no sign-up.</p>
+        <p class="text-[#6b6559] text-xs">
+          Also try: <a href="/chatgpt-prompt-generator" class="text-[#1a1a1a] underline hover:no-underline">ChatGPT prompt generator</a> · <a href="/prompt-builder" class="text-[#1a1a1a] underline hover:no-underline">Prompt Builder</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

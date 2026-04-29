@@ -187,3 +187,21 @@ Please structure your response as follows:
 
 Be thorough, accurate, and cite reasoning where applicable. Prefer depth over brevity.`;
 }
+
+export function generateCopilotPrompt(input: string): string {
+  if (!input.trim()) return '';
+  return `${input.trim()}
+
+Context: I am using Microsoft 365 Copilot. Reference relevant emails, documents, and calendar context where applicable.
+
+Requirements:
+- Specify the Microsoft 365 app context (Word, Excel, Teams, Outlook, PowerPoint)
+- Define the exact output goal clearly — summarise, draft, analyse, reformat, or extract
+- Set the audience and formality level (internal team, executive, client, external)
+- State the preferred output format (bullet list, email draft, table, report, slide outline)
+
+Output format:
+- Concise and actionable — no filler or generic suggestions
+- Professional tone appropriate to the audience
+- Structured for immediate use in the relevant Microsoft 365 app`;
+}

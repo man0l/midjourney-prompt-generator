@@ -17,6 +17,7 @@ const staticPages = [
   { url: '/bolt-prompt-generator',        lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/lovable-prompt-generator',     lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/v0-prompt-generator',          lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
+  { url: '/copilot-prompt-generator',    lastmod: '2026-04-29', priority: '0.7', changefreq: 'weekly'  },
   { url: '/image-prompt-generator',        lastmod: '2026-04-28', priority: '0.8', changefreq: 'weekly'  },
   { url: '/compare',                      lastmod: '2026-04-28', priority: '0.7', changefreq: 'weekly'  },
   { url: '/compare/gemini-vs-chatgpt',    lastmod: '2026-04-28', priority: '0.9', changefreq: 'monthly' },
