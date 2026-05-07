@@ -188,6 +188,158 @@ Please structure your response as follows:
 Be thorough, accurate, and cite reasoning where applicable. Prefer depth over brevity.`;
 }
 
+export interface RoastDimension {
+  name: string;
+  score: number;
+  issue: string | null;
+  fix: string | null;
+}
+
+export interface RoastResult {
+  overallScore: number;
+  verdict: string;
+  dimensions: RoastDimension[];
+  rewrittenPrompt: string;
+}
+
+function buildImprovedPrompt(original: string, dimensions: RoastDimension[]): string {
+  let improved = original.trim();
+
+  // Strip soft openers
+  improved = improved.replace(/^(help me |can you |could you |please |i want you to |i need you to |would you )/i, '');
+  improved = improved.charAt(0).toUpperCase() + improved.slice(1);
+
+  const contextDim = dimensions.find(d => d.name === 'Context');
+  const formatDim = dimensions.find(d => d.name === 'Format');
+  const constraintsDim = dimensions.find(d => d.name === 'Constraints');
+
+  let prefix = '';
+  let suffix = '';
+
+  if (contextDim && contextDim.score < 5) {
+    prefix = 'You are an expert assistant with deep knowledge of the subject matter.\n\n';
+  }
+  if (formatDim && formatDim.score < 4) {
+    suffix += '\n\nFormat: Use clear headers and bullet points. Be specific and actionable.';
+  }
+  if (constraintsDim && constraintsDim.score < 4) {
+    suffix += '\nTone: Direct and professional. Skip filler phrases and generic advice.';
+  }
+
+  return prefix + improved + suffix;
+}
+
+export function roastPrompt(input: string): RoastResult {
+  const text = input.trim();
+  if (!text) {
+    return {
+      overallScore: 0,
+      verdict: 'Nothing to roast — paste a prompt first.',
+      dimensions: [],
+      rewrittenPrompt: '',
+    };
+  }
+
+  const lower = text.toLowerCase();
+  const wordCount = text.split(/\s+/).length;
+
+  // Clarity
+  const vagueOpeners = ['help me', 'can you', 'could you', 'i want you to', 'please ', 'i need you to', 'would you'];
+  const hasVagueOpener = vagueOpeners.some(o => lower.startsWith(o));
+  const hasDirectVerb = /^(write|create|build|generate|list|explain|analyze|analyse|summarize|summarise|translate|compare|design|draft|code|implement|review|fix|improve|refactor|convert|describe|identify|extract|give me|provide)/i.test(text);
+  const clarityScore = hasDirectVerb ? 9 : hasVagueOpener ? 3 : 6;
+
+  // Specificity
+  const vagueWordList = ['something', 'stuff', 'things', 'good', 'nice', 'better', 'various', 'maybe', 'kind of', 'sort of', 'a bit', 'etc', 'and so on', 'whatever'];
+  const foundVague = vagueWordList.filter(w => lower.includes(w));
+  const hasNumbers = /\d/.test(text);
+  const specificityScore = Math.max(0, Math.min(10,
+    (hasNumbers ? 3 : 0) +
+    (wordCount > 20 ? 3 : wordCount > 10 ? 1 : 0) +
+    (foundVague.length === 0 ? 4 : foundVague.length === 1 ? 2 : 0)
+  ));
+
+  // Context
+  const hasRoleFrame = /act as|you are a|you're a|as an? \w|as a senior|as a professional|as an expert/i.test(text);
+  const hasAudience = /for a |for my |for the |audience|users|team|client|beginners|experts|developers|non-technical/i.test(text);
+  const hasBackground = /context[:\s]|background[:\s]|currently|we are|i am working|project|existing/i.test(text);
+  const contextScore = Math.min(10, (hasRoleFrame ? 4 : 0) + (hasAudience ? 3 : 0) + (hasBackground ? 3 : 0));
+
+  // Format
+  const hasFormatInstruction = /bullet|numbered|list|table|json|markdown|headers?|sections?|paragraphs?|outline|format[:\s]/i.test(text);
+  const hasLengthConstraint = /\d+\s*(word|sentence|paragraph|line|character|page)s?/i.test(text) || /under \d+|max \d+|at least \d+|keep it (brief|concise|short)/i.test(text);
+  const formatScore = Math.min(10, (hasFormatInstruction ? 6 : 0) + (hasLengthConstraint ? 4 : 0));
+
+  // Constraints
+  const hasNegative = /don['']t|do not|avoid|without |no \w+|never |exclude|skip/i.test(text);
+  const hasTone = /formal|informal|casual|professional|technical|simple|concise|direct|friendly|serious|conversational/i.test(text);
+  const constraintsScore = Math.min(10, (hasNegative ? 5 : 0) + (hasTone ? 5 : 0));
+
+  const dimensions: RoastDimension[] = [
+    {
+      name: 'Clarity',
+      score: clarityScore,
+      issue: hasVagueOpener
+        ? 'Starts with a soft opener that signals uncertainty to the model'
+        : !hasDirectVerb ? 'Task verb isn\'t clear upfront' : null,
+      fix: hasVagueOpener
+        ? 'Cut the opener. Start with the action verb directly: "Write...", "List...", "Explain..."'
+        : !hasDirectVerb ? 'Open with a concrete action verb so the model knows the task immediately.' : null,
+    },
+    {
+      name: 'Specificity',
+      score: specificityScore,
+      issue: foundVague.length > 0
+        ? `Contains ${foundVague.length} vague word${foundVague.length > 1 ? 's' : ''}: ${foundVague.slice(0, 3).join(', ')}`
+        : wordCount < 10 ? 'Prompt is very short — key details are missing' : null,
+      fix: foundVague.length > 0
+        ? 'Replace vague words with specific requirements. Instead of "good", specify exactly what good means for this task.'
+        : wordCount < 10 ? 'Add: desired format, required length, level of detail, and what to include or exclude.' : null,
+    },
+    {
+      name: 'Context',
+      score: contextScore,
+      issue: contextScore < 4
+        ? 'No role framing, target audience, or background context'
+        : contextScore < 7 ? 'Partial context — missing role framing or audience' : null,
+      fix: contextScore < 4
+        ? 'Add a role frame ("You are an expert in X") and specify who the output is for.'
+        : contextScore < 7 ? 'Specify the target audience or add a role/persona for the model.' : null,
+    },
+    {
+      name: 'Format',
+      score: formatScore,
+      issue: formatScore < 4 ? 'No output format specified — the model will guess' : null,
+      fix: formatScore < 4
+        ? 'Add format instructions: "Use a numbered list", "Respond in markdown with headers", "Keep it under 200 words".' : null,
+    },
+    {
+      name: 'Constraints',
+      score: constraintsScore,
+      issue: constraintsScore < 4 ? 'No tone or exclusion constraints set' : null,
+      fix: constraintsScore < 4
+        ? 'Add: tone ("professional", "direct"), what to avoid ("no filler", "skip disclaimers"), or what not to include.' : null,
+    },
+  ];
+
+  const overallScore = Math.round(
+    dimensions.reduce((sum, d) => sum + d.score, 0) / dimensions.length
+  );
+
+  let verdict: string;
+  if (overallScore >= 8) verdict = 'Strong prompt — well above average.';
+  else if (overallScore >= 6) verdict = 'Decent prompt. A few targeted fixes will meaningfully improve results.';
+  else if (overallScore >= 4) verdict = 'Mediocre. This will produce generic output. Apply the fixes below.';
+  else verdict = 'Weak prompt. The model will mostly guess. Start with the fixes below.';
+
+  return {
+    overallScore,
+    verdict,
+    dimensions,
+    rewrittenPrompt: buildImprovedPrompt(text, dimensions),
+  };
+}
+
 export function generateCopilotPrompt(input: string): string {
   if (!input.trim()) return '';
   return `${input.trim()}
