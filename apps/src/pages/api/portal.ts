@@ -33,19 +33,23 @@ export const POST: APIRoute = async ({ request }) => {
   if (!sub?.stripe_customer_id) return json({ error: 'No active subscription', sub }, 404);
 
   try {
-    const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
-    const session = await stripe.billingPortal.sessions.create({
-      customer: sub.stripe_customer_id,
-      return_url: new URL(request.url).origin + '/profile',
+    const stripeRes = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${import.meta.env.STRIPE_SECRET_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        customer: sub.stripe_customer_id,
+        return_url: new URL(request.url).origin + '/profile',
+      }).toString(),
     });
-    return json({ url: session.url });
+    const data: any = await stripeRes.json();
+    if (!stripeRes.ok) {
+      return json({ error: data?.error?.message, type: data?.error?.type, code: data?.error?.code, status: stripeRes.status }, 500);
+    }
+    return json({ url: data.url });
   } catch (err: any) {
-    return json({
-      error: err?.message ?? 'Failed to create portal session',
-      type: err?.type,
-      code: err?.code,
-      statusCode: err?.statusCode,
-      customerId: sub.stripe_customer_id,
-    }, 500);
+    return json({ error: err?.message, stage: 'fetch' }, 500);
   }
 };
