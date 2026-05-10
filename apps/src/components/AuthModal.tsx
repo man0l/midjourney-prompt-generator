@@ -19,7 +19,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             Sign in to optimize prompts
           </Dialog.Title>
           <Dialog.Description className="text-text/80 mb-4">
-            Get 8 free optimizations every day
+            Get 3 free optimizations every day
           </Dialog.Description>
           
           <Auth
