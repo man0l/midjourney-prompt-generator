@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generateCopilotPrompt } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
@@ -9,6 +10,18 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   title="Copilot Prompt Generator — Free Microsoft Copilot Prompts"
   description="Free Copilot prompt generator for Microsoft 365 Copilot. Structured prompts for Word, Excel, Teams, Outlook, and PowerPoint. Plus GitHub Copilot prompts for developers."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Copilot prompt generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      This free Copilot prompt generator builds structured Microsoft Copilot prompts — the AI assistant built into Microsoft 365, Windows, and Bing. It adds role framing, task clarity, and format instructions automatically, so your Microsoft Copilot prompts deliver precise results instead of generic responses.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Copilot Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -16,17 +29,12 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Generate Microsoft Copilot prompts that produce precise, structured results."
       inputPlaceholder="Describe what you need from Copilot... e.g. summarise this email thread and draft a professional reply declining the meeting"
       buttonLabel="Generate Copilot Prompt"
-      transform={generateCopilotPrompt}
+      toolType="copilot"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Copilot prompt generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        This free Copilot prompt generator builds structured Microsoft Copilot prompts — the AI assistant built into Microsoft 365, Windows, and Bing. It adds role framing, task clarity, and format instructions automatically, so your Microsoft Copilot prompts deliver precise results instead of generic responses. Works with Microsoft 365 Copilot, Windows Copilot, and Bing Copilot. <a href="#github-copilot" class="text-[#1a1a1a] underline hover:no-underline">Looking for GitHub Copilot prompts? Jump to the developer section below.</a>
-      </p>
-    </div>
+    
 
     <!-- H2 #1: Why Microsoft Copilot needs structured prompts -->
     <div class="border border-[#c8c0a8] rounded-xl p-6">
@@ -133,4 +141,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       </div>
     </div>
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

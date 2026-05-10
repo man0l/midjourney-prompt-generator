@@ -1,0 +1,17 @@
+---
+export const prerender = false;
+---
+<html>
+  <head><title>Signing in...</title></head>
+  <body>
+    <script>
+      import { supabase } from '../../lib/supabaseClient';
+
+      const code = new URL(window.location.href).searchParams.get('code');
+      if (code) {
+        await supabase.auth.exchangeCodeForSession(code);
+      }
+      window.location.replace('/');
+    </script>
+  </body>
+</html>

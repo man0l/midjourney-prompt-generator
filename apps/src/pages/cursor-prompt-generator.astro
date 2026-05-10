@@ -1,14 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generateCursorPrompt } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout
-  title="Free Cursor Prompt Generator — Get Error-Free Code from Cursor AI"
-  description="Turn your coding task into a perfectly crafted Cursor prompt. Free Cursor prompt generator that adds technical context, error prevention, and quality requirements. No sign-up."
+  title="Cursor Prompts — Free Cursor AI Prompt Generator for Error-Free Code"
+  description="Free Cursor AI prompts generator. Turn your coding task into a structured Cursor prompt that produces error-free, working code. No sign-up required."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Cursor AI prompts</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      The difference between a Cursor prompt that works first try and one that generates buggy, incomplete code is structure. These Cursor AI prompts add technical specificity, implementation context, and quality standards automatically — so you spend less time debugging and more time shipping.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Cursor Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -16,23 +29,24 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Generate Cursor AI prompts that produce error-free, working code."
       inputPlaceholder="Describe your coding task... e.g. add user authentication with email/password login, registration, and password reset to my Next.js app"
       buttonLabel="Generate Cursor Prompt"
-      transform={generateCursorPrompt}
+      toolType="cursor"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Cursor Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        Turn your coding task into a perfectly crafted Cursor AI prompt that generates error-free, working code. Our free Cursor prompt generator adds the technical specificity, implementation context, and quality standards Cursor needs to deliver production-ready solutions the first time.
+    
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Cursor prompt generator</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed mb-4">
+        Describe your coding task below and get a structured Cursor AI prompt optimized for production-ready output. The generator adds clear task definitions, type requirements, error handling constraints, and quality standards — the elements that separate Cursor prompts that ship from Cursor prompts that break.
       </p>
-    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="border border-[#c8c0a8] rounded-xl p-6">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Structure Your Cursor Prompts?</h3>
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why structure your Cursor prompts?</h3>
         <p class="text-[#6b6559] text-sm leading-relaxed">
-          Vague coding requests produce buggy, incomplete code. The developers getting reliable results from Cursor AI write structured prompts that specify the task clearly, include implementation constraints, and define quality standards. This Cursor prompt generator adds those elements automatically so you spend less time debugging and more time shipping.
+          Vague coding requests produce buggy, incomplete code. The developers getting reliable results from Cursor write structured prompts that specify the task clearly, include implementation constraints, and define quality standards. This Cursor prompt generator adds those elements automatically so you spend less time debugging and more time shipping.
         </p>
       </div>
       <div class="border border-[#c8c0a8] rounded-xl p-6">
@@ -44,6 +58,7 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
           <div class="flex items-start gap-2"><span class="mt-0.5">✅</span><p class="text-[#6b6559] text-sm">No placeholder code — fully working output</p></div>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="border border-[#c8c0a8] rounded-xl p-6">
@@ -68,4 +83,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       Generate Your Cursor Prompt
     </a>
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

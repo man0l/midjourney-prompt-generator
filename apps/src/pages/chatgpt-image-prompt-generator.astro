@@ -2,25 +2,31 @@
 import Layout from '../layouts/Layout.astro';
 import ChatGPTImagePage from '../components/ChatGPTImagePage';
 
+import PricingSection from '../components/PricingSection';
+
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout
   title="Free ChatGPT Image Prompt Generator — No Sign-Up"
   description="Free ChatGPT image prompt generator — no sign-up required. Generate ChatGPT photo prompts, image generator prompts and ChatGPT prompts for images in seconds. Works with ChatGPT-4o, DALL-E 3, Claude and Gemini."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">ChatGPT Image Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      The free ChatGPT photo prompt generator that works. Turn any idea into a detailed, ready-to-use ChatGPT image generator prompt in seconds — no sign-up, no prompt engineering knowledge required.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Image Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <ChatGPTImagePage client:only="react" />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-
-    <!-- Hero -->
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">ChatGPT Image Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        The free ChatGPT photo prompt generator that works. Turn any idea into a detailed, ready-to-use ChatGPT image generator prompt in seconds — no sign-up, no prompt engineering knowledge required. Just describe your subject, pick your settings, and get ChatGPT prompts for images that actually work.
-      </p>
-    </div>
 
     <!-- Row 1: What it is + Who it's for -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -221,4 +227,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
     </a>
 
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

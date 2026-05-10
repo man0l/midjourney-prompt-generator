@@ -89,7 +89,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return json({ error: 'Prompt too long (max 4000 chars)' }, 400, headers);
   }
 
-  const apiKey = process.env.VITE_OPENAI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return json({ error: 'Server not configured' }, 500, headers);
 
   try {

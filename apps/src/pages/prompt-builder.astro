@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generatePromptMaker } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
@@ -9,6 +10,18 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   title="Prompt Maker — Free AI Prompt Builder for ChatGPT, Claude, Gemini & More"
   description="Free prompt maker that converts plain language into structured AI prompts — with role framing, task clarity, output format, and tone. Works with ChatGPT, Claude, Gemini, and every major model. No sign-up."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Prompt Maker</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      A prompt maker takes your plain-language description and builds a structured, expert-level prompt — with role framing, task clarity, output format, and tone baked in. This AI prompt builder works with ChatGPT, Claude, Gemini, Midjourney, and every major model.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Build My Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -16,17 +29,12 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Describe your task and get a structured, ready-to-use AI prompt in seconds."
       inputPlaceholder="Describe what you want to build a prompt for... e.g. write a product launch email for a SaaS tool targeting startup founders"
       buttonLabel="Build Prompt"
-      transform={generatePromptMaker}
+      toolType="prompt-builder"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Prompt Maker</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        A prompt maker takes your plain-language description and builds a structured, expert-level prompt — with role framing, task clarity, output format, and tone baked in. This AI prompt builder works with ChatGPT, Claude, Gemini, Midjourney, and every major model. Free, no sign-up required.
-      </p>
-    </div>
+    
 
     <div class="border border-[#c8c0a8] rounded-xl p-6">
       <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">What is a prompt maker?</h2>
@@ -156,4 +164,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       Build Your Prompt
     </a>
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

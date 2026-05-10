@@ -2,25 +2,31 @@
 import Layout from '../layouts/Layout.astro';
 import BoltPromptPage from '../components/BoltPromptPage';
 
+import PricingSection from '../components/PricingSection';
+
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout
   title="Free Bolt Prompt Generator — Build Better Apps with Bolt.new"
   description="Generate perfectly structured Bolt.new prompts that build fully-functional apps. Free Bolt prompt generator with tech stack, UI, database and auth controls. No sign-up required."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Bolt Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Stop getting half-baked apps from Bolt.new. Our free Bolt prompt generator turns your app idea into a precision-engineered bolt new prompt that builds complete, deployment-ready applications — with the right tech stack, features, and architecture specified from the start.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Bolt Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <BoltPromptPage client:only="react" />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-
-    <!-- Hero -->
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Bolt Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        Stop getting half-baked apps from Bolt.new. Our free Bolt prompt generator turns your app idea into a precision-engineered bolt new prompt that builds complete, deployment-ready applications — with the right tech stack, features, and architecture specified from the start.
-      </p>
-    </div>
 
     <!-- Row 1: What it is + Why it works -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -194,4 +200,13 @@ Requirements:
     </a>
 
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

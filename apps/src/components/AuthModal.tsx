@@ -43,6 +43,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 input: 'bg-white/5 border-accent/20 text-text placeholder-text/50',
               }
             }}
+            redirectTo={`${window.location.origin}/auth/callback`}
             providers={['google', 'discord']}
             providerScopes={{
               discord: 'identify email'

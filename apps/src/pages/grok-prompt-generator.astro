@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generateGrokPrompt } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
@@ -9,6 +10,18 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   title="Free Grok Prompt Generator — Standard & Spicy Mode Prompts for Grok AI"
   description="Generate structured Grok prompts instantly. Free Grok AI prompt generator with spicy mode support — unlock Grok's full personality. No sign-up required."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Grok Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Grok is built different — direct, unfiltered, and trained on real-time data from X. Our free Grok AI prompt generator turns plain descriptions into structured prompts that unlock Grok's full personality, including spicy mode for responses that skip the hedging and get straight to the point.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Grok Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -16,17 +29,12 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Generate expertly structured Grok prompts — with optional spicy mode for Grok's unfiltered personality."
       inputPlaceholder="Describe what you need from Grok... e.g. explain why electric vehicles are overrated, or write a brutally honest review of stoicism"
       buttonLabel="Generate Grok Prompt"
-      transform={generateGrokPrompt}
+      toolType="grok"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Grok Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        Grok is built different — direct, unfiltered, and trained on real-time data from X. Our free Grok AI prompt generator turns plain descriptions into structured prompts that unlock Grok's full personality, including <strong class="text-[#1a1a1a]">spicy mode</strong> for responses that skip the hedging and get straight to the point. No sign-up. No limits.
-      </p>
-    </div>
+    
 
     <div class="border border-[#c8c0a8] rounded-xl p-6">
       <h2 class="text-2xl font-bold text-[#1a1a1a] mb-3">Why Grok Needs Different Prompts</h2>
@@ -117,4 +125,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       Generate Your Grok Prompt
     </a>
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

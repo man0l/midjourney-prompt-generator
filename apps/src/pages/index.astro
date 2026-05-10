@@ -1,34 +1,41 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HomePage from '../components/HomePage';
+import PricingSection from '../components/PricingSection';
 ---
-<Layout title="Midjourney Prompt Generator" description="Create stunning AI art with our Midjourney Prompt Generator. Craft perfect prompts for breathtaking digital art.">
-  <div id="root">
+<Layout title="Midjourney Prompts Generator — Free, No Sign-up" description="Create stunning Midjourney prompts from a plain description — style, lighting, composition, and parameters added automatically. Free Midjourney prompt generator, no sign-up required.">
+
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Midjourney Prompts Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Type a plain idea. Get a production-ready Midjourney prompt — with style, lighting, camera, and parameters filled in for you. No sign-up.
+    </p>
+    <a href="#tool" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate My Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <!-- Tool -->
+  <div id="tool">
     <HomePage client:only="react" />
   </div>
 
   <div class="px-6 py-12 space-y-6">
 
-    <!-- Hero text -->
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Midjourney Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        Unleash your creativity and turn ideas into breathtaking art. Craft perfect prompts that bring visions to life with incredible detail and style.
-      </p>
-    </div>
-
     <!-- Row 1: Why Use + What We Offer -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
       <div class="border border-[#c8c0a8] rounded-xl p-6">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use Midjourney Prompts?</h3>
+        <h2 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Better Prompts Produce Better Images</h2>
         <p class="text-[#6b6559] text-sm leading-relaxed">
           Midjourney is an innovative AI image generator that converts text prompts into visually captivating artworks. From hyper-realistic portraits to fantastical landscapes, the possibilities are truly limitless.
         </p>
       </div>
 
       <div class="border border-[#c8c0a8] rounded-xl p-6">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What We Offer</h3>
+        <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Everything You Need to Generate Great Prompts</h2>
         <div class="grid grid-cols-2 gap-x-6 gap-y-4">
           <div class="flex items-start gap-2">
             <span class="text-base mt-0.5">📚</span>
@@ -65,7 +72,7 @@ import HomePage from '../components/HomePage';
 
     <!-- Row 2: How It Works -->
     <div class="border border-[#c8c0a8] rounded-xl p-6">
-      <h3 class="text-lg font-bold text-[#1a1a1a] mb-5">How It Works</h3>
+      <h2 class="text-lg font-bold text-[#1a1a1a] mb-5">From Plain Description to Perfect Prompt in Seconds</h2>
       <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
 
         <div class="flex items-start gap-3 flex-1">
@@ -103,7 +110,7 @@ import HomePage from '../components/HomePage';
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
       <div class="border border-[#c8c0a8] rounded-xl p-6">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Popular Features</h3>
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Features That Do the Heavy Lifting</h3>
         <div class="space-y-4">
           <div class="flex items-start gap-3">
             <span class="text-lg mt-0.5">💡</span>
@@ -123,7 +130,7 @@ import HomePage from '../components/HomePage';
       </div>
 
       <div class="border border-[#c8c0a8] rounded-xl p-6">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Material Prompts</h3>
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Textures and Materials, Handled Automatically</h3>
         <div class="space-y-4">
           <div class="flex items-start gap-3">
             <span class="text-lg mt-0.5">🎭</span>
@@ -144,10 +151,37 @@ import HomePage from '../components/HomePage';
 
     </div>
 
+    <!-- FAQ -->
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-semibold text-[#1a1a1a] text-sm">What are the best Midjourney prompts?</h3>
+          <p class="text-[#6b6559] text-sm mt-1 leading-relaxed">
+            The best prompts are specific, descriptive, and layered. Start with a clear subject, add artistic style, lighting, and composition details. Check out our curated collections for inspiration — from
+            <a href="/posts/30-midjourney-prompts-art-styles-illustrations" class="text-[#1a1a1a] underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429]">30 Midjourney prompts for art styles and illustrations</a>
+            to
+            <a href="/posts/how-to-write-prompts-midjourney-guide-generating-stunning-ai-art" class="text-[#1a1a1a] underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429]">our complete guide on writing prompts for stunning AI art</a>.
+            For creative techniques and ideas, browse our
+            <a href="/posts/art-creative-prompting-techniques-ideas-inspiration-midjourney" class="text-[#1a1a1a] underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429]">art and creative prompting techniques</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- CTA -->
-    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
-      Start Your Journey
+    <a href="#tool" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your First Prompt — Free
     </a>
 
   </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
 </Layout>

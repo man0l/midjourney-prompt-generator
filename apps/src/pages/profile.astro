@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProfilePage from '../components/ProfilePage';
+---
+<Layout title="Your Account — Midjourney Prompt Generator" description="Manage your plan and view credit usage.">
+  <ProfilePage client:only="react" />
+</Layout>

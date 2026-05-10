@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generateImagePrompt } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
@@ -10,6 +11,18 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   title="Free Image Prompt Generator — Text to Image Prompts for Midjourney, DALL·E & ChatGPT"
   description="Free image prompt generator — no sign-up required. Turn any plain description into a structured text to image prompt with style, lighting, camera angle, and quality parameters. Works with Midjourney, DALL·E, ChatGPT, Stable Diffusion, and Gemini."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Image Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      An image prompt generator takes your plain description and builds a structured prompt packed with style, lighting, camera angle, mood, and technical parameters — everything AI image tools need to generate exactly what you have in mind. Works as a free text to image prompt generator for Midjourney, ChatGPT, DALL·E, Stable Diffusion, and Gemini.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Image Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -17,19 +30,11 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Turn your plain description into a structured image prompt with style, lighting, camera, and quality parameters."
       inputPlaceholder="Describe the image you want to generate... e.g. a cinematic portrait of an astronaut exploring a neon-lit jungle at dusk, photorealistic, 8K"
       buttonLabel="Generate Image Prompt"
-      transform={generateImagePrompt}
+      toolType="image"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-
-    <!-- H1 -->
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Image Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        An image prompt generator takes your plain description and builds a structured prompt packed with style, lighting, camera angle, mood, and technical parameters — everything AI image tools need to generate exactly what you have in mind. Works as a free text to image prompt generator for Midjourney, ChatGPT, DALL·E, Stable Diffusion, and Gemini. No sign-up required.
-      </p>
-    </div>
 
     <!-- H2 #1: What does an image prompt generator add? -->
     <div class="border border-[#c8c0a8] rounded-xl p-6">
@@ -147,4 +152,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
     </div>
 
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flame, Copy, Check, ChevronRight } from 'lucide-react';
 import SEO from './SEO';
 import { roastPrompt, type RoastResult } from '../utils/promptTransformers';
+import { supabase } from '../lib/supabaseClient';
+import type { Session } from '@supabase/supabase-js';
+import { useCredits } from '../hooks/useCredits';
+import { AuthModal } from '../components/AuthModal';
 
 function scoreColor(score: number): string {
   if (score >= 7) return 'bg-green-500';
@@ -25,9 +29,42 @@ export default function RoastMyPromptTool() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState<RoastResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [limitMessage, setLimitMessage] = useState<string | null>(null);
+  const { credits, plan, useCredit } = useCredits(session?.user ?? null);
 
-  const handleRoast = () => {
-    setResult(roastPrompt(input));
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
+      setSession(s);
+      if (s) setIsAuthModalOpen(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setIsAuthModalOpen(true);
+    window.addEventListener('openAuthModal', handler);
+    return () => window.removeEventListener('openAuthModal', handler);
+  }, []);
+
+  function showLimit(msg: string) {
+    setLimitMessage(msg);
+    setTimeout(() => setLimitMessage(null), 4000);
+  }
+
+  const handleRoast = async () => {
+    if (!input.trim()) return;
+    if (!session) { setIsAuthModalOpen(true); return; }
+    if (credits === 0) {
+      showLimit(plan === 'free'
+        ? "You've used all your free credits for today. They reset tomorrow."
+        : "You've used all your credits for this month. They reset on the 1st.");
+      return;
+    }
+    const success = await useCredit();
+    if (success) setResult(roastPrompt(input));
   };
 
   const handleCopy = () => {
@@ -45,7 +82,7 @@ export default function RoastMyPromptTool() {
         title="Roast My Prompt — Free Prompt Quality Checker"
         description="Paste any ChatGPT, Claude, or AI prompt and get an instant quality score with specific fixes. Free prompt checker — no sign-up."
       />
-      <div className="p-5 animate-fade-in">
+      <div className="px-6 py-8 animate-fade-in">
         <div className="relative mb-2">
           <textarea
             value={input}
@@ -58,17 +95,24 @@ export default function RoastMyPromptTool() {
           </div>
         </div>
 
+        {limitMessage && (
+          <div className="flex items-center gap-2 px-4 py-3 mb-3 bg-[#fff8e6] border border-[#f0b429] rounded-xl text-sm text-[#1a1a1a]">
+            <span>⚠️</span>
+            <span>{limitMessage}</span>
+            <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+          </div>
+        )}
+
         <button
           onClick={handleRoast}
           disabled={!input.trim()}
           className="w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-base hover:brightness-95 transition-all disabled:opacity-40 mb-4"
         >
-          Roast My Prompt
+          Roast My Prompt{credits !== null ? ` (${credits} left)` : ''}
         </button>
 
         {result && (
           <div className="space-y-4">
-            {/* Overall score */}
             <div className={`flex items-center justify-between px-5 py-4 rounded-xl border ${overallBadgeStyle(result.overallScore)}`}>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider opacity-70 mb-0.5">Overall Score</p>
@@ -77,7 +121,6 @@ export default function RoastMyPromptTool() {
               <span className="text-4xl font-black tabular-nums">{result.overallScore}<span className="text-lg font-normal opacity-50">/10</span></span>
             </div>
 
-            {/* Dimension scores */}
             <div className="border border-[#c8c0a8] rounded-xl overflow-hidden">
               <div className="px-4 py-2 bg-[#e4dfc8] border-b border-[#c8c0a8]">
                 <span className="text-xs font-semibold text-[#6b6559] uppercase tracking-wider">Dimension Scores</span>
@@ -95,15 +138,12 @@ export default function RoastMyPromptTool() {
                         style={{ width: `${dim.score * 10}%` }}
                       />
                     </div>
-                    {dim.issue && (
-                      <p className="text-xs text-[#9a9080] mt-1.5">{dim.issue}</p>
-                    )}
+                    {dim.issue && <p className="text-xs text-[#9a9080] mt-1.5">{dim.issue}</p>}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Fixes */}
             {issues.length > 0 && (
               <div className="border border-[#c8c0a8] rounded-xl overflow-hidden">
                 <div className="px-4 py-2 bg-[#e4dfc8] border-b border-[#c8c0a8]">
@@ -123,7 +163,6 @@ export default function RoastMyPromptTool() {
               </div>
             )}
 
-            {/* Improved version */}
             {result.rewrittenPrompt && (
               <div className="border border-[#c8c0a8] rounded-xl overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2 bg-[#e4dfc8] border-b border-[#c8c0a8]">
@@ -144,6 +183,7 @@ export default function RoastMyPromptTool() {
           </div>
         )}
       </div>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </>
   );
 }

@@ -56,8 +56,8 @@ async function getMetaTags(url: string) {
     {
       path: '/',
       getMeta: () => ({
-        title: 'AI Art Generator',
-        description: 'Create stunning AI art with our Midjourney Prompt Generator. Craft perfect prompts for breathtaking digital art, from hyper-realistic portraits to fantastical landscapes.',
+        title: 'Midjourney Prompts Generator — Free, No Sign-up',
+        description: 'Create stunning Midjourney prompts from a plain description — style, lighting, composition, and parameters added automatically. Free Midjourney prompt generator, no sign-up required.',
         type: 'website'
       })
     },

@@ -49,10 +49,11 @@ export default function HomePage() {
   const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { credits, useCredit } = useCredits(session?.user ?? null);
+  const { credits, plan, useCredit } = useCredits(session?.user ?? null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeSuccess, setOptimizeSuccess] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [limitMessage, setLimitMessage] = useState<string | null>(null);
 
   useEffect(() => {
     // Initialize session state
@@ -81,14 +82,23 @@ export default function HomePage() {
     navigator.clipboard.writeText(fullPrompt);
   };
 
+  function showLimit(msg: string) {
+    setLimitMessage(msg);
+    setTimeout(() => setLimitMessage(null), 4000);
+  }
+
   const handleOptimize = async () => {
+    if (!mainPrompt.trim()) return;
+
     if (!session) {
       setIsAuthModalOpen(true);
       return;
     }
 
     if (credits === 0) {
-      alert('You have used all your credits for today. Please try again tomorrow!');
+      showLimit(plan === 'free'
+        ? "You've used all your free credits for today. They reset tomorrow."
+        : "You've used all your credits for this month. They reset on the 1st.");
       return;
     }
 
@@ -206,7 +216,9 @@ export default function HomePage() {
     }
 
     if (credits === 0) {
-      alert('You have used all your credits for today. Please try again tomorrow!');
+      showLimit(plan === 'free'
+        ? "You've used all your free credits for today. They reset tomorrow."
+        : "You've used all your credits for this month. They reset on the 1st.");
       return;
     }
 
@@ -243,10 +255,10 @@ export default function HomePage() {
   return (
     <>
       <SEO
-        title="AI Art Generator"
-        description="Create stunning AI art with our Midjourney Prompt Generator."
+        title="Midjourney Prompts Generator — Free, No Sign-up"
+        description="Create stunning Midjourney prompts from a plain description — style, lighting, composition, and parameters added automatically."
       />
-      <div className="p-5 animate-fade-in">
+      <div className="px-6 py-8 animate-fade-in">
 
         {/* Prompt Section — two columns */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
@@ -273,7 +285,7 @@ export default function HomePage() {
                 onClick={handleCopy}
                 className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-[#c8c0a8] rounded-lg text-sm text-[#1a1a1a] bg-white hover:bg-[#f5f0e4] transition-colors"
               >
-                <Upload className="w-3.5 h-3.5 rotate-180" /> Copy Prompt
+                <Upload className="w-3.5 h-3.5 rotate-180" /> Copy & Use in Midjourney
               </button>
               <button
                 onClick={handleOptimize}
@@ -287,7 +299,7 @@ export default function HomePage() {
                 ) : (
                   <Sparkles className="w-3.5 h-3.5" />
                 )}
-                {isOptimizing ? 'Refining...' : optimizeSuccess ? 'Done!' : 'Refine Prompt'}
+                {isOptimizing ? 'Enhancing...' : optimizeSuccess ? 'Done!' : 'Enhance Further'}
               </button>
             </div>
           </div>
@@ -318,6 +330,15 @@ export default function HomePage() {
           ))}
         </div>
 
+        {/* Credit limit message */}
+        {limitMessage && (
+          <div className="flex items-center gap-2 px-4 py-3 bg-[#fff8e6] border border-[#f0b429] rounded-xl text-sm text-[#1a1a1a]">
+            <span>⚠️</span>
+            <span>{limitMessage}</span>
+            <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+          </div>
+        )}
+
         {/* Action Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
@@ -330,7 +351,7 @@ export default function HomePage() {
             ) : (
               <Sparkles className="w-4 h-4" />
             )}
-            {isOptimizing ? 'Optimizing...' : `Optimize Prompt${credits !== null ? ` (${credits} left)` : ''}`}
+            {isOptimizing ? 'Generating...' : `Generate My Prompt${credits !== null ? ` (${credits} left)` : ''}`}
           </button>
 
           <label className={`flex items-center justify-center gap-2 py-3 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-semibold text-[#1a1a1a] hover:brightness-95 transition-all cursor-pointer ${isAnalyzing ? 'opacity-60 cursor-not-allowed' : ''}`}>
@@ -340,7 +361,7 @@ export default function HomePage() {
             ) : (
               <Upload className="w-4 h-4" />
             )}
-            {isAnalyzing ? 'Analyzing...' : 'Upload Inspirational Image'}
+            {isAnalyzing ? 'Analyzing...' : 'Generate from an Image'}
           </label>
         </div>
 

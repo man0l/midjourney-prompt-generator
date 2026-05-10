@@ -102,11 +102,17 @@ export default function ChatGPTImagePage() {
   const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { credits, useCredit } = useCredits(session?.user ?? null);
+  const { credits, plan, useCredit } = useCredits(session?.user ?? null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeSuccess, setOptimizeSuccess] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [limitMessage, setLimitMessage] = useState<string | null>(null);
+
+  function showLimit(msg: string) {
+    setLimitMessage(msg);
+    setTimeout(() => setLimitMessage(null), 4000);
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
@@ -139,7 +145,12 @@ export default function ChatGPTImagePage() {
 
   const handleOptimize = async () => {
     if (!session) { setIsAuthModalOpen(true); return; }
-    if (credits === 0) { alert('You have used all your credits for today. Please try again tomorrow!'); return; }
+    if (credits === 0) {
+      showLimit(plan === 'free'
+        ? "You've used all your free credits for today. They reset tomorrow."
+        : "You've used all your credits for this month. They reset on the 1st.");
+      return;
+    }
     setIsOptimizing(true);
     setOptimizeSuccess(false);
     try {
@@ -186,7 +197,12 @@ export default function ChatGPTImagePage() {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!session) { setIsAuthModalOpen(true); return; }
-    if (credits === 0) { alert('You have used all your credits for today. Please try again tomorrow!'); return; }
+    if (credits === 0) {
+      showLimit(plan === 'free'
+        ? "You've used all your free credits for today. They reset tomorrow."
+        : "You've used all your credits for this month. They reset on the 1st.");
+      return;
+    }
     setIsAnalyzing(true);
     try {
       const description = await uploadAndAnalyzeImage(file);
@@ -206,7 +222,7 @@ export default function ChatGPTImagePage() {
         title="ChatGPT Image Prompt Generator"
         description="Generate perfect ChatGPT photo prompts instantly. Free ChatGPT image prompt generator — no sign up needed."
       />
-      <div className="p-5 animate-fade-in">
+      <div className="px-6 py-8 animate-fade-in">
 
         {/* Prompt Section */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
@@ -293,6 +309,15 @@ export default function ChatGPTImagePage() {
             </button>
           ))}
         </div>
+
+        {/* Credit limit message */}
+        {limitMessage && (
+          <div className="flex items-center gap-2 px-4 py-3 mb-3 bg-[#fff8e6] border border-[#f0b429] rounded-xl text-sm text-[#1a1a1a]">
+            <span>⚠️</span>
+            <span>{limitMessage}</span>
+            <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+          </div>
+        )}
 
         {/* Action Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

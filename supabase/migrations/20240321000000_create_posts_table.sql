@@ -1,6 +1,6 @@
 -- Create posts table
 create table if not exists public.posts (
-    id uuid primary key default uuid_generate_v4(),
+    id uuid primary key default gen_random_uuid(),
     title text not null,
     slug text not null unique,
     content_markdown text not null,

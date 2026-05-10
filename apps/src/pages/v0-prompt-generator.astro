@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SimplePromptTool from '../components/SimplePromptTool';
-import { generateV0Prompt } from '../utils/promptTransformers';
+
+import PricingSection from '../components/PricingSection';
 
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
@@ -9,6 +10,18 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   title="Free v0 Prompt Generator — Build UI Components with v0.dev"
   description="Generate perfectly structured v0 prompts from any UI idea. Free v0 prompt generator that adds design specs, TypeScript types, and accessibility requirements. No sign-up."
 >
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">v0 Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Turn your UI ideas into perfectly crafted v0 prompts that generate fully-functional components. Our free v0 prompt generator adds design specifications, TypeScript types, interactive states, and accessibility requirements — so your v0 prompt builds complete, deployment-ready UI.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate v0 Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
   <div id="root">
     <SimplePromptTool
       client:only="react"
@@ -16,17 +29,12 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       seoDescription="Generate v0 prompts that build complete UI components."
       inputPlaceholder="Describe your UI component... e.g. a pricing table with three tiers, toggle between monthly/yearly billing, and a highlighted recommended plan"
       buttonLabel="Generate v0 Prompt"
-      transform={generateV0Prompt}
+      toolType="v0"
     />
   </div>
 
   <div class="px-6 py-12 space-y-6">
-    <div class="text-center space-y-3 py-4">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">v0 Prompt Generator</h1>
-      <p class="text-[#6b6559] text-base max-w-2xl mx-auto">
-        Turn your UI ideas into perfectly crafted v0 prompts that generate fully-functional components. Our free v0 prompt generator adds design specifications, TypeScript types, interactive states, and accessibility requirements — so your v0 prompt builds complete, deployment-ready UI.
-      </p>
-    </div>
+    
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="border border-[#c8c0a8] rounded-xl p-6">
@@ -68,4 +76,13 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
       Generate Your v0 Prompt
     </a>
   </div>
+
+    <PricingSection client:load priceIds={{
+      starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+      starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+      proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+      proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+      unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+      unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+    }} />
 </Layout>
