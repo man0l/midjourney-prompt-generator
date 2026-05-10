@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     .eq('user_id', user.id)
     .single();
 
-  if (!sub?.stripe_customer_id) return json({ error: 'No active subscription' }, 404);
+  if (!sub?.stripe_customer_id) return json({ error: 'No active subscription', sub }, 404);
 
   try {
     const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
@@ -40,6 +40,12 @@ export const POST: APIRoute = async ({ request }) => {
     });
     return json({ url: session.url });
   } catch (err: any) {
-    return json({ error: err?.message ?? 'Failed to create portal session' }, 500);
+    return json({
+      error: err?.message ?? 'Failed to create portal session',
+      type: err?.type,
+      code: err?.code,
+      statusCode: err?.statusCode,
+      customerId: sub.stripe_customer_id,
+    }, 500);
   }
 };
