@@ -30,6 +30,7 @@
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.3",
+    "sonner": "^2.0.7",
     "stripe": "^22.1.1",
     "uuid": "^11.0.3"
   },

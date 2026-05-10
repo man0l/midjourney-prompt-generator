@@ -1,74 +1,67 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout
-  title="Privacy Policy — PromptBuilder Chrome Extension"
-  description="Privacy policy for the PromptBuilder Chrome extension. We do not collect, store, or transmit any personal data."
->
-  <div class="px-6 py-12 max-w-3xl mx-auto space-y-8">
-    <div class="space-y-2">
-      <h1 class="text-4xl font-bold text-[#1a1a1a]">Privacy Policy</h1>
-      <p class="text-[#6b6559] text-sm">Last updated: April 28, 2026</p>
+<Layout title="Privacy Policy – Midjourney Prompt Generator" description="Privacy Policy for Midjourney Prompt Generator">
+  <div class="max-w-3xl mx-auto px-6 py-12 space-y-8 text-[#1a1a1a]">
+    <div>
+      <h1 class="text-3xl font-bold mb-2">Privacy Policy</h1>
+      <p class="text-sm text-[#6b6559]">Last updated: May 10, 2026</p>
     </div>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Overview</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        PromptBuilder (the "Extension") is a Chrome browser extension that helps you build, save, and insert AI prompts into ChatGPT, Claude, Gemini, and Grok. This policy describes what data the Extension accesses and how it is handled.
-      </p>
-      <p class="text-[#6b6559] text-sm leading-relaxed font-medium">
-        We do not collect, transmit, sell, or share any personal data.
-      </p>
-    </div>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">1. Who We Are</h2>
+      <p class="text-[#4a4540] leading-relaxed">Midjourney Prompt Generator is operated by Pazaruvai Umno Ltd., registered in Bulgaria. Contact: <a href="mailto:manol.trendafilov@gmail.com" class="text-[#f0b429] hover:underline">manol.trendafilov@gmail.com</a>.</p>
+    </section>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Data We Store Locally</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        The Extension uses the browser's built-in <code class="bg-[#f5f0e8] px-1 rounded">chrome.storage</code> API to save the prompts you create. This data is stored entirely on your device and is never transmitted to any server. You can clear it at any time by removing the Extension or clearing your browser's extension storage.
-      </p>
-    </div>
-
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Host Permissions</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        The Extension requests access to the following websites:
-      </p>
-      <ul class="list-disc list-inside text-[#6b6559] text-sm space-y-2">
-        <li><strong>midjourney-prompt-generator.eu</strong> — to load prompt templates displayed in the extension popup. No user data is sent to this domain.</li>
-        <li><strong>chatgpt.com, claude.ai, gemini.google.com, grok.com</strong> — to inject the selected prompt text into the chat input field. The Extension only writes to the input box; it does not read, store, or transmit any content from these pages.</li>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">2. Data We Collect</h2>
+      <ul class="list-disc pl-5 space-y-2 text-[#4a4540] leading-relaxed">
+        <li><strong>Account data</strong> — email address and name when you sign in via Google or Discord.</li>
+        <li><strong>Usage data</strong> — prompts you generate, credit consumption, and session timestamps.</li>
+        <li><strong>Billing data</strong> — payment method and billing address, processed and stored by Stripe. We never see your full card number.</li>
+        <li><strong>Analytics</strong> — page views and events via Google Analytics (anonymised IP).</li>
       </ul>
-    </div>
+    </section>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Data We Do Not Collect</h2>
-      <ul class="list-disc list-inside text-[#6b6559] text-sm space-y-2">
-        <li>No personally identifiable information</li>
-        <li>No browsing history or web activity</li>
-        <li>No chat content or AI conversation data</li>
-        <li>No analytics or telemetry</li>
-        <li>No cookies</li>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">3. How We Use Your Data</h2>
+      <ul class="list-disc pl-5 space-y-2 text-[#4a4540] leading-relaxed">
+        <li>To provide and improve the Service.</li>
+        <li>To manage your subscription and enforce credit limits.</li>
+        <li>To send transactional emails (receipts, subscription confirmations).</li>
+        <li>To detect abuse and enforce our Terms of Service.</li>
       </ul>
-    </div>
+    </section>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Third Parties</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        We do not share any data with third parties. The Extension does not include any advertising networks, tracking SDKs, or analytics services.
-      </p>
-    </div>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">4. Third-Party Services</h2>
+      <p class="text-[#4a4540] leading-relaxed">We share data with the following processors:</p>
+      <ul class="list-disc pl-5 space-y-2 text-[#4a4540] leading-relaxed">
+        <li><strong>Supabase</strong> — database and authentication (EU region).</li>
+        <li><strong>Stripe</strong> — payment processing.</li>
+        <li><strong>OpenAI</strong> — prompt generation. Prompts you submit are sent to OpenAI's API; see <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener" class="text-[#f0b429] hover:underline">OpenAI's Privacy Policy</a>.</li>
+        <li><strong>Google Analytics</strong> — anonymised usage analytics.</li>
+      </ul>
+    </section>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Changes to This Policy</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        If we ever change how data is handled, we will update this page and the date above. Material changes will also be noted in the Chrome Web Store listing.
-      </p>
-    </div>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">5. Cookies</h2>
+      <p class="text-[#4a4540] leading-relaxed">We use essential cookies for authentication and Google Analytics cookies for usage measurement. You can disable analytics cookies in your browser settings.</p>
+    </section>
 
-    <div class="border border-[#c8c0a8] rounded-xl p-6 space-y-4">
-      <h2 class="text-xl font-bold text-[#1a1a1a]">Contact</h2>
-      <p class="text-[#6b6559] text-sm leading-relaxed">
-        Questions? Email us at <a href="mailto:manol.trendafilov@gmail.com" class="underline text-[#1a1a1a]">manol.trendafilov@gmail.com</a>.
-      </p>
-    </div>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">6. Data Retention</h2>
+      <p class="text-[#4a4540] leading-relaxed">We retain your account data for as long as your account is active. You may request deletion at any time by emailing us. Billing records are retained for 7 years as required by Bulgarian tax law.</p>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">7. Your GDPR Rights</h2>
+      <p class="text-[#4a4540] leading-relaxed">As an EU resident you have the right to access, correct, export, or delete your personal data. To exercise these rights, email <a href="mailto:manol.trendafilov@gmail.com" class="text-[#f0b429] hover:underline">manol.trendafilov@gmail.com</a>. We will respond within 30 days.</p>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">8. Changes to This Policy</h2>
+      <p class="text-[#4a4540] leading-relaxed">We may update this Policy from time to time. The "last updated" date at the top will reflect any changes. Continued use of the Service after changes constitutes acceptance.</p>
+    </section>
   </div>
 </Layout>

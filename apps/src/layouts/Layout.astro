@@ -2,6 +2,7 @@
 import '../index.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CheckoutToast from '../components/CheckoutToast';
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://midjourney-prompt-gene
         </main>
         <Footer />
       </div>
+      <CheckoutToast client:load />
     </div>
   </body>
 </html>
