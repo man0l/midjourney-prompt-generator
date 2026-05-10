@@ -30,7 +30,7 @@ export function useCredits(user: User | null) {
             .from('user_subscriptions')
             .select('plan')
             .eq('user_id', user!.id)
-            .single(),
+            .maybeSingle(),
         ])
 
         if (creditsResult.error || !creditsResult.data) {

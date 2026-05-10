@@ -48,8 +48,8 @@ export default function ProfilePage() {
 
   async function fetchData(userId: string) {
     const [creditsRes, subRes] = await Promise.all([
-      supabase.from('user_credits').select('credits_remaining, monthly_credits_used').eq('user_id', userId).single(),
-      supabase.from('user_subscriptions').select('plan').eq('user_id', userId).single(),
+      supabase.from('user_credits').select('credits_remaining, monthly_credits_used').eq('user_id', userId).maybeSingle(),
+      supabase.from('user_subscriptions').select('plan').eq('user_id', userId).maybeSingle(),
     ]);
     if (creditsRes.data) {
       setCreditsRemaining(creditsRes.data.credits_remaining);
