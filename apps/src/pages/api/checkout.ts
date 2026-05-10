@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -9,6 +8,20 @@ function json(body: unknown, status = 200) {
     status,
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+async function stripePost(path: string, params: Record<string, string>, secretKey: string) {
+  const res = await fetch(`https://api.stripe.com/v1${path}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams(params).toString(),
+  });
+  const data: any = await res.json();
+  if (!res.ok) throw new Error(data?.error?.message ?? `Stripe error ${res.status}`);
+  return data;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -29,53 +42,56 @@ export const POST: APIRoute = async ({ request }) => {
   const priceId = body.priceId?.trim();
   if (!priceId) return json({ error: 'Missing priceId' }, 400);
 
-  const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
-
-  // Get or create Stripe customer
-  const { data: sub } = await supabase
-    .from('user_subscriptions')
-    .select('stripe_customer_id, stripe_subscription_id, plan')
-    .eq('user_id', user.id)
-    .single();
-
-  let customerId = sub?.stripe_customer_id;
-
-  if (!customerId) {
-    const customer = await stripe.customers.create({
-      email: user.email,
-      metadata: { supabase_user_id: user.id },
-    });
-    customerId = customer.id;
-    await supabase.from('user_subscriptions').upsert({
-      user_id: user.id,
-      stripe_customer_id: customerId,
-      plan: 'free',
-      status: 'active',
-    });
-  }
-
-  // If user already has an active paid subscription, send them to the billing portal
-  if (sub?.stripe_subscription_id && sub?.plan !== 'free') {
-    const origin = new URL(request.url).origin;
-    const portal = await stripe.billingPortal.sessions.create({
-      customer: customerId,
-      return_url: `${origin}/profile`,
-    });
-    return json({ url: portal.url });
-  }
-
+  const stripeKey = import.meta.env.STRIPE_SECRET_KEY;
   const origin = new URL(request.url).origin;
-  const session = await stripe.checkout.sessions.create({
-    customer: customerId,
-    payment_method_types: ['card'],
-    line_items: [{ price: priceId, quantity: 1 }],
-    mode: 'subscription',
-    success_url: `${origin}/?checkout=success`,
-    cancel_url: `${origin}/?checkout=cancelled`,
-    metadata: { supabase_user_id: user.id },
-    automatic_tax: { enabled: true },
-    customer_update: { address: 'auto' },
-  });
 
-  return json({ url: session.url });
+  try {
+    const { data: sub } = await supabase
+      .from('user_subscriptions')
+      .select('stripe_customer_id, stripe_subscription_id, plan')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    let customerId = sub?.stripe_customer_id;
+
+    if (!customerId) {
+      const customer = await stripePost('/customers', {
+        email: user.email ?? '',
+        'metadata[supabase_user_id]': user.id,
+      }, stripeKey);
+      customerId = customer.id;
+      await supabase.from('user_subscriptions').upsert({
+        user_id: user.id,
+        stripe_customer_id: customerId,
+        plan: 'free',
+        status: 'active',
+      });
+    }
+
+    // If user already has an active paid subscription, send them to the billing portal
+    if (sub?.stripe_subscription_id && sub?.plan !== 'free') {
+      const portal = await stripePost('/billing_portal/sessions', {
+        customer: customerId,
+        return_url: `${origin}/profile`,
+      }, stripeKey);
+      return json({ url: portal.url });
+    }
+
+    const session = await stripePost('/checkout/sessions', {
+      customer: customerId,
+      'payment_method_types[0]': 'card',
+      'line_items[0][price]': priceId,
+      'line_items[0][quantity]': '1',
+      mode: 'subscription',
+      success_url: `${origin}/?checkout=success`,
+      cancel_url: `${origin}/?checkout=cancelled`,
+      'metadata[supabase_user_id]': user.id,
+      'automatic_tax[enabled]': 'true',
+      'customer_update[address]': 'auto',
+    }, stripeKey);
+
+    return json({ url: session.url });
+  } catch (err: any) {
+    return json({ error: err?.message ?? 'Unknown error' }, 500);
+  }
 };

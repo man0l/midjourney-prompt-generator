@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -28,12 +27,12 @@ export const POST: APIRoute = async ({ request }) => {
     .from('user_subscriptions')
     .select('stripe_customer_id')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
-  if (!sub?.stripe_customer_id) return json({ error: 'No active subscription', sub }, 404);
+  if (!sub?.stripe_customer_id) return json({ error: 'No billing account found' }, 404);
 
   try {
-    const stripeRes = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
+    const res = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${import.meta.env.STRIPE_SECRET_KEY}`,
@@ -44,12 +43,10 @@ export const POST: APIRoute = async ({ request }) => {
         return_url: new URL(request.url).origin + '/profile',
       }).toString(),
     });
-    const data: any = await stripeRes.json();
-    if (!stripeRes.ok) {
-      return json({ error: data?.error?.message, type: data?.error?.type, code: data?.error?.code, status: stripeRes.status }, 500);
-    }
+    const data: any = await res.json();
+    if (!res.ok) throw new Error(data?.error?.message ?? `Stripe error ${res.status}`);
     return json({ url: data.url });
   } catch (err: any) {
-    return json({ error: err?.message, stage: 'fetch' }, 500);
+    return json({ error: err?.message ?? 'Unknown error' }, 500);
   }
 };
