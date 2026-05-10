@@ -19,14 +19,20 @@ function planFromPriceId(priceId: string): string {
 }
 
 async function verifyStripeSignature(body: string, sigHeader: string, secret: string): Promise<boolean> {
-  const parts = Object.fromEntries(sigHeader.split(',').map(p => p.split('=')));
-  const timestamp = parts['t'];
-  const signature = parts['v1'];
+  let timestamp = '';
+  let signature = '';
+  for (const part of sigHeader.split(',')) {
+    const idx = part.indexOf('=');
+    const key = part.slice(0, idx);
+    const val = part.slice(idx + 1);
+    if (key === 't') timestamp = val;
+    if (key === 'v1' && !signature) signature = val;
+  }
   if (!timestamp || !signature) return false;
 
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    'raw', enc.encode(secret.trim()), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
   );
   const payload = enc.encode(`${timestamp}.${body}`);
   const sigBytes = await crypto.subtle.sign('HMAC', key, payload);
