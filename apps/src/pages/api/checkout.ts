@@ -26,7 +26,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   let body: { priceId?: string };
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
-  if (!body.priceId) return json({ error: 'Missing priceId' }, 400);
+  const priceId = body.priceId?.trim();
+  if (!priceId) return json({ error: 'Missing priceId' }, 400);
 
   const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
 
@@ -67,7 +68,7 @@ export const POST: APIRoute = async ({ request }) => {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     payment_method_types: ['card'],
-    line_items: [{ price: body.priceId, quantity: 1 }],
+    line_items: [{ price: priceId, quantity: 1 }],
     mode: 'subscription',
     success_url: `${origin}/?checkout=success`,
     cancel_url: `${origin}/?checkout=cancelled`,
