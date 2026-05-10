@@ -88,6 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
       'metadata[supabase_user_id]': user.id,
       'automatic_tax[enabled]': 'true',
       'customer_update[address]': 'auto',
+      allow_promotion_codes: 'true',
     }, stripeKey);
 
     return json({ url: session.url });
