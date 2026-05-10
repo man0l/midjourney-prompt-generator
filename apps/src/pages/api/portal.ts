@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
   const token = authHeader.slice(7);
 
   const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
@@ -32,11 +32,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!sub?.stripe_customer_id) return json({ error: 'No active subscription' }, 404);
 
-  const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
-  const session = await stripe.billingPortal.sessions.create({
-    customer: sub.stripe_customer_id,
-    return_url: new URL(request.url).origin,
-  });
-
-  return json({ url: session.url });
+  try {
+    const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
+    const session = await stripe.billingPortal.sessions.create({
+      customer: sub.stripe_customer_id,
+      return_url: new URL(request.url).origin + '/profile',
+    });
+    return json({ url: session.url });
+  } catch (err: any) {
+    return json({ error: err?.message ?? 'Failed to create portal session' }, 500);
+  }
 };
