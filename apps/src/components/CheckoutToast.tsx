@@ -6,6 +6,13 @@ export default function CheckoutToast() {
     const params = new URLSearchParams(window.location.search);
     const status = params.get('checkout');
     if (status === 'success') {
+      const sessionId = params.get('session_id');
+      if (sessionId && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'purchase', {
+          transaction_id: sessionId,
+          currency: 'EUR',
+        });
+      }
       toast.success('Subscription activated! Your credits have been updated.', { duration: 6000 });
       window.history.replaceState({}, '', window.location.pathname);
     } else if (status === 'cancelled') {
