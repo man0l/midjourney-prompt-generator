@@ -61,7 +61,7 @@ function closeModal() {
 }
 
 function track(event, params) {
-  chrome.runtime.sendMessage({ type: 'track', event, params });
+  if (typeof gtag === 'function') gtag('event', event, params || {});
 }
 
 function save() {
