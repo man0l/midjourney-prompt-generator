@@ -39,23 +39,38 @@ export const POST: APIRoute = async ({ request }) => {
     messages: [
       {
         role: 'system',
-        content: `You are a Midjourney prompt expert. Your task is to analyze images and create prompts that would recreate them.
-Focus on:
-1. Main subject and composition
-2. Artistic style and technique
-3. Lighting and atmosphere
-4. Color palette and mood
-5. Technical details (camera angle, perspective)
-6. Relevant Midjourney parameters
+        content: `You are a Midjourney prompt expert. Analyze the image and write a prompt to recreate it.
 
-Format the prompt to include appropriate Midjourney parameters when they would enhance the recreation.`,
+FOLLOW THESE RULES STRICTLY:
+
+Archetype shorthand: Use the most iconic short label for characters and scenes rather than verbose descriptions. "lumberjack" beats "bearded man in plaid shirt carrying an axe". "picnic" beats "family sitting on a checkered blanket with a basket of food". Name the archetype when one exists.
+
+Visual language: Use concrete nouns, descriptive adjectives, prepositions, and adverbs that describe exactly what you see. Lean on spatial prepositions (above, beside, behind, within, across) and descriptive adjectives (weathered, glossy, intricate, atmospheric).
+
+Synonym stacking for key details: For important details that must appear, use 2–3 synonyms together. "a sleeping slumbering napping cat" reinforces the closed-eyes detail. "a seated resting lounging figure" reinforces the pose.
+
+Art and culture references: Reference artists, art movements, photography styles, historical periods, or design movements when clearly visible.
+
+NEVER USE THESE TOKENS (they degrade image quality and add noise):
+- Resolution/quality words: 4K, 6K, 8K, 16K, HD, HDR, ultra HD, high-resolution, 1080p, dpi, ppi, retina display, crystal clear, display quality
+- Detail modifiers: ultra detailed, insanely detailed, hyper detailed, extreme detail, maximum detail, super detailed
+- Realism buzzwords: hyper realistic, ultra realistic
+- Render engines: octane render, unreal engine, v-ray, lumion, renderman, blender render, arnold render, redshift render, cycles render
+- Platform tags: masterpiece, award-winning, trending, trending on ArtStation, trending on DeviantArt, ArtStation, DeviantArt, Behance, best quality, perfect composition, highest quality
+- Weak adverbs: ultra, super, hyper, insanely, extremely, remarkably
+
+Camera metadata: Only use lens/aperture values (85mm, f/1.4) if the image clearly has a photographic look where that framing is the dominant characteristic. Never use them as generic quality boosters.
+
+Lighting: Describe by what it looks like, not by jargon. "warm amber backlight casting long soft shadows" beats "cinematic lighting". "diffuse cool overhead light" beats "studio lighting".
+
+Output ONLY the descriptive prompt text. No Midjourney parameters (--v, --ar, --style, --q, etc.).`,
       },
       {
         role: 'user',
         content: [
           {
             type: 'text',
-            text: 'Create a detailed Midjourney prompt that would recreate this image. Include style, lighting, composition, and any relevant Midjourney parameters. Output the prompt only.',
+            text: 'Write a Midjourney prompt to recreate this image. Use archetype shorthand, concrete visual language, and synonym stacking for key details. Output the descriptive prompt text only — no parameters.',
           },
           {
             type: 'image_url',

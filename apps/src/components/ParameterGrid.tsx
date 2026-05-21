@@ -43,14 +43,15 @@ export function ParameterGrid({ parameters, onParameterChange }: ParameterGridPr
     ]},
     { key: 'version', label: 'Version', icon: Layers, type: 'select', options: [
       { value: '----', label: 'Select version' },
+      { value: 'V8.1', label: 'Version 8.1 (latest)' },
+      { value: 'V8', label: 'Version 8' },
+      { value: 'V7', label: 'Version 7' },
       { value: 'V6', label: 'Version 6' },
       { value: 'V5.2', label: 'Version 5.2' },
       { value: 'V5.1', label: 'Version 5.1' },
     ]},
     { key: 'quality', label: 'Quality', icon: Sparkles, type: 'select', options: [
       { value: '----', label: 'Select quality' },
-      { value: '.25', label: 'Draft (.25)' },
-      { value: '.5', label: 'Low (.5)' },
       { value: '1', label: 'Default (1)' },
       { value: '2', label: 'High (2)' },
     ]},

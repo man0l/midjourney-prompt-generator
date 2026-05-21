@@ -19,7 +19,12 @@ export function generatePrompt(mainPrompt: string, parameters: PromptParameters)
     parts.push(`--aspect ${parameters.aspectRatio}`);
   }
   if (parameters.version !== '----') {
-    parts.push(`--version ${parameters.version}`);
+    const versionMap: Record<string, string> = {
+      'V8.1': '8.1', 'V8': '8', 'V7': '7',
+      'V6': '6', 'V5.2': '5.2', 'V5.1': '5.1', 'V5': '5', 'V4': '4', 'V3': '3'
+    };
+    const v = versionMap[parameters.version];
+    if (v) parts.push(`--v ${v}`);
   }
   if (parameters.quality !== '----') {
     parts.push(`--quality ${parameters.quality}`);
