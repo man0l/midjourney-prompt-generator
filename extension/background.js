@@ -1,39 +1,7 @@
 // Background service worker — makes API calls on behalf of content scripts,
 // bypassing CORS restrictions that apply to content script fetches.
 
-// ── GA4 Measurement Protocol ────────────────────────────────────────────────
-const GA_MEASUREMENT_ID = 'G-XKW6ETTXC3';
-const GA_API_SECRET = 'HmzjwUlISKiIFGLFdWH2MQ';
-
-async function gaClientId() {
-  return new Promise(resolve => {
-    chrome.storage.local.get('_ga_cid', d => {
-      if (d._ga_cid) { resolve(d._ga_cid); return; }
-      const id = crypto.randomUUID();
-      chrome.storage.local.set({ _ga_cid: id });
-      resolve(id);
-    });
-  });
-}
-
-async function trackEvent(name, params = {}) {
-  try {
-    const client_id = await gaClientId();
-    await fetch(
-      `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${GA_API_SECRET}`,
-      { method: 'POST', body: JSON.stringify({ client_id, events: [{ name, params }] }) }
-    );
-  } catch (_) {}
-}
-
-// ── Message router ──────────────────────────────────────────────────────────
-
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message.type === 'track') {
-    trackEvent(message.event, message.params || {});
-    return false;
-  }
-
   if (message.type !== 'improve') return false;
 
   fetch('https://www.midjourney-prompt-generator.eu/api/improve', {
