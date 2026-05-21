@@ -2,10 +2,8 @@
   'use strict';
 
   const MIN_CHARS_FOR_TOOLBAR = 15;
-  const MIN_CHARS_FOR_CHATGPT_BTN = 3;
   const IS_CHATGPT = location.hostname === 'chatgpt.com';
   const IS_CLAUDE  = location.hostname === 'claude.ai';
-  const IS_INLINE  = IS_CHATGPT || IS_CLAUDE;
 
   let state = null; // { el } when slash menu is open
   let dropdown = null;
@@ -184,7 +182,6 @@
   }
 
   function showToolbar(el) {
-    if (IS_INLINE) return; // inline sites use injected button instead
     if (!toolbar) { toolbar = buildToolbar(); document.body.appendChild(toolbar); }
     toolbarEl = el;
     toolbar.classList.add('visible');
@@ -207,7 +204,6 @@
   }
 
   function refreshToolbar(el) {
-    if (IS_INLINE) return;
     if (!isEditable(el)) { hideToolbar(); return; }
     const text = getEditableText(el).trim();
     if (text.length < MIN_CHARS_FOR_TOOLBAR) { hideToolbar(); return; }
@@ -476,7 +472,7 @@
       chrome.runtime.sendMessage({ type: 'improve', prompt: original }, (response) => {
         btn.classList.remove('loading');
         btn.disabled = false;
-        if (!IS_INLINE) positionToolbar();
+        positionToolbar();
 
         if (chrome.runtime.lastError) {
           showToast('Improve failed: ' + chrome.runtime.lastError.message, 'error');
@@ -551,33 +547,16 @@
       showDropdown(el, match[1]);
     } else {
       hideDropdown();
-      if (IS_CHATGPT) {
-        const editor = findChatGPTEditor();
-        updateChatGPTButton(editor ? getEditableText(editor) : '');
-      } else if (IS_CLAUDE) {
-        const editor = findClaudeEditor();
-        updateClaudeButton(editor ? getEditableText(editor) : '');
-      } else {
-        refreshToolbar(el);
-      }
+      refreshToolbar(el);
     }
   }, true);
 
   document.addEventListener('focusin', (e) => {
     if (!isEditable(e.target)) return;
-    if (IS_CHATGPT) {
-      const editor = findChatGPTEditor();
-      updateChatGPTButton(editor ? getEditableText(editor) : '');
-    } else if (IS_CLAUDE) {
-      const editor = findClaudeEditor();
-      updateClaudeButton(editor ? getEditableText(editor) : '');
-    } else {
-      refreshToolbar(e.target);
-    }
+    refreshToolbar(e.target);
   }, true);
 
   document.addEventListener('focusout', (e) => {
-    if (IS_INLINE) return; // inline sites keep button visible while text is present
     setTimeout(() => {
       const active = document.activeElement;
       const inToolbar = toolbar && toolbar.contains(active);
@@ -604,13 +583,11 @@
     if (dropdown && !dropdown.contains(e.target)) hideDropdown();
   }, true);
 
-  // Keep toolbar glued to its editable on scroll/resize (non-inline sites)
-  const reposition = () => { if (!IS_INLINE && toolbarEl) positionToolbar(); };
+  // Keep toolbar glued to its editable on scroll/resize
+  const reposition = () => { if (toolbarEl) positionToolbar(); };
   window.addEventListener('scroll', reposition, true);
   window.addEventListener('resize', reposition);
 
   // ── Init ───────────────────────────────────────────────────
-
-  if (IS_CHATGPT) setupChatGPT();
-  else if (IS_CLAUDE) setupClaude();
+  // Toolbar handles all sites; inline button injection is no longer used.
 })();
