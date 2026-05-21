@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
   "name": "PromptBuilder: ChatGPT & Gemini Prompt Builder",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Generate smarter prompts for ChatGPT, Claude, Gemini & more. Build, save, and launch AI prompts in one click — free.",
   "background": {
     "service_worker": "background.js"
   },
   "permissions": ["storage"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src https://www.google-analytics.com"
+  },
   "host_permissions": [
     "https://midjourney-prompt-generator.eu/*",
     "https://www.midjourney-prompt-generator.eu/*",

@@ -460,6 +460,10 @@
     }
   }
 
+  function track(event, params) {
+    chrome.runtime.sendMessage({ type: 'track', event, params });
+  }
+
   function doImprove(btn, editableEl) {
     if (!editableEl) return;
     const original = getEditableText(editableEl).trim();
@@ -467,6 +471,7 @@
 
     btn.classList.add('loading');
     btn.disabled = true;
+    track('improve_click', { site: location.hostname });
 
     try {
       chrome.runtime.sendMessage({ type: 'improve', prompt: original }, (response) => {
@@ -499,6 +504,7 @@
     const text = getEditableText(editableEl).trim();
     if (!text) return;
 
+    track('save_click', { site: location.hostname });
     const title = deriveTitle(text);
     chrome.storage.local.get('prompts', (data) => {
       const prompts = data.prompts || [];

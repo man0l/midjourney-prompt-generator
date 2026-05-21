@@ -60,6 +60,10 @@ function closeModal() {
   editingId = null;
 }
 
+function track(event, params) {
+  chrome.runtime.sendMessage({ type: 'track', event, params });
+}
+
 function save() {
   const title = document.getElementById('form-title').value.trim();
   const body = document.getElementById('form-body').value.trim();
@@ -68,8 +72,10 @@ function save() {
   if (editingId) {
     const idx = prompts.findIndex(p => p.id === editingId);
     if (idx !== -1) prompts[idx] = { id: editingId, title, body };
+    track('prompt_edited');
   } else {
     prompts.push({ id: Date.now().toString(), title, body });
+    track('prompt_saved');
   }
 
   persist(() => { load(); closeModal(); });
@@ -78,6 +84,7 @@ function save() {
 function del(id) {
   if (!confirm('Delete this prompt?')) return;
   prompts = prompts.filter(p => p.id !== id);
+  track('prompt_deleted');
   persist(() => render());
 }
 
@@ -87,6 +94,7 @@ function esc(s) {
 
 document.addEventListener('DOMContentLoaded', () => {
   load();
+  track('popup_open');
 
   document.getElementById('add-btn').addEventListener('click', () => openModal());
   document.getElementById('cancel-btn').addEventListener('click', closeModal);
