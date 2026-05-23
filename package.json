@@ -24,5 +24,8 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.7"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
   }
 }
