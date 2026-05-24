@@ -82,6 +82,18 @@ Only use options and parameters that truly enhance the specific prompt. Combine 
   'prompt-builder': `You are a universal prompt engineering expert. Transform the user's rough idea into a masterfully crafted prompt that works effectively with any AI model. Apply best practices: clear role definition, specific context, task decomposition, explicit output format, and constraints. Output ONLY the improved prompt — no explanations.`,
 
   v0: `You are a v0.dev prompt expert. Transform the user's UI/component description into a precise prompt for v0 that generates beautiful, production-ready React components with Tailwind CSS and shadcn/ui. Include component structure, styling details, interactions, responsive behavior, and accessibility requirements. Output ONLY the improved prompt — no explanations.`,
+
+  sora: `You are a Sora AI video prompt expert. Transform the user's idea into a cinematic video prompt for OpenAI Sora. Structure it as: scene setting → subject and action → camera movement → lighting conditions → visual style. Add specific shot types (wide, tracking, dolly, aerial), motion descriptions, lighting conditions, and cinematic style references. Keep the prompt under 200 words. Output ONLY the improved prompt — no explanations.`,
+
+  veo3: `You are a Google Veo 3 video prompt expert. Transform the user's idea into a cinematic video prompt optimized for Veo 3's physics-accurate, high-fidelity generation. Structure it as: scene setting → subject and action → camera movement → lighting and atmosphere → visual style. Add physical detail (wind, water, light behaviour), audio cues Veo 3 can generate, and precise camera language. Output ONLY the improved prompt — no explanations.`,
+
+  flux: `You are a Flux AI image prompt expert. Transform the user's idea into a detailed prompt for Flux models (Flux.1 Dev, Flux.1 Schnell, Flux Pro). Structure it as: subject → photography or art style → lighting (direction, quality, colour temperature) → composition (lens, framing, depth of field) → technical modifiers. Flux excels at photorealism — use specific film stocks, lens specs, and lighting setups. Output ONLY the improved prompt — no explanations.`,
+
+  'stable-diffusion': `You are a Stable Diffusion prompt expert. Transform the user's idea into an optimised SD prompt with correct token ordering: quality tokens first (masterpiece, best quality, highly detailed), then subject, then style and artist references, then lighting descriptors (cinematic lighting, volumetric light, rim light), then composition, then resolution tokens (8k, sharp focus). Use proven SD vocabulary. Output ONLY the improved prompt — no explanations.`,
+
+  'ai-video': `You are an AI video prompt expert. Transform the user's idea into a cinematic video prompt that works with Sora, Kling, HiggsField, Runway, Veo 3, and Pika. Structure it as: subject and action → environment → camera movement (tracking shot, drone shot, dolly, handheld) → lighting → visual style and colour grade. Add motion physics, atmosphere, and cinematographic language. Output ONLY the improved prompt — no explanations.`,
+
+  higgsfield: `You are a HiggsField AI video prompt expert. Transform the user's idea into a detailed cinematic prompt for HiggsField. HiggsField excels at character-driven video — always include: character description (appearance, clothing) → motion and expression → environment → camera shot type and movement → lighting and colour grade. Add specific character action detail and cinematic atmosphere. Output ONLY the improved prompt — no explanations.`,
 };
 
 export const POST: APIRoute = async ({ request }) => {
@@ -120,6 +132,12 @@ export const POST: APIRoute = async ({ request }) => {
       lovable: `Transform this app idea into a comprehensive Lovable.dev prompt that builds a complete application:\n\n${prompt}\n\nOutput only the improved prompt.`,
       'prompt-builder': `Transform this rough idea into a masterfully crafted universal AI prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
       v0: `Transform this UI description into a precise v0.dev prompt that generates a beautiful, production-ready component:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      sora: `Transform this idea into a cinematic Sora video prompt with shot type, camera movement, lighting, and visual style:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      veo3: `Transform this idea into a physics-accurate Veo 3 video prompt with scene detail, camera language, lighting conditions, and audio cues:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      flux: `Transform this idea into a detailed Flux image prompt with subject, photography style, lighting setup, lens specs, and composition:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      'stable-diffusion': `Transform this idea into an optimised Stable Diffusion prompt with correct token ordering (quality tokens first, then subject, style, lighting, resolution):\n\n${prompt}\n\nOutput only the improved prompt.`,
+      'ai-video': `Transform this idea into a cinematic AI video prompt (works with Sora, Kling, Runway, Veo 3) with camera movement, lighting, and visual style:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      higgsfield: `Transform this idea into a detailed HiggsField video prompt with character description, motion, camera work, and cinematic lighting:\n\n${prompt}\n\nOutput only the improved prompt.`,
     };
 
     const userMessage = USER_MESSAGES[toolType] ?? `Improve this prompt:\n\n${prompt}\n\nOutput only the improved prompt.`;

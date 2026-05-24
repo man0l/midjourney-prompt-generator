@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Stable Diffusion Prompt Generator — SD Prompts, Examples & Guide"
+  description="Generate optimised Stable Diffusion prompts instantly. Free SD prompt generator with examples, a prompt guide, and lighting/camera tokens built in — works with SDXL, SD 1.5, SD 3, and ComfyUI. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Stable Diffusion Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate optimised prompts for Stable Diffusion. Our free SD prompt generator adds the style tokens, quality boosters, lighting descriptors, and composition terms that Stable Diffusion models respond to — no prompt engineering experience needed.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate SD Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Stable Diffusion Prompt Generator"
+      seoDescription="Generate optimised prompts for Stable Diffusion models."
+      inputPlaceholder="Describe your image... e.g. a fantasy warrior woman in enchanted forest, glowing armor, dramatic lighting"
+      buttonLabel="Generate SD Prompt"
+      toolType="stable-diffusion"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use a Stable Diffusion Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Stable Diffusion models use token weighting and specific vocabulary to interpret prompts. The right combination of style tokens, quality modifiers, and composition terms dramatically improves output quality. This generator knows which tokens SD models respond to and automatically builds prompts with the correct structure, ordering, and modifiers for consistent, high-quality results.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your SD Prompts</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">⭐</span><p class="text-[#6b6559] text-sm">Quality: masterpiece, best quality, highly detailed tokens</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎨</span><p class="text-[#6b6559] text-sm">Style: artist references, art movement, rendering engine</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">💡</span><p class="text-[#6b6559] text-sm">Lighting: cinematic lighting, volumetric, rim light, bokeh</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">📐</span><p class="text-[#6b6559] text-sm">Composition: framing, perspective, depth of field</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Stable Diffusion Prompt Guide: Structure, Examples & Tips</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The proven <strong>stable diffusion prompt structure</strong> is: subject → style and artist references → quality tokens → lighting → technical parameters. This <strong>stable diffusion prompt guide</strong> is built into the generator — your description automatically becomes a structured prompt with the right token ordering that works across SDXL, SD 1.5, SD 3, and popular checkpoints. Paste directly into Automatic1111, ComfyUI, or InvokeAI. See <strong>stable diffusion prompt examples</strong> below for reference.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Stable Diffusion Prompt Examples</h3>
+      <div class="space-y-3">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Fantasy character</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"masterpiece, best quality, fantasy warrior woman, enchanted forest, glowing armor, dramatic cinematic lighting, volumetric light, by Greg Rutkowski, highly detailed, 8k, sharp focus"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Stable diffusion lighting prompt</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"portrait, soft studio lighting, rim light, bokeh background, photorealistic, 85mm lens, f/2.8, warm colour temperature, masterpiece, highly detailed"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Stable diffusion camera prompt</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"wide angle shot, 16mm lens, deep depth of field, urban landscape at night, neon lights, long exposure, award-winning photography, ultra-sharp, 8k"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Stable Diffusion prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no account needed.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Which SD models does this work with?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Prompts work with SDXL, SD 1.5, SD 2.1, SD 3, and most popular checkpoints on Civitai, Automatic1111, and ComfyUI.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best Stable Diffusion prompt tips?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Top stable diffusion prompt tips: put quality tokens (masterpiece, best quality) first, use specific artist names for style, include lighting descriptors like "cinematic lighting" or "volumetric light", and end with resolution tokens like "8k, highly detailed". This generator applies all of these automatically.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Does it generate negative prompts too?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The generator focuses on optimising the positive stable diffusion prompt, which has the biggest impact on quality. Standard negative tokens like "blurry, low quality, deformed" can be added manually.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is prompt weighting in Stable Diffusion?</p>
+          <p class="text-[#6b6559] text-xs mt-1">SD models treat tokens at the start of a prompt as higher priority. This generator orders tokens correctly — subject and style first, quality modifiers after — to get the best balance of elements in the output.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Stable Diffusion Prompt
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>

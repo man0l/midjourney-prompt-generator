@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Veo 3 Prompt Generator — Veo 3 Prompt Examples, Guide & Templates"
+  description="Generate Google Veo 3 prompts instantly. Free Veo 3 prompt generator with examples, templates, and structure guide — covers camera motion, lighting, and scene detail. Works with Gemini Veo 3. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Veo 3 Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate cinematic prompts for Google Veo 3. Our free Veo 3 prompt generator adds camera movement, lighting, scene composition, and visual style so Google's most advanced video AI produces exactly what you have in mind.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Veo 3 Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Veo 3 Prompt Generator"
+      seoDescription="Generate cinematic video prompts for Google Veo 3."
+      inputPlaceholder="Describe your video... e.g. a timelapse of storm clouds rolling over a coastal city at dusk, aerial perspective"
+      buttonLabel="Generate Veo 3 Prompt"
+      toolType="veo3"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use a Veo 3 Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Veo 3 is Google's most capable video generation model, producing high-fidelity, physically accurate video with natural motion and audio. But like all AI video models, it produces dramatically better results with structured cinematic prompts. This generator automatically adds the camera language, scene physics, lighting conditions, and visual style cues that Veo 3 uses to construct coherent, high-quality videos.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Veo 3 Prompts</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎬</span><p class="text-[#6b6559] text-sm">Camera: shot type, angle, motion path, transitions</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🌅</span><p class="text-[#6b6559] text-sm">Lighting: time of day, weather, atmospheric conditions</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🏙️</span><p class="text-[#6b6559] text-sm">Scene: environment, depth, background, physical detail</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎞️</span><p class="text-[#6b6559] text-sm">Style: cinematic grade, visual references, mood</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Veo 3 Prompt Guide: Structure, Examples & Templates</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The proven <strong>veo 3 prompt structure</strong> is: scene setting → subject and action → camera movement → lighting conditions → visual style. Google Veo 3 understands real-world physics and natural motion — but to unlock that capability, your prompts need to specify physical conditions precisely. This generator applies that veo 3 prompt guide automatically, turning plain descriptions into the detailed cinematic brief Google Veo 3 needs. Works identically as a <strong>Gemini Veo 3 prompt</strong> generator via VideoFX and Gemini Advanced.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Veo 3 Prompt Examples</h3>
+      <div class="space-y-3">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Nature scene</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Timelapse of storm clouds rolling over a coastal city at dusk, aerial perspective, warm amber light giving way to deep blue, wind audible, cinematic wide shot, ultra-high detail"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Urban street</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Slow tracking shot down a rain-soaked alley at night, steam rising from grates, neon reflections on wet cobblestones, ambient city noise, shallow depth of field, film noir colour grade"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Veo 3 prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Where can I use Veo 3?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Veo 3 is available through Google's VideoFX, Gemini Advanced, and Google AI Studio. Prompts generated here work as a Gemini Veo 3 prompt or a Google Veo 3 prompt — the interface doesn't matter.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is the best Veo 3 prompt structure?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The best veo 3 prompt template starts with scene and subject, then specifies camera movement, then lighting, then visual style. This generator builds that structure automatically — no prompt engineering knowledge needed.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What makes Veo 3 different from other AI video models?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Veo 3 generates video with native audio — ambient sound, sound effects, and dialogue — alongside the visual content. It also produces longer clips with more coherent motion than most competing models.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Do these prompts work for Veo 2 as well?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — cinematic prompts work well with both Veo 2 and Veo 3. The structured format helps both models produce more consistent, high-quality output.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Veo 3 Prompt
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>

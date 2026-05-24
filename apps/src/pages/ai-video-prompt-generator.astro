@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free AI Video Prompt Generator — Viral AI Video Prompts & Examples"
+  description="Generate viral AI video prompts instantly. Free AI video prompt generator with examples, copy-paste templates, and trending prompts — works with Sora, Kling, HiggsField, Runway, and Veo 3. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">AI Video Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate cinematic video prompts for any AI video tool. Works with Sora, Kling, HiggsField, Runway, Veo 3, and Pika. Our free AI video prompt generator adds camera motion, lighting, scene composition, and visual style so your AI videos look like they were directed, not typed.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Video Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="AI Video Prompt Generator"
+      seoDescription="Generate cinematic video prompts for Sora, Kling, HiggsField, Runway, and Veo."
+      inputPlaceholder="Describe your video... e.g. a drone shot flying over a misty mountain range at dawn, slow cinematic movement"
+      buttonLabel="Generate Video Prompt"
+      toolType="ai-video"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use an AI Video Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          AI video models interpret your prompt frame by frame — camera angle, subject motion, lighting transition, background depth. A plain description like "a car driving" produces something generic. Add shot type, motion speed, time of day, colour grade, and cinematic style, and you get a short film. This generator builds that full cinematic brief automatically from your plain-language idea.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Works With All Major AI Video Tools</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎬</span><p class="text-[#6b6559] text-sm">OpenAI Sora — cinematic scene generation</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎭</span><p class="text-[#6b6559] text-sm">HiggsField — character-driven cinematic video</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🏃</span><p class="text-[#6b6559] text-sm">Runway Gen-3 — creative video generation</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🌊</span><p class="text-[#6b6559] text-sm">Google Veo 3, Kling, Pika, and Luma</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Viral AI Video Prompts: Examples & Copy-Paste Templates</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The best <strong>viral ai video prompts</strong> on TikTok and Instagram share a common structure: clear subject + action → environment → camera move → lighting → visual style. Every trending AI video clip has a specific camera move, deliberate lighting, and a defined visual style. This generator encodes that directorial thinking automatically — producing <strong>ai video prompt examples</strong> ready to copy-paste directly into Sora, HiggsField, Kling, or any other AI video platform.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">AI Video Prompt Examples — Copy & Paste</h3>
+      <div class="space-y-3">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Trending cinematic</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Slow drone shot rising over a misty mountain forest at dawn, golden light breaking through the tree canopy, birds taking flight, epic cinematic colour grade, 4K"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Urban viral style</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Tracking shot following a woman in a flowing dress walking through a busy Tokyo crossing at night, slow motion, neon lights, rain-soaked street, cinematic shallow depth of field"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Text to video prompt</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Close-up of hands pouring coffee into a white ceramic cup, steam rising, warm morning light from a window, macro lens, soft focus background, cozy aesthetic"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this AI video prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Which AI video tools does this work with?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Prompts work with Sora, HiggsField, Runway, Kling, Veo 3, Pika, Luma Dream Machine, and most other text-to-video AI platforms.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What makes a viral AI video prompt?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Viral ai video prompts always have a specific camera movement, a defined lighting condition, and a clear subject action. Generic prompts produce generic videos. This generator adds the directorial detail that separates trending clips from average ones.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best trending AI video prompts right now?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Trending ai video prompts in 2025 include: slow drone shots over nature scenes, tracking shots through urban night scenes, close-up texture and food videos, and character transformation sequences. Use the generator above to build your own version of any of these.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I use these prompts for TikTok content?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — this generator is built for TikTok, Instagram Reels, and YouTube Shorts creators making AI video content. Detailed cinematic prompts produce more consistent, shareable results.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your AI Video Prompt
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>

@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free Flux Prompt Generator — Flux Prompt Examples, Guide & ComfyUI"
+  description="Generate Flux AI image prompts instantly. Free Flux prompt generator with examples, a prompt guide, and ComfyUI-ready output — adds lighting, composition, and style modifiers automatically. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Flux Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate high-quality prompts for Flux AI image models. Our free Flux prompt generator adds lighting, composition, style modifiers, and technical parameters that make Flux produce photorealistic and artistic images exactly as you imagined.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Flux Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="Flux Prompt Generator"
+      seoDescription="Generate detailed image prompts for Flux AI models."
+      inputPlaceholder="Describe your image... e.g. a portrait of a young woman in golden hour light, shallow depth of field, film photography style"
+      buttonLabel="Generate Flux Prompt"
+      toolType="flux"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use a Flux Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Flux models (Flux.1 Dev, Flux.1 Schnell, Flux Pro) respond strongly to detailed, structured prompts. Simple descriptions produce flat results — but add the right lighting language, composition terms, style references, and technical modifiers, and Flux generates photorealistic images indistinguishable from real photography. This generator knows what Flux responds to and builds prompts that get results.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your Flux Prompts</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">📸</span><p class="text-[#6b6559] text-sm">Photography: lens type, aperture, depth of field, film stock</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">💡</span><p class="text-[#6b6559] text-sm">Lighting: direction, quality, colour temperature, shadows</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🖼️</span><p class="text-[#6b6559] text-sm">Composition: framing, rule of thirds, foreground/background</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎨</span><p class="text-[#6b6559] text-sm">Style: artistic references, mood, colour palette, texture</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">Flux Prompt Guide: Structure, Examples & ComfyUI Tips</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The best <strong>flux prompt structure</strong> is: subject → style and medium → lighting → composition → technical modifiers. Flux is one of the most capable open-source image models available — but it rewards specificity. This <strong>flux prompt guide</strong> is built in: your plain description becomes a structured prompt with subject, style, lighting, composition, and parameters already included. Ready to paste into Flux.1, ComfyUI, Replicate, or Fal.ai. Use the <strong>flux prompt improver</strong> button to refine existing prompts too.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Flux Prompt Examples</h3>
+      <div class="space-y-3">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Portrait photography</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Close-up portrait of a young woman, golden hour backlight, soft bokeh background, 85mm f/1.4, film grain, warm skin tones, analog photography style, Kodak Portra 400"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Realistic photo</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Product shot of a ceramic coffee mug on a marble surface, overhead angle, soft studio lighting, white background, ultra-sharp detail, commercial photography, 4K"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this Flux prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Which Flux models does this work with?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Prompts work with all Flux models — Flux.1 Dev, Flux.1 Schnell, Flux Pro, and Flux Ultra. They're also optimised for ComfyUI, Replicate, and Fal.ai as a flux prompt generator for ComfyUI.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best Flux prompt tips?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Top flux prompt tips: place the most important subject first, name a specific photography style or film stock, include a lens type for realism, and avoid vague adjectives like "beautiful" — use concrete descriptors like "golden hour backlight" instead.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How is Flux different from Midjourney?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Flux excels at photorealism and fine detail, especially for portraits and product photography. Midjourney is stronger for stylised, artistic imagery. Both benefit from detailed, well-structured prompts.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I use an image to generate a Flux prompt?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Describe what you see in the image as your input and this generator will build a structured flux prompt that recreates it — including lighting, style, composition, and technical parameters.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your Flux Prompt
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>

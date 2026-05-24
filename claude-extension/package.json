@@ -1,0 +1,6 @@
+{
+  "name": "prompt-picker-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension — type / to insert saved prompts in ChatGPT, Claude, Gemini, Grok"
+}

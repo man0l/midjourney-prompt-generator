@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free HiggsField Prompt Generator — HiggsField AI Prompts, Examples & Guide"
+  description="Generate HiggsField AI prompts instantly. Free HiggsField prompt generator with examples and a built-in guide — adds character motion, camera work, and cinematic lighting automatically. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">HiggsField Prompt Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate cinematic prompts for HiggsField AI video. Our free HiggsField prompt generator adds character motion, camera angles, lighting, and scene detail so HiggsField produces exactly the video you have in mind.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate HiggsField Prompt — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="HiggsField Prompt Generator"
+      seoDescription="Generate cinematic video prompts for HiggsField AI."
+      inputPlaceholder="Describe your video scene... e.g. a woman walking through a rainy Tokyo street at night, neon reflections on wet pavement"
+      buttonLabel="Generate HiggsField Prompt"
+      toolType="higgsfield"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">Why Use a HiggsField Prompt Generator?</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          HiggsField excels at character-driven cinematic video, but it needs precise instructions about motion, expression, environment, and camera behaviour to shine. Our HiggsField prompt generator automatically structures your idea into the detailed cinematic brief HiggsField needs — covering subject action, camera movement, lighting, and atmosphere in one ready-to-paste prompt.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">What Gets Added to Your HiggsField Prompts</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎭</span><p class="text-[#6b6559] text-sm">Character: motion, expression, clothing, action detail</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎬</span><p class="text-[#6b6559] text-sm">Camera: shot type, movement, angle, and depth of field</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">💡</span><p class="text-[#6b6559] text-sm">Lighting: mood, colour grading, shadows, time of day</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🌆</span><p class="text-[#6b6559] text-sm">Environment: location, background, atmospheric detail</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">HiggsField AI Prompts: Examples, Guide & Best Practices</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The best <strong>HiggsField AI prompts</strong> follow a clear structure: character description → motion and expression → environment → camera movement → lighting → visual style. HiggsField is built for high-fidelity character video — but getting that quality requires detailed <strong>higgsfield prompts</strong> that go well beyond subject and location. This generator builds a complete cinematic specification automatically. See the examples below for reference on what <strong>good higgsfield prompts</strong> look like.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">HiggsField Prompt Examples</h3>
+      <div class="space-y-3">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Street scene</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"A young woman in a red coat walking slowly through a rain-soaked Tokyo street at night, looking up at neon signs, medium tracking shot, shallow depth of field, warm neon colours reflecting on wet pavement"</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-3">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-1">Dramatic character moment</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Close-up of an older man sitting alone at a bar, turning to look at camera with a knowing expression, dim warm lighting, handheld camera subtle movement, cinematic noir colour grade, film grain"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this HiggsField prompt generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — completely free, no account needed.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What makes the best HiggsField AI prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The best higgsfield ai prompts specify: character description and clothing, motion and expression, environment and background, camera shot type and movement, and lighting mood. This generator adds all five automatically.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is HiggsField good for TikTok content?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — HiggsField's cinematic character video is widely used for TikTok and Instagram Reels. Detailed higgsfield prompts produce more consistent, shareable results than vague descriptions.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How do I write HiggsField prompts?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Start with the character's appearance and what they're doing, then add the environment, then camera movement, then lighting. This generator structures all of that automatically — just describe your idea in plain English.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Can I use these prompts for other AI video tools?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — prompts generated here also work with Sora, Kling, Runway, Veo 3, and other AI video platforms.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your HiggsField Prompt
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>
