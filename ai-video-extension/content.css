@@ -1,0 +1,214 @@
+#pp-dropdown {
+  position: absolute;
+  background: #ede9d8;
+  border: 2px solid #1c1c1c;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(28, 28, 28, 0.18), 0 2px 6px rgba(28, 28, 28, 0.08);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 2147483647;
+  min-width: 300px;
+  max-width: 420px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1a1a1a;
+  padding: 4px;
+}
+
+.pp-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.pp-item + .pp-item {
+  margin-top: 2px;
+}
+
+.pp-item:hover,
+.pp-item.active {
+  background: #f0b429;
+  border-color: #1c1c1c;
+}
+
+.pp-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: -0.1px;
+}
+
+.pp-item-preview {
+  font-size: 12px;
+  color: #6b6559;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-item.active .pp-item-preview {
+  color: #1c1c1c;
+}
+
+.pp-empty {
+  padding: 18px 14px;
+  color: #6b6559;
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+}
+
+#pp-dropdown::-webkit-scrollbar { width: 8px; }
+#pp-dropdown::-webkit-scrollbar-track { background: transparent; }
+#pp-dropdown::-webkit-scrollbar-thumb { background: #c8c0a8; border-radius: 4px; }
+#pp-dropdown::-webkit-scrollbar-thumb:hover { background: #6b6559; }
+
+/* ── Floating toolbar ──────────────────────────────────────── */
+
+#pp-toolbar {
+  position: absolute;
+  display: none;
+  gap: 6px;
+  padding: 4px;
+  background: #ede9d8;
+  border: 2px solid #1c1c1c;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 #1c1c1c;
+  z-index: 2147483646;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  animation: ppFadeIn 0.15s ease-out;
+}
+
+#pp-toolbar.visible { display: inline-flex; }
+
+@keyframes ppFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pp-tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #1a1a1a;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.1s ease, border-color 0.1s ease, transform 0.08s ease;
+}
+
+.pp-tb-btn:hover {
+  background: #f0b429;
+  border-color: #1c1c1c;
+}
+
+.pp-tb-btn:active { transform: translateY(1px); }
+
+.pp-tb-btn[disabled] { opacity: 0.5; cursor: default; }
+.pp-tb-btn[disabled]:hover { background: transparent; border-color: transparent; }
+
+.pp-tb-btn svg { flex-shrink: 0; }
+
+.pp-tb-btn.loading svg {
+  animation: ppSpin 0.9s linear infinite;
+}
+
+@keyframes ppSpin {
+  to { transform: rotate(360deg); }
+}
+
+.pp-tb-label { white-space: nowrap; }
+
+/* ── ChatGPT inline improve button ────────────────────────── */
+
+.pp-chatgpt-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;       /* h-9 */
+  min-width: 2rem;       /* min-w-8 */
+  padding: 0.5rem;       /* p-2 */
+  border-radius: 9999px; /* rounded-full */
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.pp-chatgpt-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.pp-chatgpt-btn[hidden] {
+  display: none;
+}
+
+.pp-chatgpt-btn.loading {
+  background-size: 100% 200%;
+  background-image: linear-gradient(
+    to top,
+    #f59e0b 0%,
+    #fb923c 35%,
+    #a855f7 65%,
+    #6366f1 100%
+  );
+  animation: ppFillUpDown 1.4s ease-in-out infinite;
+  color: white;
+  opacity: 1;
+}
+
+.pp-chatgpt-btn.loading svg {
+  filter: brightness(0) invert(1); /* keep icon white over gradient */
+}
+
+@keyframes ppFillUpDown {
+  0%   { background-position: 0% 100%; }
+  50%  { background-position: 0% 0%;   }
+  100% { background-position: 0% 100%; }
+}
+
+.pp-chatgpt-btn[disabled] {
+  cursor: default;
+}
+
+/* ── Toast ─────────────────────────────────────────────────── */
+
+#pp-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #1c1c1c;
+  color: #ede9d8;
+  border: 2px solid #1c1c1c;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 2147483647;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 3px 3px 0 #c8c0a8;
+}
+
+#pp-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#pp-toast[data-kind="success"] { background: #f0b429; color: #1c1c1c; }
+#pp-toast[data-kind="error"] { background: #9a3b3b; color: #fff; box-shadow: 3px 3px 0 #1c1c1c; }

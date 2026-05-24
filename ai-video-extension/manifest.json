@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "AI Video Prompt Generator",
+  "version": "1.0.0",
+  "description": "Generate and save cinematic AI video prompts for Sora, Kling, Runway, Veo 3, and Pika. Type / to insert — free.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' https://www.googletagmanager.com; object-src 'self'; connect-src https://www.google-analytics.com https://analytics.google.com"
+  },
+  "host_permissions": [
+    "https://midjourney-prompt-generator.eu/*",
+    "https://www.midjourney-prompt-generator.eu/*",
+    "https://sora.com/*",
+    "https://runwayml.com/*",
+    "https://pika.art/*",
+    "https://kling.kuaishou.com/*"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI Video Prompt Generator",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://sora.com/*",
+        "https://runwayml.com/*",
+        "https://pika.art/*",
+        "https://kling.kuaishou.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
