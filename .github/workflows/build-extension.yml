@@ -1,41 +1,56 @@
-name: Build Chrome Extension
+name: Build Chrome Extensions
 
 on:
   push:
     branches: [main]
     paths:
       - 'extension/**'
+      - 'chatgpt-extension/**'
+      - 'claude-extension/**'
+      - 'sora-extension/**'
+      - 'higgsfield-extension/**'
+      - 'veo3-extension/**'
+      - 'flux-extension/**'
+      - 'stable-diffusion-extension/**'
+      - 'ai-video-extension/**'
+      - 'ugc-script-extension/**'
       - '.github/workflows/build-extension.yml'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        extension:
+          - extension
+          - chatgpt-extension
+          - claude-extension
+          - sora-extension
+          - higgsfield-extension
+          - veo3-extension
+          - flux-extension
+          - stable-diffusion-extension
+          - ai-video-extension
+          - ugc-script-extension
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Extract version from manifest
-        id: version
-        run: echo "version=v$(jq -r .version extension/manifest.json)" >> "$GITHUB_OUTPUT"
 
       - name: Generate PNG icons from SVG
         run: |
-          sudo apt-get update && sudo apt-get install -y librsvg2-bin
-          mkdir -p extension/icons
+          sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin
+          mkdir -p ${{ matrix.extension }}/icons
           for size in 16 32 48 128; do
-            rsvg-convert -w $size -h $size extension/icon.svg -o extension/icons/icon-${size}.png
+            rsvg-convert -w $size -h $size ${{ matrix.extension }}/icon.svg \
+              -o ${{ matrix.extension }}/icons/icon-${size}.png
           done
 
-      - name: Package extension zip
+      - name: Zip extension
         run: |
-          cd extension
-          zip -r ../prompt-picker-extension.zip \
+          cd ${{ matrix.extension }}
+          zip -r ../${{ matrix.extension }}.zip \
             manifest.json \
             background.js \
             content.js \
@@ -45,35 +60,69 @@ jobs:
             popup.css \
             icons/
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.extension }}
+          path: ${{ matrix.extension }}.zip
+          retention-days: 90
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version
+        id: version
+        run: echo "version=v$(jq -r .version extension/manifest.json)" >> "$GITHUB_OUTPUT"
+
       - name: Check if tag exists
         id: check_tag
         run: |
-          if git rev-parse "${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+          if git rev-parse "ext-${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Download all zips
+        uses: actions/download-artifact@v4
+        with:
+          path: zips/
+          merge-multiple: false
+
       - name: Create GitHub Release
         if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          name: Prompt Picker Extension ${{ steps.version.outputs.version }}
+          tag_name: ext-${{ steps.version.outputs.version }}
+          name: Chrome Extensions ${{ steps.version.outputs.version }}
           body: |
-            Chrome extension build for **Prompt Picker** ${{ steps.version.outputs.version }}.
+            All 10 Chrome extension zips — download individually below.
 
-            ### Installation
-            1. Download `prompt-picker-extension.zip`
-            2. Unzip
+            | Extension | File |
+            |---|---|
+            | PromptBuilder (general) | `extension.zip` |
+            | ChatGPT Prompt Generator | `chatgpt-extension.zip` |
+            | Claude AI Prompt Generator | `claude-extension.zip` |
+            | Sora Prompt Generator | `sora-extension.zip` |
+            | HiggsField Prompt Generator | `higgsfield-extension.zip` |
+            | Veo 3 Prompt Generator | `veo3-extension.zip` |
+            | Flux Image Prompt Generator | `flux-extension.zip` |
+            | Stable Diffusion Prompt Generator | `stable-diffusion-extension.zip` |
+            | AI Video Prompt Generator | `ai-video-extension.zip` |
+            | AI UGC Script Generator | `ugc-script-extension.zip` |
+
+            ### Installation (any extension)
+            1. Download the zip for the extension you want
+            2. Unzip it
             3. Go to `chrome://extensions` → enable Developer mode → Load unpacked → select the unzipped folder
-          files: prompt-picker-extension.zip
+          files: zips/**/*.zip
           draft: false
           prerelease: false
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: prompt-picker-extension
-          path: prompt-picker-extension.zip
-          retention-days: 90
