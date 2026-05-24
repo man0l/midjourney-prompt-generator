@@ -57,3 +57,4 @@ content-api/.tmp
 *.jpg
 *.jpeg
 .env*.local
+credentials.json
