@@ -30,7 +30,7 @@ FEATURES
 ✓ Type / to trigger the quick-insert picker inline
 ✓ Save unlimited prompts with full-text search
 ✓ Improve any prompt in-place using the AI optimizer
-✓ Completely free — no account, no subscription
+✓ 3 free generations per day — no credit card required
 
 BUILT FOR
 — Content creators who run the same research and writing prompts repeatedly
@@ -41,7 +41,7 @@ BUILT FOR
 PROMPT GENERATOR
 Not sure how to write a good prompt? Open the extension and visit our free prompt generator — just describe what you want and the AI writes a structured, optimized prompt for ChatGPT, Claude, Gemini, or any other model.
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -73,7 +73,7 @@ FEATURES
 ✓ Save and search unlimited prompts
 ✓ Edit or delete prompts at any time
 ✓ One-click access to free AI prompt generator
-✓ No account required — completely free
+✓ 3 free generations per day — no credit card required
 
 WHO IT'S FOR
 — Writers and content creators using ChatGPT for drafting
@@ -84,7 +84,7 @@ WHO IT'S FOR
 PROMPT GENERATOR
 Our free ChatGPT prompt generator at midjourney-prompt-generator.eu adds role definition, task context, output format, and constraints that produce dramatically better ChatGPT responses. Enter your idea — get a professional-grade prompt.
 
-Free. No account needed.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -116,7 +116,7 @@ FEATURES
 ✓ Type / for instant prompt insertion
 ✓ Full-text search across saved prompts
 ✓ AI-powered prompt generator for Claude
-✓ Free — no sign-up, no subscription
+✓ 3 free generations per day — no credit card required
 
 WHY CLAUDE NEEDS STRUCTURED PROMPTS
 Claude performs best with clearly framed tasks, appropriate context depth, and explicit output format instructions. Our generator applies these principles automatically — so you get precise, high-quality responses without needing to study prompt engineering.
@@ -127,7 +127,7 @@ BUILT FOR
 — Professionals who need structured, reliable Claude outputs consistently
 — Anyone moving from ChatGPT to Claude who wants the same workflow
 
-Free. No account needed.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -162,14 +162,14 @@ FEATURES
 ✓ Type / to insert saved prompts inline
 ✓ Save unlimited cinematic prompt templates
 ✓ Free Sora video prompt generator included
-✓ No account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "Slow tracking shot through a rain-soaked Tokyo alley at night, neon reflections on wet cobblestones, anamorphic lens flare, cinematic 2.39:1"
 — "Aerial drone pull-back from a lone lighthouse on a rocky cliff, turbulent ocean below, dramatic overcast sky, cold blue colour grade"
 — "Close-up of hands shaping clay on a pottery wheel, warm studio lighting, shallow depth of field, ASMR documentary style"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -204,13 +204,13 @@ FEATURES
 ✓ Type / for quick prompt insertion
 ✓ Save unlimited character and scene prompt templates
 ✓ Free HiggsField prompt generator included
-✓ No account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "Young woman in a cream linen blazer walks slowly through a sunlit wheat field, gentle breeze, contemplative expression, wide tracking shot, golden hour backlighting, cinematic film grain"
 — "Middle-aged man in a wet overcoat stands at a bus stop in heavy rain, anxious glance over shoulder, tight over-shoulder shot, cold blue-grey atmosphere, handheld camera"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -245,13 +245,13 @@ FEATURES
 ✓ Type / for quick prompt insertion
 ✓ Save unlimited Veo 3 prompt templates
 ✓ Free Veo 3 prompt generator included
-✓ No account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "Wide establishing shot of a coastal market at dawn, fishermen unloading catch, ambient sounds of waves and seagulls, warm low-angle sunlight refracting through mist, Veo 3 photorealistic"
 — "Handheld tracking shot following a cyclist through narrow Mediterranean streets, cobblestone texture, ambient crowd noise, morning light filtering through awnings"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -286,13 +286,13 @@ FEATURES
 ✓ Type / for quick prompt insertion
 ✓ Save unlimited Flux prompt templates
 ✓ Supports Flux.1 Dev, Schnell, Pro, and Ultra
-✓ Free — no account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "Portrait of a woman, Kodak Portra 400 film, 85mm f/1.4 lens, soft window light from camera left, slight film grain, shallow depth of field, warm neutral tones, editorial photography"
 — "Product shot of a ceramic coffee mug, flat lay overhead, white marble surface, dramatic side lighting, sharp focus, commercial photography, 50mm macro"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -327,13 +327,13 @@ FEATURES
 ✓ Type / for quick prompt insertion
 ✓ Save unlimited SD prompt templates
 ✓ Works with SD 1.5, SDXL, SD 3, and ControlNet workflows
-✓ Free — no account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "masterpiece, best quality, highly detailed, oil painting portrait of a Victorian woman, Pre-Raphaelite style, Millais influence, soft candlelight, warm amber tones, intricate fabric detail, 8k resolution, sharp focus"
 — "masterpiece, ultra-detailed, cyberpunk cityscape, neon-lit rain-soaked streets, blade runner aesthetic, Syd Mead influence, volumetric fog, blue-purple palette, cinematic composition, 8k"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -374,13 +374,13 @@ FEATURES
 ✓ Type / for inline prompt insertion
 ✓ Save unlimited cinematic prompt templates
 ✓ Free AI video prompt generator included
-✓ No account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE PROMPTS IT GENERATES
 — "Slow-motion aerial pullback from a burning bonfire on a beach, sparks rising into a starlit sky, long exposure light trails, film noir colour grade, 24fps cinematic"
 — "Handheld tracking shot follows a child running through a sunflower field at magic hour, shallow depth of field, warm orange and gold palette, documentary naturalism"
 
-Free. No sign-up required.
+3 free generations per day — no credit card required.
 ```
 
 ---
@@ -420,12 +420,12 @@ FEATURES
 ✓ Type / for quick UGC script insertion
 ✓ Save unlimited script templates by product/niche
 ✓ Free AI UGC script generator included
-✓ No account required
+✓ 3 free generations per day — no credit card required
 
 EXAMPLE SCRIPTS IT GENERATES
 "POV: you finally found the eye cream that actually works. I've tried literally everything — patches, caffeine serums, that $90 one from the dermatologist. Then I tried [Product] for 3 weeks and I genuinely cannot believe the difference. Link in bio — they're running a limited discount right now."
 
 Built for ecommerce brands, media buyers, and performance marketers running UGC ads on TikTok, Instagram Reels, and TikTok Shop.
 
-Free. No account needed.
+3 free generations per day — no credit card required.
 ```
