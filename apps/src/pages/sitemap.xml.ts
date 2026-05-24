@@ -32,6 +32,7 @@ const staticPages = [
   { url: '/higgsfield-prompt-generator',    lastmod: '2026-05-24', priority: '0.8', changefreq: 'weekly'  },
   { url: '/flux-prompt-generator',          lastmod: '2026-05-24', priority: '0.8', changefreq: 'weekly'  },
   { url: '/stable-diffusion-prompt-generator', lastmod: '2026-05-24', priority: '0.8', changefreq: 'weekly' },
+  { url: '/ai-ugc-script-generator',          lastmod: '2026-05-24', priority: '0.8', changefreq: 'weekly'  },
   { url: '/posts/codex-prompts',            lastmod: '2026-04-29', priority: '0.8', changefreq: 'monthly' },
   { url: '/posts/github-copilot-prompts',   lastmod: '2026-04-29', priority: '0.8', changefreq: 'monthly' },
   { url: '/posts',                        lastmod: '2026-04-26', priority: '0.5', changefreq: 'weekly'  },

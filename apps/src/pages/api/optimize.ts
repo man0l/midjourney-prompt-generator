@@ -94,6 +94,20 @@ Only use options and parameters that truly enhance the specific prompt. Combine 
   'ai-video': `You are an AI video prompt expert. Transform the user's idea into a cinematic video prompt that works with Sora, Kling, HiggsField, Runway, Veo 3, and Pika. Structure it as: subject and action → environment → camera movement (tracking shot, drone shot, dolly, handheld) → lighting → visual style and colour grade. Add motion physics, atmosphere, and cinematographic language. Output ONLY the improved prompt — no explanations.`,
 
   higgsfield: `You are a HiggsField AI video prompt expert. Transform the user's idea into a detailed cinematic prompt for HiggsField. HiggsField excels at character-driven video — always include: character description (appearance, clothing) → motion and expression → environment → camera shot type and movement → lighting and colour grade. Add specific character action detail and cinematic atmosphere. Output ONLY the improved prompt — no explanations.`,
+
+  'ugc-script': `You are a UGC (user-generated content) ad script expert. Your task is to write high-converting UGC video scripts for TikTok, Instagram Reels, and ecommerce ads. Every script must follow this exact 4-part structure:
+
+1. HOOK (0–3s): Stop-the-scroll opener. Use one of: bold claim, POV scenario, or curiosity gap. Must work as a spoken line.
+2. PROBLEM AGITATION: 2–3 sentences. Relatable pain point the target audience feels. First-person, conversational tone.
+3. PRODUCT SOLUTION: Product reveal with one specific, believable benefit claim. No generic claims — be concrete.
+4. CTA: Platform-matched call to action. "Link in bio", "comment X", or "shop now" depending on context.
+
+Rules:
+- Write in natural, spoken English. No formal language.
+- Sound like a real creator, not a brand.
+- Keep total script under 60 seconds when spoken at a natural pace (~150 words max).
+- Use [Product] as placeholder for the product name.
+- Output the script only — no headers, no labels, no explanations.`,
 };
 
 export const POST: APIRoute = async ({ request }) => {
@@ -138,6 +152,7 @@ export const POST: APIRoute = async ({ request }) => {
       'stable-diffusion': `Transform this idea into an optimised Stable Diffusion prompt with correct token ordering (quality tokens first, then subject, style, lighting, resolution):\n\n${prompt}\n\nOutput only the improved prompt.`,
       'ai-video': `Transform this idea into a cinematic AI video prompt (works with Sora, Kling, Runway, Veo 3) with camera movement, lighting, and visual style:\n\n${prompt}\n\nOutput only the improved prompt.`,
       higgsfield: `Transform this idea into a detailed HiggsField video prompt with character description, motion, camera work, and cinematic lighting:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      'ugc-script': `Write a UGC ad script for the following product/brand:\n\n${prompt}\n\nOutput only the script — hook, problem, solution, CTA. No labels or headers.`,
     };
 
     const userMessage = USER_MESSAGES[toolType] ?? `Improve this prompt:\n\n${prompt}\n\nOutput only the improved prompt.`;

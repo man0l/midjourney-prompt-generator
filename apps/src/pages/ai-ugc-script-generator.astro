@@ -1,0 +1,131 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SimplePromptTool from '../components/SimplePromptTool';
+import PricingSection from '../components/PricingSection';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
+---
+<Layout
+  title="Free AI UGC Script Generator — UGC Ad Scripts for TikTok & Reels"
+  description="Generate AI UGC scripts instantly. Free UGC script generator for TikTok, Instagram Reels, and ecommerce ads — hook, problem, solution, and CTA built in automatically. No sign-up."
+>
+  <!-- Hero Section -->
+  <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">AI UGC Script Generator</h1>
+    <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Generate scroll-stopping UGC ad scripts for TikTok, Instagram Reels, and ecommerce. Enter your product and the AI writes the hook, story, and CTA — ready to film or feed into HeyGen, Creatify, Arcads, or any AI UGC tool.
+    </p>
+    <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate UGC Script — Free
+    </a>
+    <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
+  </section>
+
+  <div id="root">
+    <SimplePromptTool
+      client:only="react"
+      seoTitle="AI UGC Script Generator"
+      seoDescription="Generate UGC ad scripts for TikTok, Reels, and ecommerce."
+      inputPlaceholder="Describe your product... e.g. a skincare serum that reduces dark circles, targeting women 25–35, casual relatable tone"
+      buttonLabel="Generate UGC Script"
+      toolType="ugc-script"
+    />
+  </div>
+
+  <div class="px-6 py-12 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">What a UGC Script Needs (and Why Most AI UGC Fails)</h3>
+        <p class="text-[#6b6559] text-sm leading-relaxed">
+          Most AI UGC fails because the script is generic. A converting ugc prompt follows a strict 4-part structure: <strong>Hook (0–3s)</strong> to stop the scroll, <strong>problem agitation</strong> to create emotional resonance, <strong>product solution</strong> with a specific benefit claim, and a <strong>clear CTA</strong> matched to the platform. This generator builds that structure automatically — every output follows the framework that converts.
+        </p>
+      </div>
+      <div class="border border-[#c8c0a8] rounded-xl p-6">
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Works With All AI UGC Tools</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎭</span><p class="text-[#6b6559] text-sm">HeyGen — AI avatar video from script</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">🎬</span><p class="text-[#6b6559] text-sm">Arcads — UGC ad generation at scale</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">✨</span><p class="text-[#6b6559] text-sm">Creatify — AI video ads from product URL</p></div>
+          <div class="flex items-start gap-2"><span class="mt-0.5">📱</span><p class="text-[#6b6559] text-sm">Veed, CapCut AI, and any script-to-video tool</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h2 class="text-xl font-bold text-[#1a1a1a] mb-3">UGC Script Generator: Examples, Structure & Prompt Guide</h2>
+      <p class="text-[#6b6559] text-sm leading-relaxed">
+        The best <strong>ugc video script</strong> follows a proven structure that mirrors how real creator content performs: hook first, personal story second, product reveal third, CTA last. This <strong>ugc script generator</strong> encodes that structure automatically — your product description becomes a complete, platform-optimised script with the right pacing for TikTok and Reels. See <strong>ugc video examples</strong> below to understand what each section looks like in practice.
+      </p>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">UGC Script Examples — Copy & Paste</h3>
+      <div class="space-y-4">
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-4">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-2">Skincare — POV hook style</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"POV: you finally found the thing that actually got rid of your dark circles. I've tried literally everything — eye patches, caffeine rollers, that $90 serum that did nothing. Then I tried [Product] for 3 weeks and I genuinely cannot believe the difference. The formula absorbs instantly, no pilling under concealer, and my under-eyes look rested even when I'm not. Link in bio — they're running a limited discount right now."</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-4">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-2">App / SaaS — problem-first testimonial</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"I was spending 4 hours a week on invoicing. Like manually copying details, chasing payments, sending reminders — actual time I could have used for client work. Someone in my freelancer group mentioned [App] and I thought it was going to be another overcomplicated tool. It wasn't. Set up in 10 minutes, automated everything, and I got paid 6 days faster on my next invoice. Free trial in bio."</p>
+        </div>
+        <div class="bg-[#faf8f3] border border-[#e8e0cc] rounded-lg p-4">
+          <p class="text-[#1a1a1a] text-xs font-semibold mb-2">Fashion / ecommerce — transformation arc</p>
+          <p class="text-[#6b6559] text-xs font-mono leading-relaxed">"Okay I need to show you what I wore to my friend's dinner because people kept asking me about it all night. It's this [Product] — I found it scrolling at 2am and thought whatever, worth a try. The quality is unreal for the price, it fits perfectly out of the box, and I've already worn it three times this week. Linking it below."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-3">UGC Scripts for TikTok vs Instagram Reels vs TikTok Shop</h3>
+      <div class="space-y-3">
+        <div class="flex items-start gap-2"><span class="mt-0.5">📱</span><p class="text-[#6b6559] text-sm"><strong>TikTok:</strong> Hook must land in 1–2 seconds. Conversational, slightly rough delivery. CTA: "link in bio" or "comment X and I'll send it to you".</p></div>
+        <div class="flex items-start gap-2"><span class="mt-0.5">📸</span><p class="text-[#6b6559] text-sm"><strong>Instagram Reels:</strong> Slightly more polished delivery acceptable. CTA can include swipe-up or "link in stories". Slightly longer hook window (3s).</p></div>
+        <div class="flex items-start gap-2"><span class="mt-0.5">🛒</span><p class="text-[#6b6559] text-sm"><strong>TikTok Shop:</strong> Product reveal earlier (first 5s). CTA directly references the in-app shop pin. Discount/urgency language performs strongly.</p></div>
+      </div>
+    </div>
+
+    <div class="border border-[#c8c0a8] rounded-xl p-6">
+      <h3 class="text-lg font-bold text-[#1a1a1a] mb-4">Frequently Asked Questions</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What does UGC video mean?</p>
+          <p class="text-[#6b6559] text-xs mt-1">UGC video meaning: user-generated content videos — content that looks like it was made by a real customer or creator, not a brand. UGC converts better than polished ads because it feels authentic and relatable. AI UGC replicates this style at scale using AI avatars and generated scripts.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is AI UGC?</p>
+          <p class="text-[#6b6559] text-xs mt-1">AI UGC is user-generated content created using artificial intelligence — typically an AI avatar delivering a script — rather than a real creator. Tools like HeyGen, Arcads, and Creatify generate the video; this tool generates the script that goes into them.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">Is this UGC script generator free?</p>
+          <p class="text-[#6b6559] text-xs mt-1">Yes — free, no sign-up required. 3 free generations per day.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">How do I write a strong UGC hook?</p>
+          <p class="text-[#6b6559] text-xs mt-1">A strong ugc prompt hook does one of three things in the first 2 seconds: makes a bold claim ("this changed my skin in 3 weeks"), creates a POV scenario ("POV: you finally found the thing that works"), or triggers curiosity ("I wasn't going to post this but..."). This generator picks the best hook pattern for your product automatically.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What are the best AI UGC tools?</p>
+          <p class="text-[#6b6559] text-xs mt-1">The best ai ugc tools in 2026: HeyGen (realistic avatars), Arcads (ad-focused, fast iteration), Creatify (ecommerce product URL input), Veed (multi-format), and CapCut AI (mobile-first). This generator produces scripts optimised for all of them.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#1a1a1a] text-sm">What is AI UGC meaning for ecommerce brands?</p>
+          <p class="text-[#6b6559] text-xs mt-1">AI UGC meaning for ecommerce: replacing expensive creator partnerships with AI-generated videos that have the same authentic feel and conversion rate, at a fraction of the cost and turnaround time. Brands use it for TikTok ads, Meta ads, and TikTok Shop at scale.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+      Generate Your UGC Script
+    </a>
+  </div>
+
+  <PricingSection client:load priceIds={{
+    starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
+    starterYearly: import.meta.env.STRIPE_PRICE_STARTER_YEARLY,
+    proMonthly: import.meta.env.STRIPE_PRICE_PRO_MONTHLY,
+    proYearly: import.meta.env.STRIPE_PRICE_PRO_YEARLY,
+    unlimitedMonthly: import.meta.env.STRIPE_PRICE_UNLIMITED_MONTHLY,
+    unlimitedYearly: import.meta.env.STRIPE_PRICE_UNLIMITED_YEARLY,
+  }} />
+</Layout>
