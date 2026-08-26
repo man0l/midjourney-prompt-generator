@@ -198,7 +198,7 @@ export const POST: APIRoute = async ({ request }) => {
           'X-Title': 'Midjourney Prompt Generator',
         },
         body: JSON.stringify({
-          model: 'x-ai/grok-latest',
+          model: '~x-ai/grok-latest',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userMessage },
