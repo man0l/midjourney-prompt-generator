@@ -5,6 +5,8 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
+import { optimizePrompt, OutOfCreditsError } from '../services/openai';
+import { ensureSession } from '../lib/session';
 
 interface Props {
   seoTitle: string;
@@ -22,7 +24,7 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [limitMessage, setLimitMessage] = useState<string | null>(null);
-  const { credits, plan, useCredit } = useCredits(session?.user ?? null);
+  const { credits, plan, setCredits } = useCredits(session?.user ?? null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
@@ -46,31 +48,35 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
 
   const handleGenerate = async () => {
     if (!input.trim()) return;
-    if (!session) { setIsAuthModalOpen(true); return; }
-    if (credits === 0) {
-      showLimit(plan === 'free'
-        ? "You've used all your free credits for today. They reset tomorrow."
-        : "You've used all your credits for this month. They reset on the 1st.");
-      return;
-    }
 
     setIsGenerating(true);
     try {
-      const res = await fetch('/api/optimize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ prompt: input, toolType }),
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      // No account? Transparently continue as an anonymous user (3 free/day).
+      if (!await ensureSession()) {
+        setIsAuthModalOpen(true);
+        return;
+      }
 
-      const success = await useCredit();
-      if (success) setOutput(data.optimized || input);
+      if (credits === 0) {
+        showLimit(plan === 'free'
+          ? "You've used all your free credits for today. They reset tomorrow."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        return;
+      }
+
+      const result = await optimizePrompt(input, toolType);
+
+      if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
+      setOutput(result.optimized || input);
     } catch (err: any) {
-      showLimit(err?.message || 'Generation failed. Please try again.');
+      if (err instanceof OutOfCreditsError) {
+        showLimit(plan === 'free'
+          ? "You've used your 3 free generations for today. Sign in to claim bonus generations — they reset daily."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        if (session?.user?.is_anonymous || !session) setIsAuthModalOpen(true);
+      } else {
+        showLimit(err?.message || 'Generation failed. Please try again.');
+      }
     } finally {
       setIsGenerating(false);
     }

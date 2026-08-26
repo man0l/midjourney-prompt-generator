@@ -10,6 +10,7 @@
     "build": "rm -rf .vercel/output && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "vitest run",
     "old-dev": "node ../server.js",
     "old-build": "vite build --outDir dist/client"
   },
@@ -44,6 +45,7 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.3",
-    "vite": "^5.4.2"
+    "vite": "^5.4.2",
+    "vitest": "^4.1.11"
   }
 }

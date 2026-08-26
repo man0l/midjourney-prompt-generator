@@ -23,7 +23,8 @@ export default function HeaderAuth() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  if (!user) {
+  // Anonymous (free-tier) sessions have no profile — keep showing Sign In.
+  if (!user || user.is_anonymous) {
     return (
       <button
         onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal'))}

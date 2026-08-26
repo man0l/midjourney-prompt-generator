@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
+import { ensureSession } from '../lib/session';
 
 function scoreColor(score: number): string {
   if (score >= 7) return 'bg-green-500';
@@ -56,7 +57,8 @@ export default function RoastMyPromptTool() {
 
   const handleRoast = async () => {
     if (!input.trim()) return;
-    if (!session) { setIsAuthModalOpen(true); return; }
+    // No account? Transparently continue as an anonymous user (3 free/day).
+    if (!await ensureSession()) { setIsAuthModalOpen(true); return; }
     if (credits === 0) {
       showLimit(plan === 'free'
         ? "You've used all your free credits for today. They reset tomorrow."

@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
+import { ensureSession } from '../lib/session';
 
 const APP_TYPES = ['----', 'Web App', 'SaaS Platform', 'Dashboard / Admin Panel', 'E-commerce Store', 'Landing Page', 'API / Backend', 'Mobile App (PWA)', 'Browser Extension', 'CLI Tool'];
 const TECH_STACKS = ['----', 'React + Node.js', 'Next.js', 'Vue.js + Express', 'SvelteKit', 'Remix', 'Astro', 'React Native', 'Vanilla JS'];
@@ -70,7 +71,8 @@ export default function BoltPromptPage() {
 
   const handleCopy = async () => {
     if (!fullPrompt) return;
-    if (!session) { setIsAuthModalOpen(true); return; }
+    // No account? Transparently continue as an anonymous user (3 free/day).
+    if (!await ensureSession()) { setIsAuthModalOpen(true); return; }
     if (credits === 0) {
       showLimit(plan === 'free'
         ? "You've used all your free credits for today. They reset tomorrow."

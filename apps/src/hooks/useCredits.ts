@@ -80,5 +80,7 @@ export function useCredits(user: User | null) {
     }
   }
 
-  return { credits, plan, loading, useCredit }
+  // Server-enforced paths (/api/optimize, /api/analyze-image) decrement
+  // authoritatively and report the new balance — sync it via setCredits.
+  return { credits, plan, loading, useCredit, setCredits }
 }

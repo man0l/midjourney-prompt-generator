@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import OpenAI from 'openai';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
 
@@ -111,8 +112,20 @@ Rules:
 };
 
 export const POST: APIRoute = async ({ request }) => {
-  const authHeader = request.headers.get('Authorization');
-  if (!authHeader?.startsWith('Bearer ')) return json({ error: 'Unauthorized' }, 401);
+  // Validate the JWT itself — a mere Bearer header proves nothing.
+  const token = request.headers.get('Authorization')?.replace('Bearer ', '').trim();
+  if (!token) return json({ error: 'Unauthorized' }, 401);
+
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) return json({ error: 'Server not configured' }, 500);
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) return json({ error: 'Unauthorized' }, 401);
 
   let body: { prompt?: string; toolType?: string };
   try {
@@ -129,6 +142,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   const apiKey = import.meta.env.OPENAI_API_KEY;
   if (!apiKey) return json({ error: 'Server not configured' }, 500);
+
+  // Reserve one credit atomically BEFORE spending OpenAI tokens. Returns -1
+  // when the balance is already zero (also applies daily/monthly resets).
+  const { data: reserved, error: creditError } = await supabase.rpc('use_credit', {
+    p_user_id: user.id,
+  });
+  if (creditError) return json({ error: 'Credit check failed' }, 500);
+  if (reserved === null || reserved === -1) return json({ error: 'out_of_credits' }, 402);
 
   try {
     const openai = new OpenAI({ apiKey });
@@ -167,8 +188,10 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const optimized = completion.choices[0]?.message?.content?.trim() || prompt;
-    return json({ optimized });
+    return json({ optimized, creditsRemaining: reserved });
   } catch (err: any) {
+    // Generation failed — give the reserved credit back.
+    await supabase.rpc('refund_credit', { p_user_id: user.id });
     return json({ error: err?.message || 'OpenAI error' }, 502);
   }
 };

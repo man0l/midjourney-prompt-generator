@@ -22,8 +22,9 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
-import { optimizePrompt } from '../services/openai';
+import { optimizePrompt, OutOfCreditsError } from '../services/openai';
 import { uploadAndAnalyzeImage } from '../services/imageAnalysis';
+import { ensureSession } from '../lib/session';
 import SEO from '../components/SEO';
 
 export default function HomePage() {
@@ -49,7 +50,7 @@ export default function HomePage() {
   const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { credits, plan, useCredit } = useCredits(session?.user ?? null);
+  const { credits, plan, setCredits } = useCredits(session?.user ?? null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeSuccess, setOptimizeSuccess] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -90,33 +91,41 @@ export default function HomePage() {
   const handleOptimize = async () => {
     if (!mainPrompt.trim()) return;
 
-    if (!session) {
-      setIsAuthModalOpen(true);
-      return;
-    }
-
-    if (credits === 0) {
-      showLimit(plan === 'free'
-        ? "You've used all your free credits for today. They reset tomorrow."
-        : "You've used all your credits for this month. They reset on the 1st.");
-      return;
-    }
-
     setIsOptimizing(true);
     setOptimizeSuccess(false);
 
     try {
-      const optimizedPrompt = await optimizePrompt(mainPrompt);
-      const success = await useCredit();
-      
-      if (success) {
-        setMainPrompt(optimizedPrompt);
-        setOptimizeSuccess(true);
-        setTimeout(() => setOptimizeSuccess(false), 2000);
+      // No account? Transparently continue as an anonymous user (3 free/day).
+      if (!await ensureSession()) {
+        setIsAuthModalOpen(true);
+        return;
       }
+
+      // Soft client-side pre-check for instant feedback; the API enforces it.
+      if (credits === 0) {
+        showLimit(plan === 'free'
+          ? "You've used all your free credits for today. They reset tomorrow."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        return;
+      }
+
+      const result = await optimizePrompt(mainPrompt);
+
+      if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
+      setMainPrompt(result.optimized);
+      setOptimizeSuccess(true);
+      setTimeout(() => setOptimizeSuccess(false), 2000);
     } catch (error) {
-      console.error('Error optimizing prompt:', error);
-      alert('Failed to optimize prompt. Please try again.');
+      if (error instanceof OutOfCreditsError) {
+        showLimit(plan === 'free'
+          ? "You've used your 3 free generations for today. Sign in to claim bonus generations — they reset daily."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        // Anonymous users just hit the conversion moment.
+        if (session?.user?.is_anonymous || !session) setIsAuthModalOpen(true);
+      } else {
+        console.error('Error optimizing prompt:', error);
+        alert('Failed to optimize prompt. Please try again.');
+      }
     } finally {
       setIsOptimizing(false);
     }
@@ -210,34 +219,39 @@ export default function HomePage() {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!session) {
-      setIsAuthModalOpen(true);
-      return;
-    }
-
-    if (credits === 0) {
-      showLimit(plan === 'free'
-        ? "You've used all your free credits for today. They reset tomorrow."
-        : "You've used all your credits for this month. They reset on the 1st.");
-      return;
-    }
-
     setIsAnalyzing(true);
 
     try {
-      const description = await uploadAndAnalyzeImage(file);
-      const success = await useCredit();
-      
-      if (success) {
-        setMainPrompt(description);
-        event.target.value = '';
+      if (!await ensureSession()) {
+        setIsAuthModalOpen(true);
+        return;
       }
+
+      if (credits === 0) {
+        showLimit(plan === 'free'
+          ? "You've used all your free credits for today. They reset tomorrow."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        return;
+      }
+
+      const result = await uploadAndAnalyzeImage(file);
+
+      if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
+      setMainPrompt(result.prompt);
+      event.target.value = '';
     } catch (error) {
-      console.error('Error analyzing image:', error);
-      if (error instanceof Error) {
-        alert(error.message);
+      if (error instanceof OutOfCreditsError) {
+        showLimit(plan === 'free'
+          ? "You've used your 3 free generations for today. Sign in to claim bonus generations — they reset daily."
+          : "You've used all your credits for this month. They reset on the 1st.");
+        if (session?.user?.is_anonymous || !session) setIsAuthModalOpen(true);
       } else {
-        alert('Failed to analyze image. Please try again with a different image.');
+        console.error('Error analyzing image:', error);
+        if (error instanceof Error) {
+          alert(error.message);
+        } else {
+          alert('Failed to analyze image. Please try again with a different image.');
+        }
       }
       event.target.value = '';
     } finally {

@@ -1,6 +1,13 @@
 import { supabase } from '../lib/supabaseClient';
+import { OutOfCreditsError } from './openai';
 
-export async function uploadAndAnalyzeImage(file: File): Promise<string> {
+export interface ImageAnalysisResult {
+  prompt: string;
+  /** Authoritative balance after the server reserved one credit. */
+  creditsRemaining: number | null;
+}
+
+export async function uploadAndAnalyzeImage(file: File): Promise<ImageAnalysisResult> {
   const { data: { session }, error: authError } = await supabase.auth.getSession();
   if (authError || !session) {
     throw new Error('You must be logged in to upload images');
@@ -37,9 +44,13 @@ export async function uploadAndAnalyzeImage(file: File): Promise<string> {
   });
 
   const data = await res.json();
+  if (res.status === 402) throw new OutOfCreditsError();
   if (!res.ok) {
     throw new Error(data.error || 'Failed to analyze image');
   }
 
-  return data.prompt;
+  return {
+    prompt: data.prompt,
+    creditsRemaining: typeof data.creditsRemaining === 'number' ? data.creditsRemaining : null,
+  };
 }

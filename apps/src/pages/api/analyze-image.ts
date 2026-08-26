@@ -32,11 +32,24 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Server configuration error' }), { status: 500 });
   }
 
+  // Reserve one credit atomically BEFORE spending OpenAI tokens.
+  const { data: reserved, error: creditError } = await supabase.rpc('use_credit', {
+    p_user_id: user.id,
+  });
+  if (creditError) {
+    return new Response(JSON.stringify({ error: 'Credit check failed' }), { status: 500 });
+  }
+  if (reserved === null || reserved === -1) {
+    return new Response(JSON.stringify({ error: 'out_of_credits' }), { status: 402 });
+  }
+
   const openai = new OpenAI({ apiKey });
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [
+  let response;
+  try {
+    response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
       {
         role: 'system',
         content: `You are a Midjourney prompt expert. Your PRIMARY job is to capture the visual style so precisely that someone could regenerate the exact same look. Scene description is secondary — style is everything.
@@ -103,16 +116,21 @@ Output ONLY the descriptive prompt text. No Midjourney parameters.`,
           },
         ],
       },
-    ],
-    max_completion_tokens: 800,
-  });
+      ],
+      max_completion_tokens: 800,
+    });
+  } catch (err: any) {
+    // Generation failed — give the reserved credit back.
+    await supabase.rpc('refund_credit', { p_user_id: user.id });
+    return new Response(JSON.stringify({ error: err?.message || 'OpenAI error' }), { status: 502 });
+  }
 
   const prompt = response.choices[0]?.message?.content;
   if (!prompt) {
     return new Response(JSON.stringify({ error: 'Failed to generate prompt from image' }), { status: 500 });
   }
 
-  return new Response(JSON.stringify({ prompt }), {
+  return new Response(JSON.stringify({ prompt, creditsRemaining: reserved }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
