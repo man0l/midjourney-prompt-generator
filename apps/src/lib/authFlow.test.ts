@@ -1,29 +1,47 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getSession, linkIdentity, signInWithOAuth } = vi.hoisted(() => ({
+const { getSession, linkIdentity, signInWithOAuth, rpc } = vi.hoisted(() => ({
   getSession: vi.fn(),
   linkIdentity: vi.fn(),
   signInWithOAuth: vi.fn(),
+  rpc: vi.fn(),
 }));
 
 vi.mock('./supabaseClient', () => ({
-  supabase: { auth: { getSession, linkIdentity, signInWithOAuth } },
+  supabase: { auth: { getSession, linkIdentity, signInWithOAuth }, rpc },
 }));
 
-import { initiateAuth, resolveAuthFlow, shouldNudgeSignIn } from './authFlow';
+import {
+  completeMergeIfPending,
+  initiateAuth,
+  recoverFromIdentityExists,
+  resolveAuthFlow,
+  shouldNudgeSignIn,
+} from './authFlow';
 
 const anonSession = { user: { id: 'a1', is_anonymous: true } };
 const realSession = { user: { id: 'r1', email: 'x@y.z', is_anonymous: false } };
 
+let store: Record<string, string>;
+
 beforeEach(() => {
   vi.clearAllMocks();
-  // @ts-expect-error test stub for browser global
+  // @ts-expect-error test stub for browser globals
   globalThis.window = { location: { origin: 'https://test.local' } };
+  store = {};
+  // @ts-expect-error test stub for localStorage
+  globalThis.localStorage = {
+    getItem: (k: string) => store[k] ?? null,
+    setItem: (k: string, v: string) => { store[k] = v; },
+    removeItem: (k: string) => { delete store[k]; },
+  };
 });
 
 afterEach(() => {
-  // @ts-expect-error test stub for browser global
+  // @ts-expect-error test stub for browser globals
   delete globalThis.window;
+  // @ts-expect-error test stub for localStorage
+  delete globalThis.localStorage;
 });
 
 describe('resolveAuthFlow', () => {
@@ -94,5 +112,85 @@ describe('initiateAuth', () => {
     const result = await initiateAuth('discord');
 
     expect(result.error).toBe('provider down');
+  });
+
+  it('remembers the provider so identity_already_exists can recover', async () => {
+    getSession.mockResolvedValue({ data: { session: anonSession } });
+    linkIdentity.mockResolvedValue({ data: {}, error: null });
+
+    await initiateAuth('google');
+
+    expect(store['pendingAuthProvider']).toBe('google');
+  });
+});
+
+describe('recoverFromIdentityExists', () => {
+  it('stages credits and re-auths into the existing account', async () => {
+    store['pendingAuthProvider'] = 'discord';
+    rpc.mockResolvedValue({ data: null, error: null });
+    signInWithOAuth.mockResolvedValue({ data: {}, error: null });
+
+    const recovered = await recoverFromIdentityExists();
+
+    expect(recovered).toBe(true);
+    expect(rpc).toHaveBeenCalledWith('stage_credit_merge', { p_token: expect.any(String) });
+    const call = signInWithOAuth.mock.calls[0][0];
+    expect(call.provider).toBe('discord');
+    expect(call.options.redirectTo).toMatch(/^https:\/\/test\.local\/auth\/callback\?merge=[0-9a-f-]{36}$/);
+    expect(call.options.scopes).toBe('identify email');
+    expect(store['mergeAttempted']).toBeDefined();
+  });
+
+  it('gives up without looping when already attempted once', async () => {
+    store['pendingAuthProvider'] = 'google';
+    store['mergeAttempted'] = 'some-token';
+
+    const recovered = await recoverFromIdentityExists();
+
+    expect(recovered).toBe(false);
+    expect(rpc).not.toHaveBeenCalled();
+    expect(signInWithOAuth).not.toHaveBeenCalled();
+    expect(store['mergeAttempted']).toBeUndefined();
+  });
+
+  it('does nothing without a remembered provider', async () => {
+    const recovered = await recoverFromIdentityExists();
+
+    expect(recovered).toBe(false);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('aborts when staging fails', async () => {
+    store['pendingAuthProvider'] = 'google';
+    rpc.mockResolvedValue({ data: null, error: { message: 'insufficient privilege' } });
+
+    const recovered = await recoverFromIdentityExists();
+
+    expect(recovered).toBe(false);
+    expect(signInWithOAuth).not.toHaveBeenCalled();
+    expect(store['mergeAttempted']).toBeUndefined();
+  });
+});
+
+describe('completeMergeIfPending', () => {
+  it('transfers staged credits and clears the loop guard', async () => {
+    store['mergeAttempted'] = 'tok';
+    rpc.mockResolvedValue({ data: 3, error: null });
+
+    const transferred = await completeMergeIfPending('tok');
+
+    expect(transferred).toBe(3);
+    expect(rpc).toHaveBeenCalledWith('complete_credit_merge', { p_token: 'tok' });
+    expect(store['mergeAttempted']).toBeUndefined();
+  });
+
+  it('returns 0 on rpc error or missing token', async () => {
+    store['mergeAttempted'] = 'tok';
+    rpc.mockResolvedValue({ data: null, error: { message: 'boom' } });
+    expect(await completeMergeIfPending('tok')).toBe(0);
+
+    rpc.mockClear();
+    expect(await completeMergeIfPending(null)).toBe(0);
+    expect(rpc).not.toHaveBeenCalled();
   });
 });

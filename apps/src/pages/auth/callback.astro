@@ -6,12 +6,31 @@ export const prerender = false;
   <body>
     <script>
       import { supabase } from '../../lib/supabaseClient';
+      import { recoverFromIdentityExists, completeMergeIfPending } from '../../lib/authFlow';
 
-      const code = new URL(window.location.href).searchParams.get('code');
-      if (code) {
-        await supabase.auth.exchangeCodeForSession(code);
+      const params = new URL(window.location.href).searchParams;
+      const code = params.get('code');
+      const errorCode = params.get('error_code');
+      const mergeToken = params.get('merge');
+
+      if (errorCode === 'identity_already_exists') {
+        // The provider identity belongs to an older account. Stage the
+        // anonymous credits and sign in to that account instead.
+        const recovered = await recoverFromIdentityExists();
+        if (recovered) {
+          // Redirecting to the provider; nothing else to do.
+        } else {
+          window.location.replace('/');
+        }
+      } else {
+        if (code) {
+          await supabase.auth.exchangeCodeForSession(code);
+        }
+        if (mergeToken) {
+          await completeMergeIfPending(mergeToken);
+        }
+        window.location.replace('/');
       }
-      window.location.replace('/');
     </script>
   </body>
 </html>
