@@ -76,6 +76,8 @@ Only use options and parameters that truly enhance the specific prompt. Combine 
 
   grok: `You are a Grok AI prompt expert. Transform the user's idea into a well-crafted prompt optimized for Grok's real-time knowledge and conversational strengths. Include clear context, specific requirements, and output format guidance. Output ONLY the improved prompt — no explanations.`,
 
+  'grok-spicy': `You are a Grok AI prompt expert for SPICY mode. Grok's spicy mode is bold, unfiltered, humor-forward, and willing to engage with edgy or controversial angles. Transform the user's idea into a well-crafted spicy prompt: keep the core request, but add framing that tells Grok to be direct, drop corporate hedging, lean into humor/wit, and draw on up-to-the-minute context where useful. Include clear output format guidance. Output ONLY the improved prompt — no explanations or disclaimers.`,
+
   image: `You are an AI image generation prompt expert. Transform the user's rough idea into a detailed, vivid image prompt suitable for DALL-E, Midjourney, Stable Diffusion, or similar tools. Add subject details, art style, lighting, composition, color palette, mood, and technical quality descriptors. Output ONLY the image prompt — no explanations.`,
 
   lovable: `You are a Lovable.dev prompt expert. Transform the user's app idea into a comprehensive prompt for Lovable that will generate a complete, beautiful, functional web application. Include app purpose, core features, UI/UX style (clean, modern), tech requirements, user flows, and any key interactions. Output ONLY the improved prompt — no explanations.`,
@@ -143,6 +145,11 @@ export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.OPENAI_API_KEY;
   if (!apiKey) return json({ error: 'Server not configured' }, 500);
 
+  // Grok spicy goes through OpenRouter / x-ai/grok-latest
+  const isGrokSpicy = toolType === 'grok-spicy';
+  const grokSpicyKey = import.meta.env.OPENROUTER_API_KEY;
+  if (isGrokSpicy && !grokSpicyKey) return json({ error: 'Grok spicy not configured' }, 500);
+
   // Reserve one credit atomically BEFORE spending OpenAI tokens. Returns -1
   // when the balance is already zero (also applies daily/monthly resets).
   const { data: reserved, error: creditError } = await supabase.rpc('use_credit', {
@@ -163,6 +170,7 @@ export const POST: APIRoute = async ({ request }) => {
       copilot: `Transform this into a structured Microsoft Copilot / GitHub Copilot prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
       gemini: `Transform this into an optimized Google Gemini prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
       grok: `Transform this into a well-crafted Grok AI prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
+      'grok-spicy': `Transform this into a well-crafted Grok SPICY prompt (bold, humor-forward, unfiltered — skip the hedging):\n\n${prompt}\n\nOutput only the improved prompt.`,
       image: `Transform this rough idea into a detailed AI image generation prompt:\n\n${prompt}\n\nOutput only the image prompt.`,
       lovable: `Transform this app idea into a comprehensive Lovable.dev prompt that builds a complete application:\n\n${prompt}\n\nOutput only the improved prompt.`,
       'prompt-builder': `Transform this rough idea into a masterfully crafted universal AI prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
@@ -178,16 +186,45 @@ export const POST: APIRoute = async ({ request }) => {
 
     const userMessage = USER_MESSAGES[toolType] ?? `Improve this prompt:\n\n${prompt}\n\nOutput only the improved prompt.`;
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-5.4-nano',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage },
-      ],
-      max_completion_tokens: 2000,
-    });
+    let optimized: string;
 
-    const optimized = completion.choices[0]?.message?.content?.trim() || prompt;
+    if (isGrokSpicy) {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${grokSpicyKey}`,
+          'HTTP-Referer': 'https://midjourney-prompt-generator.eu',
+          'X-Title': 'Midjourney Prompt Generator',
+        },
+        body: JSON.stringify({
+          model: 'x-ai/grok-latest',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessage },
+          ],
+          max_tokens: 2000,
+        }),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`OpenRouter ${res.status}: ${errText.slice(0, 300)}`);
+      }
+      const data = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
+      optimized = data.choices?.[0]?.message?.content?.trim() || prompt;
+    } else {
+      const openai = new OpenAI({ apiKey });
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-5.4-nano',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userMessage },
+        ],
+        max_completion_tokens: 2000,
+      });
+      optimized = completion.choices[0]?.message?.content?.trim() || prompt;
+    }
+
     return json({ optimized, creditsRemaining: reserved });
   } catch (err: any) {
     // Generation failed — give the reserved credit back.

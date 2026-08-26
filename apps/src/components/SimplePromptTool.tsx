@@ -15,13 +15,16 @@ interface Props {
   inputPlaceholder: string;
   buttonLabel: string;
   toolType: string;
+  showSpicyToggle?: boolean;
 }
 
-export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceholder, buttonLabel, toolType }: Props) {
+export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceholder, buttonLabel, toolType, showSpicyToggle }: Props) {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [spicy, setSpicy] = useState(false);
+  const effectiveToolType = showSpicyToggle && spicy ? 'grok-spicy' : toolType;
   const [session, setSession] = useState<Session | null>(null);
   const { isOpen: isAuthModalOpen, variant: authVariant, openAuthModal, closeAuthModal, needsSignIn } = useAuthNudge(session);
   const [limitMessage, setLimitMessage] = useState<string | null>(null);
@@ -66,7 +69,7 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
         return;
       }
 
-      const result = await optimizePrompt(input, toolType);
+      const result = await optimizePrompt(input, effectiveToolType);
 
       if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
       setOutput(result.optimized || input);
@@ -124,6 +127,19 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
               <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
             )}
           </div>
+        )}
+
+        {showSpicyToggle && (
+          <label className="flex items-center gap-2 mb-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={spicy}
+              onChange={e => setSpicy(e.target.checked)}
+              className="w-4 h-4 accent-[#f0b429]"
+            />
+            <span className="text-sm font-semibold text-[#1a1a1a]">🌶️ Spicy mode</span>
+            <span className="text-xs text-[#6b6559]">via Grok (OpenRouter)</span>
+          </label>
         )}
 
         <button
