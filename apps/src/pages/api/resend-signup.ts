@@ -54,15 +54,15 @@ export const POST: APIRoute = async ({ request }) => {
     console.error('resend contact create failed:', contactRes.status, detail);
     return json({ error: 'contact create failed' }, 502);
   }
-  const contact: { id?: string } = await contactRes.json();
 
-  // 2. Fire the signup event — this is what starts the automation.
-  const eventRes = await fetch('https://api.resend.com/events', {
+  // 2. Fire the signup event occurrence — this is what starts the automation.
+  // NOTE: POST /events registers event definitions; occurrences go through /events/send.
+  const eventRes = await fetch('https://api.resend.com/events/send', {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      contact_id: contact.id,
-      name: SIGNUP_EVENT,
+      event: SIGNUP_EVENT,
+      email,
       payload: { source: 'grok_spicy' },
     }),
   });
