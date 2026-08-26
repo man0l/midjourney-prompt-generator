@@ -21,7 +21,9 @@ export async function uploadAndAnalyzeImage(file: File): Promise<ImageAnalysisRe
     throw new Error('File must be an image');
   }
 
-  const fileName = `${Date.now()}-${file.name}`;
+  // Upload into a per-user folder — storage RLS only allows
+  // <auth.uid()>/... inside the bucket.
+  const fileName = `${session.user.id}/${Date.now()}-${file.name}`;
   const { error: uploadError } = await supabase.storage
     .from('inspiration-images')
     .upload(fileName, file, { cacheControl: '3600', upsert: false });

@@ -34,15 +34,9 @@ export function useCredits(user: User | null) {
         ])
 
         if (creditsResult.error || !creditsResult.data) {
-          // Provision initial credits for new user
-          const { data: newData, error: insertError } = await supabase
-            .from('user_credits')
-            .insert([{ user_id: user!.id, credits_remaining: 3 }])
-            .select('credits_remaining')
-            .single()
-
-          if (insertError) throw insertError
-          setCredits(newData.credits_remaining)
+          // No row: credits are provisioned server-side by the
+          // on_auth_user_created trigger; nothing to insert client-side.
+          setCredits(0);
         } else {
           setCredits(creditsResult.data.credits_remaining)
         }
