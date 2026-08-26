@@ -58,3 +58,4 @@ content-api/.tmp
 *.jpeg
 .env*.local
 credentials.json
+.env*
