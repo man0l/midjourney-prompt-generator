@@ -22,6 +22,7 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
+import { useAuthNudge } from '../hooks/useAuthNudge';
 import { optimizePrompt, OutOfCreditsError } from '../services/openai';
 import { uploadAndAnalyzeImage } from '../services/imageAnalysis';
 import { ensureSession } from '../lib/session';
@@ -102,7 +103,7 @@ export default function ChatGPTImagePage() {
   const [isMaterialsModalOpen, setIsMaterialsModalOpen] = useState(false);
   const [isArtistsModalOpen, setIsArtistsModalOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { isOpen: isAuthModalOpen, variant: authVariant, openAuthModal, closeAuthModal, needsSignIn } = useAuthNudge(session);
   const { credits, plan, setCredits } = useCredits(session?.user ?? null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizeSuccess, setOptimizeSuccess] = useState(false);
@@ -119,13 +120,13 @@ export default function ChatGPTImagePage() {
     supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
-      if (s) setIsAuthModalOpen(false);
+      if (s) closeAuthModal();
     });
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-    const handler = () => setIsAuthModalOpen(true);
+    const handler = () => openAuthModal();
     window.addEventListener('openAuthModal', handler);
     return () => window.removeEventListener('openAuthModal', handler);
   }, []);
@@ -149,9 +150,10 @@ export default function ChatGPTImagePage() {
     setOptimizeSuccess(false);
     try {
       // No account? Transparently continue as an anonymous user (3 free/day).
-      if (!await ensureSession()) { setIsAuthModalOpen(true); return; }
+      if (!await ensureSession()) { openAuthModal(); return; }
 
       if (credits === 0) {
+        if (needsSignIn) { openAuthModal('limit'); return; }
         showLimit(plan === 'free'
           ? "You've used all your free credits for today. They reset tomorrow."
           : "You've used all your credits for this month. They reset on the 1st.");
@@ -165,10 +167,13 @@ export default function ChatGPTImagePage() {
       setTimeout(() => setOptimizeSuccess(false), 2000);
     } catch (error) {
       if (error instanceof OutOfCreditsError) {
-        showLimit(plan === 'free'
-          ? "You've used your 3 free generations for today. Sign in to claim bonus generations — they reset daily."
-          : "You've used all your credits for this month. They reset on the 1st.");
-        if (session?.user?.is_anonymous || !session) setIsAuthModalOpen(true);
+        if (needsSignIn) {
+          openAuthModal('limit');
+        } else {
+          showLimit(plan === 'free'
+            ? "You've used your 3 free generations for today. They reset tomorrow."
+            : "You've used all your credits for this month. They reset on the 1st.");
+        }
       } else {
         alert('Failed to optimize prompt. Please try again.');
       }
@@ -207,9 +212,10 @@ export default function ChatGPTImagePage() {
     if (!file) return;
     setIsAnalyzing(true);
     try {
-      if (!await ensureSession()) { setIsAuthModalOpen(true); return; }
+      if (!await ensureSession()) { openAuthModal(); return; }
 
       if (credits === 0) {
+        if (needsSignIn) { openAuthModal('limit'); return; }
         showLimit(plan === 'free'
           ? "You've used all your free credits for today. They reset tomorrow."
           : "You've used all your credits for this month. They reset on the 1st.");
@@ -222,10 +228,13 @@ export default function ChatGPTImagePage() {
       event.target.value = '';
     } catch (error) {
       if (error instanceof OutOfCreditsError) {
-        showLimit(plan === 'free'
-          ? "You've used your 3 free generations for today. Sign in to claim bonus generations — they reset daily."
-          : "You've used all your credits for this month. They reset on the 1st.");
-        if (session?.user?.is_anonymous || !session) setIsAuthModalOpen(true);
+        if (needsSignIn) {
+          openAuthModal('limit');
+        } else {
+          showLimit(plan === 'free'
+            ? "You've used your 3 free generations for today. They reset tomorrow."
+            : "You've used all your credits for this month. They reset on the 1st.");
+        }
       } else {
         alert(error instanceof Error ? error.message : 'Failed to analyze image. Please try again.');
       }
@@ -334,7 +343,16 @@ export default function ChatGPTImagePage() {
           <div className="flex items-center gap-2 px-4 py-3 mb-3 bg-[#fff8e6] border border-[#f0b429] rounded-xl text-sm text-[#1a1a1a]">
             <span>⚠️</span>
             <span>{limitMessage}</span>
-            <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+            {needsSignIn ? (
+              <button
+                onClick={() => openAuthModal('limit')}
+                className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap"
+              >
+                Claim 7 free
+              </button>
+            ) : (
+              <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+            )}
           </div>
         )}
 
@@ -375,7 +393,7 @@ export default function ChatGPTImagePage() {
       <ColorModal isOpen={isColorModalOpen} onClose={() => setIsColorModalOpen(false)} onSelectColor={handleColorSelect} />
       <MaterialsModal isOpen={isMaterialsModalOpen} onClose={() => setIsMaterialsModalOpen(false)} onSelectMaterial={handleMaterialSelect} />
       <ArtistsModal isOpen={isArtistsModalOpen} onClose={() => setIsArtistsModalOpen(false)} onSelectArtist={handleArtistSelect} />
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} variant={authVariant} />
     </>
   );
 }

@@ -10,7 +10,7 @@ vi.mock('./supabaseClient', () => ({
   supabase: { auth: { getSession, linkIdentity, signInWithOAuth } },
 }));
 
-import { initiateAuth, resolveAuthFlow } from './authFlow';
+import { initiateAuth, resolveAuthFlow, shouldNudgeSignIn } from './authFlow';
 
 const anonSession = { user: { id: 'a1', is_anonymous: true } };
 const realSession = { user: { id: 'r1', email: 'x@y.z', is_anonymous: false } };
@@ -34,6 +34,17 @@ describe('resolveAuthFlow', () => {
   it('uses plain OAuth for real sessions', () => {
     expect(resolveAuthFlow(realSession as any)).toBe('oauth');
     expect(resolveAuthFlow(null)).toBe('oauth');
+  });
+});
+
+describe('shouldNudgeSignIn', () => {
+  it('nudges anonymous and signed-out visitors (the conversion audience)', () => {
+    expect(shouldNudgeSignIn(anonSession as any)).toBe(true);
+    expect(shouldNudgeSignIn(null)).toBe(true);
+  });
+
+  it('does not nudge fully signed-in users', () => {
+    expect(shouldNudgeSignIn(realSession as any)).toBe(false);
   });
 });
 

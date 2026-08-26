@@ -13,6 +13,15 @@ export function resolveAuthFlow(session: Session | null): AuthFlow {
   return session?.user?.is_anonymous ? 'link' : 'oauth';
 }
 
+/**
+ * True when the visitor is anonymous or has no account — the audience for the
+ * hard sign-in nudge when they run out of credits. Signed-in users get the
+ * plain limit toast and the pricing link instead.
+ */
+export function shouldNudgeSignIn(session: Session | null): boolean {
+  return !session || session.user?.is_anonymous === true;
+}
+
 /** Redirects to the OAuth provider; the result lands in /auth/callback. */
 export async function initiateAuth(provider: AuthProvider): Promise<{ error?: string }> {
   if (!supabase) return { error: 'Auth unavailable' };

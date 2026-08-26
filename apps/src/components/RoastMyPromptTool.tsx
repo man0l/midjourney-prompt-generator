@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 import { useCredits } from '../hooks/useCredits';
 import { AuthModal } from '../components/AuthModal';
+import { useAuthNudge } from '../hooks/useAuthNudge';
 import { ensureSession } from '../lib/session';
 
 function scoreColor(score: number): string {
@@ -31,7 +32,7 @@ export default function RoastMyPromptTool() {
   const [result, setResult] = useState<RoastResult | null>(null);
   const [copied, setCopied] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { isOpen: isAuthModalOpen, variant: authVariant, openAuthModal, closeAuthModal, needsSignIn } = useAuthNudge(session);
   const [limitMessage, setLimitMessage] = useState<string | null>(null);
   const { credits, plan, useCredit } = useCredits(session?.user ?? null);
 
@@ -39,13 +40,13 @@ export default function RoastMyPromptTool() {
     supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
-      if (s) setIsAuthModalOpen(false);
+      if (s) closeAuthModal();
     });
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-    const handler = () => setIsAuthModalOpen(true);
+    const handler = () => openAuthModal();
     window.addEventListener('openAuthModal', handler);
     return () => window.removeEventListener('openAuthModal', handler);
   }, []);
@@ -58,8 +59,9 @@ export default function RoastMyPromptTool() {
   const handleRoast = async () => {
     if (!input.trim()) return;
     // No account? Transparently continue as an anonymous user (3 free/day).
-    if (!await ensureSession()) { setIsAuthModalOpen(true); return; }
+    if (!await ensureSession()) { openAuthModal(); return; }
     if (credits === 0) {
+      if (needsSignIn) { openAuthModal('limit'); return; }
       showLimit(plan === 'free'
         ? "You've used all your free credits for today. They reset tomorrow."
         : "You've used all your credits for this month. They reset on the 1st.");
@@ -101,7 +103,16 @@ export default function RoastMyPromptTool() {
           <div className="flex items-center gap-2 px-4 py-3 mb-3 bg-[#fff8e6] border border-[#f0b429] rounded-xl text-sm text-[#1a1a1a]">
             <span>⚠️</span>
             <span>{limitMessage}</span>
-            <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+            {needsSignIn ? (
+              <button
+                onClick={() => openAuthModal('limit')}
+                className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap"
+              >
+                Claim 7 free
+              </button>
+            ) : (
+              <a href="/#pricing" className="ml-auto font-semibold underline decoration-[#f0b429] underline-offset-2 hover:text-[#f0b429] whitespace-nowrap">Upgrade</a>
+            )}
           </div>
         )}
 
@@ -185,7 +196,7 @@ export default function RoastMyPromptTool() {
           </div>
         )}
       </div>
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} variant={authVariant} />
     </>
   );
 }

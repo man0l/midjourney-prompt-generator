@@ -1,5 +1,6 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { Dialog } from '@headlessui/react'
+import { Check } from 'lucide-react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabaseClient'
 import { initiateAuth, type AuthProvider } from '../lib/authFlow'
@@ -7,6 +8,12 @@ import { initiateAuth, type AuthProvider } from '../lib/authFlow'
 interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
+  /**
+   * 'limit' = hard, conversion-focused dialog shown when an anonymous visitor
+   * runs out of credits: it can only be closed via the explicit opt-out link.
+   * 'standard' = regular sign-in dialog (header button, fallbacks).
+   */
+  variant?: 'standard' | 'limit'
 }
 
 const PROVIDERS: Array<{ id: AuthProvider; label: string; icon: ReactNode }> = [
@@ -33,7 +40,14 @@ const PROVIDERS: Array<{ id: AuthProvider; label: string; icon: ReactNode }> = [
   },
 ]
 
-export function AuthModal({ isOpen, onClose }: AuthModalProps) {
+const LIMIT_BENEFITS = [
+  '+7 bonus generations added instantly',
+  'Your remaining credits carry over — nothing lost',
+  'Refills to 3 free every day (anonymous credits never reset)',
+  'Prompts & preferences saved across devices',
+]
+
+export function AuthModal({ isOpen, onClose, variant = 'standard' }: AuthModalProps) {
   const [session, setSession] = useState<Session | null>(null)
   const [busy, setBusy] = useState<AuthProvider | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -45,6 +59,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   }, [isOpen])
 
   const isAnonymous = !!session?.user?.is_anonymous
+  const hard = variant === 'limit'
 
   const handleSignIn = async (provider: AuthProvider) => {
     setBusy(provider)
@@ -58,44 +73,100 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   }
 
+  const buttons = (
+    <div className="flex flex-col gap-2.5">
+      {PROVIDERS.map(({ id, label, icon }) => (
+        <button
+          key={id}
+          onClick={() => handleSignIn(id)}
+          disabled={busy !== null}
+          className={`flex items-center justify-center gap-3 w-full py-3 px-4 bg-white border-2 border-[#1c1c1c] rounded-xl font-semibold text-sm text-[#1a1a1a] hover:bg-[#f0b429] transition-colors disabled:opacity-60 ${id === 'google' ? 'ring-2 ring-[#f0b429] ring-offset-2' : ''}`}
+        >
+          {icon}
+          {busy === id ? 'Redirecting…' : label}
+        </button>
+      ))}
+    </div>
+  )
+
   return (
-    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
+    <Dialog
+      open={isOpen}
+      // Hard variant: backdrop clicks and Escape are ignored — only the
+      // explicit opt-out link below may close the dialog.
+      onClose={hard ? () => {} : onClose}
+      className="relative z-50"
+    >
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto w-full max-w-md rounded-xl bg-white border-2 border-[#1c1c1c] p-6 shadow-xl">
-          <Dialog.Title className="text-xl font-semibold text-[#1a1a1a] mb-2">
-            {isAnonymous ? 'Claim your bonus generations' : 'Sign in to get more generations'}
-          </Dialog.Title>
-          <Dialog.Description className="text-sm text-[#6b6559] mb-5">
-            {isAnonymous
-              ? "You've used your free generations. Sign in now and we'll add 7 bonus generations to your account instantly."
-              : 'Get 3 free optimizations every day — no credit card required.'}
-          </Dialog.Description>
+        <Dialog.Panel className="mx-auto w-full max-w-md rounded-2xl bg-white border-2 border-[#1c1c1c] p-6 shadow-xl">
+          {hard ? (
+            <>
+              <div className="flex justify-center mb-3">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff8e6] border border-[#f0b429] text-xs font-semibold text-[#1a1a1a]">
+                  🎁 Free generations used
+                </span>
+              </div>
+              <Dialog.Title className="text-2xl font-bold text-[#1a1a1a] text-center mb-1.5">
+                Claim 7 more — free
+              </Dialog.Title>
+              <Dialog.Description className="text-sm text-[#6b6559] text-center mb-5">
+                Sign in and we'll add <strong className="text-[#1a1a1a]">7 bonus generations</strong> to your account instantly.
+              </Dialog.Description>
 
-          <div className="flex flex-col gap-2.5">
-            {PROVIDERS.map(({ id, label, icon }) => (
+              <ul className="flex flex-col gap-2 mb-5 px-1">
+                {LIMIT_BENEFITS.map(benefit => (
+                  <li key={benefit} className="flex items-start gap-2 text-sm text-[#1a1a1a]">
+                    <Check className="w-4 h-4 text-[#0a8a3a] mt-0.5 shrink-0" strokeWidth={3} />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+
+              {buttons}
+
+              {error && (
+                <p className="mt-3 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  {error}
+                </p>
+              )}
+
+              <p className="mt-3 text-xs text-[#9a9080] text-center">
+                No credit card · Takes 5 seconds
+              </p>
+
               <button
-                key={id}
-                onClick={() => handleSignIn(id)}
-                disabled={busy !== null}
-                className="flex items-center justify-center gap-3 w-full py-3 px-4 bg-white border-2 border-[#1c1c1c] rounded-xl font-semibold text-sm text-[#1a1a1a] hover:bg-[#f0b429] transition-colors disabled:opacity-60"
+                onClick={onClose}
+                className="mt-3 w-full text-center text-xs text-[#9a9080] hover:text-[#6b6559] underline underline-offset-2 transition-colors"
               >
-                {icon}
-                {busy === id ? 'Redirecting…' : label}
+                No thanks — I'll keep my 3 one-time credits
               </button>
-            ))}
-          </div>
+            </>
+          ) : (
+            <>
+              <Dialog.Title className="text-xl font-semibold text-[#1a1a1a] mb-2">
+                {isAnonymous ? 'Claim your bonus generations' : 'Sign in to get more generations'}
+              </Dialog.Title>
+              <Dialog.Description className="text-sm text-[#6b6559] mb-5">
+                {isAnonymous
+                  ? "Sign in now and we'll add 7 bonus generations to your account instantly. Your credits carry over."
+                  : 'Get 3 free optimizations every day — no credit card required.'}
+              </Dialog.Description>
 
-          {error && (
-            <p className="mt-3 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-              {error}
-            </p>
+              {buttons}
+
+              {error && (
+                <p className="mt-3 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  {error}
+                </p>
+              )}
+
+              <p className="mt-4 text-xs text-[#9a9080] text-center">
+                Free to join · Your credits carry over when you sign in
+              </p>
+            </>
           )}
-
-          <p className="mt-4 text-xs text-[#9a9080] text-center">
-            Free to join · Your credits carry over when you sign in
-          </p>
         </Dialog.Panel>
       </div>
     </Dialog>
