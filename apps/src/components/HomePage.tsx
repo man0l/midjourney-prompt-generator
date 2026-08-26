@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { 
   Upload,
   Sparkles,
@@ -28,6 +28,8 @@ import { uploadAndAnalyzeImage } from '../services/imageAnalysis';
 import { ensureSession } from '../lib/session';
 import { clearOAuthErrorFromUrl, readOAuthError, recoverFromIdentityExists } from '../lib/authFlow';
 import SEO from '../components/SEO';
+
+const PREFILL_KEY = 'mpgPrefill';
 
 export default function HomePage() {
   const [mainPrompt, setMainPrompt] = useState('');
@@ -73,6 +75,30 @@ export default function HomePage() {
     });
 
     return () => subscription.unsubscribe();
+  }, []);
+
+  // Hero handoff (index.astro): the example chips stash an idea in
+  // sessionStorage before scrolling here. Consume on mount — this island is
+  // client:only, so hydration can finish long after the click — and re-check
+  // whenever a 'mpg-prefill' event pings us after mount.
+  const optimizeRef = useRef<() => Promise<void>>(async () => {});
+  useEffect(() => {
+    const consumePrefill = () => {
+      try {
+        const raw = sessionStorage.getItem(PREFILL_KEY);
+        if (!raw) return;
+        sessionStorage.removeItem(PREFILL_KEY);
+        const { idea, autostart } = JSON.parse(raw) as { idea?: string; autostart?: boolean };
+        if (!idea) return;
+        setMainPrompt(idea);
+        if (autostart) setTimeout(() => void optimizeRef.current(), 250);
+      } catch {
+        sessionStorage.removeItem(PREFILL_KEY);
+      }
+    };
+    consumePrefill();
+    window.addEventListener('mpg-prefill', consumePrefill);
+    return () => window.removeEventListener('mpg-prefill', consumePrefill);
   }, []);
 
   const fullPrompt = generatePrompt(mainPrompt, parameters);
@@ -137,6 +163,9 @@ export default function HomePage() {
       setIsOptimizing(false);
     }
   };
+
+  // Keep the prefill effect's auto-start call working with fresh state.
+  optimizeRef.current = handleOptimize;
 
   const handleStyleSelect = (style: string) => {
     const currentPrompt = mainPrompt.trim();

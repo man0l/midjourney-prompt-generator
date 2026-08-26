@@ -11,9 +11,28 @@ import PricingSection from '../components/PricingSection';
     <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
       Type a plain idea. Get a production-ready Midjourney prompt — with style, lighting, camera, and parameters filled in for you. No sign-up.
     </p>
-    <a href="#tool" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
+    <a id="hero-cta" href="#tool" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
       Generate My Prompt — Free
     </a>
+
+    <!-- Example ideas: one click fills the tool and generates -->
+    <div class="mt-5 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto">
+      <span class="text-[#9a9080] text-xs">Try one:</span>
+      {[
+        'a cozy reading nook by a rainy window',
+        'cyberpunk street food market at night',
+        'portrait of an old fisherman in dramatic light',
+      ].map((idea) => (
+        <button
+          type="button"
+          data-example={idea}
+          class="px-3 py-1.5 rounded-full border border-[#c8c0a8] bg-white text-xs text-[#6b6559] hover:border-[#f0b429] hover:text-[#1a1a1a] transition-colors"
+        >
+          “{idea}”
+        </button>
+      ))}
+    </div>
+
     <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
   </section>
 
@@ -175,6 +194,47 @@ import PricingSection from '../components/PricingSection';
     </a>
 
   </div>
+
+  <script>
+    // Hero CTA + example chips hand off to the React tool island: smooth-scroll
+    // to it, focus the idea textarea (primary CTA) or prefill + auto-generate
+    // (chips). The idea travels via sessionStorage so late-hydrating islands
+    // still pick it up; the CustomEvent pings already-mounted ones.
+    const scrollToTool = (): void => {
+      document.getElementById('tool')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const focusIdea = (): void => {
+      const textarea = document.querySelector<HTMLTextAreaElement>('#tool textarea');
+      if (textarea) textarea.focus({ preventScroll: true });
+    };
+
+    document.getElementById('hero-cta')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      scrollToTool();
+      window.setTimeout(focusIdea, 450);
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('button[data-example]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        sessionStorage.setItem(
+          'mpgPrefill',
+          JSON.stringify({ idea: btn.dataset.example ?? '', autostart: true }),
+        );
+        scrollToTool();
+        window.setTimeout(() => window.dispatchEvent(new CustomEvent('mpg-prefill')), 450);
+      });
+    });
+
+    // Same smooth landing for every other "back to the tool" anchor on the page.
+    document.querySelectorAll<HTMLAnchorElement>('a[href="#tool"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        scrollToTool();
+        window.setTimeout(focusIdea, 450);
+      });
+    });
+  </script>
 
   <PricingSection client:load priceIds={{
     starterMonthly: import.meta.env.STRIPE_PRICE_STARTER_MONTHLY,
