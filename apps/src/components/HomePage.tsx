@@ -310,7 +310,8 @@ export default function HomePage() {
   // hash fragment depending on failure phase. If the anonymous→account link
   // was rejected because the identity already belongs to an older account,
   // recover by signing in to that account (anonymous credits are staged for
-  // transfer in /auth/callback).
+  // transfer in /auth/callback). If recovery can't run, still surface the
+  // sign-in modal — never strand the visitor silently.
   useEffect(() => {
     const oauthError = readOAuthError();
     if (!oauthError) return;
@@ -318,7 +319,12 @@ export default function HomePage() {
       oauthError.code === 'identity_already_exists'
         ? recoverFromIdentityExists()
         : Promise.resolve(false);
-    void recovery.finally(clearOAuthErrorFromUrl);
+    void recovery
+      .catch(() => false)
+      .then((recovered) => {
+        if (!recovered) openAuthModal();
+      })
+      .finally(clearOAuthErrorFromUrl);
   }, []);
 
   return (

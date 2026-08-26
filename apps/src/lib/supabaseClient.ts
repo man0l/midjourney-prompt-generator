@@ -15,7 +15,10 @@ export const supabase = typeof window !== 'undefined'
       auth: {
         autoRefreshToken: true,
         persistSession: true,
-        detectSessionInUrl: true,
+        // Manual PKCE exchange happens in /auth/callback. Leaving detection on
+        // lets whichever island initializes first strip GoTrue's error params
+        // from the URL before the recovery code on the page reads them.
+        detectSessionInUrl: false,
         flowType: 'pkce',
         redirectTo
       }

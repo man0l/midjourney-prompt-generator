@@ -152,19 +152,45 @@ describe('recoverFromIdentityExists', () => {
     expect(call.provider).toBe('discord');
     expect(call.options.redirectTo).toMatch(/^https:\/\/test\.local\/auth\/callback\?merge=[0-9a-f-]{36}$/);
     expect(call.options.scopes).toBe('identify email');
-    expect(store['mergeAttempted']).toBeDefined();
+    expect(JSON.parse(store['mergeAttempted'])).toMatchObject({ token: expect.any(String) });
   });
 
-  it('gives up without looping when already attempted once', async () => {
+  it('heals a legacy bare-token guard stranded by an earlier bounce', async () => {
     store['pendingAuthProvider'] = 'google';
-    store['mergeAttempted'] = 'some-token';
+    store['mergeAttempted'] = 'legacy-token-from-old-deploy';
+    rpc.mockResolvedValue({ data: null, error: null });
+    signOut.mockResolvedValue({});
+    signInWithOAuth.mockResolvedValue({ data: {}, error: null });
+
+    const recovered = await recoverFromIdentityExists();
+
+    // The stale flag must not brick recovery, and its staged token is reused.
+    expect(recovered).toBe(true);
+    expect(rpc).toHaveBeenCalledWith('stage_credit_merge', { p_token: 'legacy-token-from-old-deploy' });
+    expect(signInWithOAuth.mock.calls[0][0].options.redirectTo).toContain('merge=legacy-token-from-old-deploy');
+  });
+
+  it('reuses the staged token on a stale timestamped guard', async () => {
+    store['pendingAuthProvider'] = 'google';
+    store['mergeAttempted'] = JSON.stringify({ token: 'staged-tok', at: Date.now() - 60_000 });
+    rpc.mockResolvedValue({ data: null, error: null });
+    signOut.mockResolvedValue({});
+    signInWithOAuth.mockResolvedValue({ data: {}, error: null });
+
+    expect(await recoverFromIdentityExists()).toBe(true);
+    expect(rpc).toHaveBeenCalledWith('stage_credit_merge', { p_token: 'staged-tok' });
+    expect(signInWithOAuth.mock.calls[0][0].options.redirectTo).toContain('merge=staged-tok');
+  });
+
+  it('brakes only on a fresh guard (rapid re-trigger loop)', async () => {
+    store['pendingAuthProvider'] = 'google';
+    store['mergeAttempted'] = JSON.stringify({ token: 'tok', at: Date.now() - 5_000 });
 
     const recovered = await recoverFromIdentityExists();
 
     expect(recovered).toBe(false);
     expect(rpc).not.toHaveBeenCalled();
     expect(signInWithOAuth).not.toHaveBeenCalled();
-    expect(store['mergeAttempted']).toBeUndefined();
   });
 
   it('does nothing without a remembered provider', async () => {
@@ -174,8 +200,9 @@ describe('recoverFromIdentityExists', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it('aborts when staging fails', async () => {
+  it('clears the guard when staging fails so future attempts are not bricked', async () => {
     store['pendingAuthProvider'] = 'google';
+    store['mergeAttempted'] = JSON.stringify({ token: 'old-tok', at: Date.now() - 60_000 });
     rpc.mockResolvedValue({ data: null, error: { message: 'insufficient privilege' } });
 
     const recovered = await recoverFromIdentityExists();
@@ -211,10 +238,10 @@ describe('completeMergeIfPending', () => {
 
 describe('readOAuthError', () => {
   it('parses errors delivered in the hash fragment (authorize-phase failures)', () => {
-    // @ts-expect-error test stub for browser globals
+    // Minimal window stub — readOAuthError only touches location.search/hash.
     globalThis.window = {
       location: { search: '', hash: '#error=server_error&error_code=identity_already_exists&error_description=Identity+is+already+linked+to+another+user&sb=al' },
-    };
+    } as unknown as typeof globalThis.window;
     try {
       expect(readOAuthError()).toEqual({
         error: 'server_error',
@@ -228,10 +255,9 @@ describe('readOAuthError', () => {
   });
 
   it('parses query-string delivery and lets query values win on collision', () => {
-    // @ts-expect-error test stub for browser globals
     globalThis.window = {
       location: { search: '?error=access_denied&error_code=bad_code', hash: '#error=server_error&sb=x' },
-    };
+    } as unknown as typeof globalThis.window;
     try {
       expect(readOAuthError()).toEqual({ error: 'access_denied', code: 'bad_code', description: null });
     } finally {
@@ -241,8 +267,7 @@ describe('readOAuthError', () => {
   });
 
   it('returns null when no OAuth error params are present', () => {
-    // @ts-expect-error test stub for browser globals
-    globalThis.window = { location: { search: '?utm_source=x', hash: '#pricing' } };
+    globalThis.window = { location: { search: '?utm_source=x', hash: '#pricing' } } as unknown as typeof globalThis.window;
     try {
       expect(readOAuthError()).toBeNull();
     } finally {
@@ -255,11 +280,10 @@ describe('readOAuthError', () => {
 describe('clearOAuthErrorFromUrl', () => {
   it('strips OAuth error params from both query and fragment', () => {
     const replaceState = vi.fn();
-    // @ts-expect-error test stub for browser globals
     globalThis.window = {
       location: { href: 'https://test.local/?keep=1&error=server_error&error_description=oink#pass=true&error_code=identity_already_exists' },
       history: { replaceState },
-    };
+    } as unknown as typeof globalThis.window;
     try {
       clearOAuthErrorFromUrl();
       const replaced = replaceState.mock.calls[0][2] as string;

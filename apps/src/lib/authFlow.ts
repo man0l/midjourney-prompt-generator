@@ -49,6 +49,34 @@ export async function initiateAuth(provider: AuthProvider): Promise<{ error?: st
 const PENDING_PROVIDER_KEY = 'pendingAuthProvider';
 const MERGE_GUARD_KEY = 'mergeAttempted';
 
+/** Rapid re-trigger brake only — stale guards must never brick recovery. */
+const GUARD_MAX_AGE_MS = 30_000;
+
+interface MergeGuard {
+  token: string;
+  at: number;
+}
+
+/**
+ * Older deploys stored a bare token with no timestamp and only cleared it in
+ * /auth/callback — a bounce there left a permanent flag that silently bailed
+ * every later recovery. Treat any bare string (or unparseable value) as
+ * ancient so those browsers heal on their next attempt.
+ */
+function readMergeGuard(): MergeGuard | null {
+  const raw = localStorage.getItem(MERGE_GUARD_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as { token?: unknown; at?: unknown };
+    if (typeof parsed.token === 'string') {
+      return { token: parsed.token, at: Number(parsed.at) || 0 };
+    }
+  } catch {
+    // fall through: legacy bare-token format
+  }
+  return { token: raw, at: 0 };
+}
+
 /**
  * Recovery for GoTrue's identity_already_exists: the visitor is anonymous and
  * tried to link a Google/Discord identity that already belongs to an older
@@ -64,17 +92,24 @@ export async function recoverFromIdentityExists(): Promise<boolean> {
 
   const provider = localStorage.getItem(PENDING_PROVIDER_KEY) as AuthProvider | null;
   if (!provider) return false;
-  if (localStorage.getItem(MERGE_GUARD_KEY)) {
-    // Already attempted once — don't loop.
+
+  // Only brake on a *fresh* guard (rapid re-trigger loop). An old guard —
+  // e.g. one stranded by a bounced callback in an earlier session — must not
+  // block recovery; the staged token it holds is reused instead.
+  const existing = readMergeGuard();
+  if (existing && Date.now() - existing.at < GUARD_MAX_AGE_MS) return false;
+
+  // Reuse the previously staged token when present so its staged transfer
+  // intent isn't orphaned; stage_credit_merge upserts/refreshes the row.
+  const token = existing?.token ?? crypto.randomUUID();
+  const { error } = await supabase.rpc('stage_credit_merge', { p_token: token });
+  if (error) {
+    // Don't leave a guard behind that could brick the next attempt.
     localStorage.removeItem(MERGE_GUARD_KEY);
     return false;
   }
 
-  const token = crypto.randomUUID();
-  const { error } = await supabase.rpc('stage_credit_merge', { p_token: token });
-  if (error) return false;
-
-  localStorage.setItem(MERGE_GUARD_KEY, token);
+  localStorage.setItem(MERGE_GUARD_KEY, JSON.stringify({ token, at: Date.now() }));
   // Stage first, then drop the anonymous session: with manual linking enabled
   // GoTrue treats a cookie-authenticated /authorize as another *link* attempt,
   // which re-fires the same identity_already_exists conflict. Signing out
