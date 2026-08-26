@@ -23,8 +23,15 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
   const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [spicy, setSpicy] = useState(false);
-  const effectiveToolType = showSpicyToggle && spicy ? 'grok-spicy' : toolType;
+  const [spicy, setSpicy] = useState(true);
+  const [asImage, setAsImage] = useState(true);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const effectiveToolType = (() => {
+    if (showSpicyToggle && asImage) return spicy ? 'grok-spicy-image' : 'grok-image';
+    if (showSpicyToggle && spicy) return 'grok-spicy';
+    return toolType;
+  })();
   const [session, setSession] = useState<Session | null>(null);
   const { isOpen: isAuthModalOpen, variant: authVariant, openAuthModal, closeAuthModal, needsSignIn } = useAuthNudge(session);
   const [limitMessage, setLimitMessage] = useState<string | null>(null);
@@ -50,12 +57,42 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
     setTimeout(() => setLimitMessage(null), 4000);
   }
 
+  const handlePreview = async () => {
+    if (!output.trim()) return;
+    setIsPreviewing(true);
+    setPreviewUrl(null);
+    try {
+      if (!await ensureSession()) { openAuthModal(); return; }
+      if (credits !== null && credits < 2) {
+        if (needsSignIn) openAuthModal('limit');
+        else showLimit(plan === 'free' ? "You've used your 3 free generations for today. They reset tomorrow." : "Not enough credits for a preview (needs 2). They reset on the 1st.");
+        return;
+      }
+      const { data: { session: sess } } = await supabase.auth.getSession();
+      if (!sess) throw new Error('Not authenticated');
+      const res = await fetch('/api/grok-preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sess.access_token}` },
+        body: JSON.stringify({ prompt: output }),
+      });
+      const data = await res.json();
+      if (res.status === 402) throw new OutOfCreditsError();
+      if (!res.ok || data.error) throw new Error(data.error || 'Preview failed');
+      if (typeof data.creditsRemaining === 'number') setCredits(data.creditsRemaining);
+      if (data.b64_json) setPreviewUrl(`data:image/jpeg;base64,${data.b64_json}`);
+      else if (data.imageUrl) setPreviewUrl(data.imageUrl);
+      else setPreviewUrl(null);
+    } catch (err: any) {
+      if (err instanceof OutOfCreditsError) { if (needsSignIn) openAuthModal('limit'); else showLimit("You've used your generations for today. They reset tomorrow."); }
+      else showLimit(err?.message || 'Preview failed. Please try again.');
+    } finally { setIsPreviewing(false); }
+  };
+
   const handleGenerate = async () => {
     if (!input.trim()) return;
 
     setIsGenerating(true);
     try {
-      // No account? Transparently continue as an anonymous user (3 free/day).
       if (!await ensureSession()) {
         openAuthModal();
         return;
@@ -73,6 +110,7 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
 
       if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
       setOutput(result.optimized || input);
+      setPreviewUrl(null);
     } catch (err: any) {
       if (err instanceof OutOfCreditsError) {
         if (needsSignIn) {
@@ -130,16 +168,18 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
         )}
 
         {showSpicyToggle && (
-          <label className="flex items-center gap-2 mb-3 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={spicy}
-              onChange={e => setSpicy(e.target.checked)}
-              className="w-4 h-4 accent-[#f0b429]"
-            />
-            <span className="text-sm font-semibold text-[#1a1a1a]">🌶️ Spicy mode</span>
-            <span className="text-xs text-[#6b6559]">via Grok (OpenRouter)</span>
-          </label>
+          <div className="flex flex-wrap gap-4 mb-3">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" checked={spicy} onChange={e => setSpicy(e.target.checked)} className="w-4 h-4 accent-[#f0b429]" />
+              <span className="text-sm font-semibold text-[#1a1a1a]">🌶️ Spicy mode</span>
+              <span className="text-xs text-[#6b6559]">always on</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" checked={asImage} onChange={e => setAsImage(e.target.checked)} className="w-4 h-4 accent-[#f0b429]" />
+              <span className="text-sm font-semibold text-[#1a1a1a]">🖼️ Image</span>
+              <span className="text-xs text-[#6b6559]">describe as image</span>
+            </label>
+          </div>
         )}
 
         <button
@@ -154,21 +194,32 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
         </button>
 
         {output && (
-          <div className="border border-[#c8c0a8] rounded-xl overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-2 bg-[#e4dfc8] border-b border-[#c8c0a8]">
-              <span className="text-xs font-semibold text-[#6b6559] uppercase tracking-wider">Result</span>
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1.5 text-xs text-[#1a1a1a] hover:text-[#f0b429] transition-colors"
-              >
-                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                {copied ? 'Copied!' : 'Copy'}
+          <>
+            <div className="flex gap-2 mb-3">
+              <button onClick={handlePreview} disabled={!output.trim() || isPreviewing} className="flex-1 py-2.5 bg-[#1a1a1a] border-2 border-[#1c1c1c] rounded-xl font-semibold text-sm text-white hover:bg-black transition-all disabled:opacity-40 flex items-center justify-center gap-2">
+                {isPreviewing ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : null}
+                {isPreviewing ? 'Generating preview…' : 'grok -imagine preview (2 credits)'}
               </button>
             </div>
-            <div className="px-4 py-4 bg-white font-mono text-xs text-[#1a1a1a] whitespace-pre-wrap leading-relaxed">
-              {output}
+            {previewUrl && (
+              <div className="mb-3 rounded-xl overflow-hidden border-2 border-[#1c1c1c]"><img src={previewUrl} alt="Grok imagine preview" className="w-full" /></div>
+            )}
+            <div className="border border-[#c8c0a8] rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-2 bg-[#e4dfc8] border-b border-[#c8c0a8]">
+                <span className="text-xs font-semibold text-[#6b6559] uppercase tracking-wider">Result</span>
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1.5 text-xs text-[#1a1a1a] hover:text-[#f0b429] transition-colors"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+              <div className="px-4 py-4 bg-white font-mono text-xs text-[#1a1a1a] whitespace-pre-wrap leading-relaxed">
+                {output}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
       <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} variant={authVariant} />
