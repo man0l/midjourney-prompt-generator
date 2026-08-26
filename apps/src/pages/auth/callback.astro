@@ -6,31 +6,38 @@ export const prerender = false;
   <body>
     <script>
       import { supabase } from '../../lib/supabaseClient';
-      import { recoverFromIdentityExists, completeMergeIfPending } from '../../lib/authFlow';
+      import {
+        completeMergeIfPending,
+        readOAuthError,
+        recoverFromIdentityExists,
+      } from '../../lib/authFlow';
 
       const params = new URL(window.location.href).searchParams;
       const code = params.get('code');
-      const errorCode = params.get('error_code');
       const mergeToken = params.get('merge');
 
-      if (errorCode === 'identity_already_exists') {
+      // GoTrue may deliver the OAuth failure here in the query string or, when
+      // it rejected the request before any provider hop (e.g. the authorize
+      // phase), back at the site root in the hash fragment.
+      const oauthError = readOAuthError();
+
+      if (oauthError?.code === 'identity_already_exists') {
         // The provider identity belongs to an older account. Stage the
         // anonymous credits and sign in to that account instead.
-        const recovered = await recoverFromIdentityExists();
-        if (recovered) {
-          // Redirecting to the provider; nothing else to do.
-        } else {
-          window.location.replace('/');
+        try {
+          await recoverFromIdentityExists(); // redirects to the provider on success
+        } catch {
+          // fall through to home; staged token simply expires
         }
-      } else {
-        if (code) {
-          await supabase.auth.exchangeCodeForSession(code);
+      } else if (!oauthError) {
+        try {
+          if (code) await supabase.auth.exchangeCodeForSession(code);
+          if (mergeToken) await completeMergeIfPending(mergeToken);
+        } catch {
+          // fall through to home
         }
-        if (mergeToken) {
-          await completeMergeIfPending(mergeToken);
-        }
-        window.location.replace('/');
       }
+      window.location.replace('/');
     </script>
   </body>
 </html>

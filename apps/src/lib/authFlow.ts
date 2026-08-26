@@ -75,6 +75,11 @@ export async function recoverFromIdentityExists(): Promise<boolean> {
   if (error) return false;
 
   localStorage.setItem(MERGE_GUARD_KEY, token);
+  // Stage first, then drop the anonymous session: with manual linking enabled
+  // GoTrue treats a cookie-authenticated /authorize as another *link* attempt,
+  // which re-fires the same identity_already_exists conflict. Signing out
+  // makes the next hop a plain sign-in into the existing account instead.
+  await supabase.auth.signOut();
   const redirectTo = `${window.location.origin}/auth/callback?merge=${token}`;
   await supabase.auth.signInWithOAuth({
     provider,
@@ -96,4 +101,42 @@ export async function completeMergeIfPending(token: string | null): Promise<numb
 
   const { data, error } = await supabase.rpc('complete_credit_merge', { p_token: token });
   return error ? 0 : (data ?? 0);
+}
+
+export interface OAuthError {
+  error: string | null;
+  code: string | null;
+  description: string | null;
+}
+
+/**
+ * GoTrue lands OAuth failures in either the query string or the hash fragment
+ * depending on which phase rejected the request:
+ *   /?error=server_error&error_code=identity_already_exists   (callback phase)
+ *   /#error=server_error&error_code=identity_already_exists&… (authorize phase)
+ * Read both forms; query-string values win when both are present.
+ */
+export function readOAuthError(): OAuthError | null {
+  if (typeof window === 'undefined') return null;
+
+  const merged = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  for (const [key, value] of new URLSearchParams(window.location.search)) {
+    merged.set(key, value);
+  }
+
+  if (!merged.get('error') && !merged.get('error_code')) return null;
+  return {
+    error: merged.get('error'),
+    code: merged.get('error_code'),
+    description: merged.get('error_description'),
+  };
+}
+
+/** Strips OAuth error params from the query string and drops the fragment. */
+export function clearOAuthErrorFromUrl(): void {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  for (const key of ['error', 'error_code', 'error_description']) url.searchParams.delete(key);
+  url.hash = '';
+  window.history.replaceState({}, '', url.toString());
 }

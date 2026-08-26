@@ -1,19 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getSession, linkIdentity, signInWithOAuth, rpc } = vi.hoisted(() => ({
+const { getSession, linkIdentity, signInWithOAuth, signOut, rpc } = vi.hoisted(() => ({
   getSession: vi.fn(),
   linkIdentity: vi.fn(),
   signInWithOAuth: vi.fn(),
+  signOut: vi.fn(),
   rpc: vi.fn(),
 }));
 
 vi.mock('./supabaseClient', () => ({
-  supabase: { auth: { getSession, linkIdentity, signInWithOAuth }, rpc },
+  supabase: { auth: { getSession, linkIdentity, signInWithOAuth, signOut }, rpc },
 }));
 
 import {
+  clearOAuthErrorFromUrl,
   completeMergeIfPending,
   initiateAuth,
+  readOAuthError,
   recoverFromIdentityExists,
   resolveAuthFlow,
   shouldNudgeSignIn,
@@ -125,15 +128,26 @@ describe('initiateAuth', () => {
 });
 
 describe('recoverFromIdentityExists', () => {
-  it('stages credits and re-auths into the existing account', async () => {
+  it('stages credits, signs out the anon session, then re-auths', async () => {
     store['pendingAuthProvider'] = 'discord';
     rpc.mockResolvedValue({ data: null, error: null });
+    signOut.mockResolvedValue({});
     signInWithOAuth.mockResolvedValue({ data: {}, error: null });
 
     const recovered = await recoverFromIdentityExists();
 
     expect(recovered).toBe(true);
     expect(rpc).toHaveBeenCalledWith('stage_credit_merge', { p_token: expect.any(String) });
+    // The anonymous session must be gone before redirecting: GoTrue treats a
+    // cookie-authenticated /authorize as a link attempt and the same conflict
+    // would fire right back.
+    expect(signOut).toHaveBeenCalledTimes(1);
+    const [stagedBeforeSignOut, signedOutBeforeRedirect] = [
+      rpc.mock.invocationCallOrder[0]! < signOut.mock.invocationCallOrder[0]!,
+      signOut.mock.invocationCallOrder[0]! < signInWithOAuth.mock.invocationCallOrder[0]!,
+    ];
+    expect(stagedBeforeSignOut && signedOutBeforeRedirect).toBe(true);
+
     const call = signInWithOAuth.mock.calls[0][0];
     expect(call.provider).toBe('discord');
     expect(call.options.redirectTo).toMatch(/^https:\/\/test\.local\/auth\/callback\?merge=[0-9a-f-]{36}$/);
@@ -192,5 +206,68 @@ describe('completeMergeIfPending', () => {
     rpc.mockClear();
     expect(await completeMergeIfPending(null)).toBe(0);
     expect(rpc).not.toHaveBeenCalled();
+  });
+});
+
+describe('readOAuthError', () => {
+  it('parses errors delivered in the hash fragment (authorize-phase failures)', () => {
+    // @ts-expect-error test stub for browser globals
+    globalThis.window = {
+      location: { search: '', hash: '#error=server_error&error_code=identity_already_exists&error_description=Identity+is+already+linked+to+another+user&sb=al' },
+    };
+    try {
+      expect(readOAuthError()).toEqual({
+        error: 'server_error',
+        code: 'identity_already_exists',
+        description: 'Identity is already linked to another user',
+      });
+    } finally {
+      // @ts-expect-error test stub for browser globals
+      delete globalThis.window;
+    }
+  });
+
+  it('parses query-string delivery and lets query values win on collision', () => {
+    // @ts-expect-error test stub for browser globals
+    globalThis.window = {
+      location: { search: '?error=access_denied&error_code=bad_code', hash: '#error=server_error&sb=x' },
+    };
+    try {
+      expect(readOAuthError()).toEqual({ error: 'access_denied', code: 'bad_code', description: null });
+    } finally {
+      // @ts-expect-error test stub for browser globals
+      delete globalThis.window;
+    }
+  });
+
+  it('returns null when no OAuth error params are present', () => {
+    // @ts-expect-error test stub for browser globals
+    globalThis.window = { location: { search: '?utm_source=x', hash: '#pricing' } };
+    try {
+      expect(readOAuthError()).toBeNull();
+    } finally {
+      // @ts-expect-error test stub for browser globals
+      delete globalThis.window;
+    }
+  });
+});
+
+describe('clearOAuthErrorFromUrl', () => {
+  it('strips OAuth error params from both query and fragment', () => {
+    const replaceState = vi.fn();
+    // @ts-expect-error test stub for browser globals
+    globalThis.window = {
+      location: { href: 'https://test.local/?keep=1&error=server_error&error_description=oink#pass=true&error_code=identity_already_exists' },
+      history: { replaceState },
+    };
+    try {
+      clearOAuthErrorFromUrl();
+      const replaced = replaceState.mock.calls[0][2] as string;
+      expect(replaced.startsWith('https://test.local/?keep=1')).toBe(true);
+      expect(replaced).not.toContain('error');
+    } finally {
+      // @ts-expect-error test stub for browser globals
+      delete globalThis.window;
+    }
   });
 });

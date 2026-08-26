@@ -26,7 +26,7 @@ import { useAuthNudge } from '../hooks/useAuthNudge';
 import { optimizePrompt, OutOfCreditsError } from '../services/openai';
 import { uploadAndAnalyzeImage } from '../services/imageAnalysis';
 import { ensureSession } from '../lib/session';
-import { recoverFromIdentityExists } from '../lib/authFlow';
+import { clearOAuthErrorFromUrl, readOAuthError, recoverFromIdentityExists } from '../lib/authFlow';
 import SEO from '../components/SEO';
 
 export default function HomePage() {
@@ -277,18 +277,19 @@ export default function HomePage() {
     return () => window.removeEventListener('openAuthModal', handler);
   }, []);
 
-  // GoTrue redirects OAuth errors to the site root. If the anonymous→account
-  // link was rejected because the identity already belongs to an older
-  // account, recover by signing in to that account (anonymous credits are
-  // staged for transfer in /auth/callback).
+  // GoTrue redirects OAuth errors to the site root, in the query string or the
+  // hash fragment depending on failure phase. If the anonymous→account link
+  // was rejected because the identity already belongs to an older account,
+  // recover by signing in to that account (anonymous credits are staged for
+  // transfer in /auth/callback).
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('error_code') !== 'identity_already_exists') return;
-    recoverFromIdentityExists().finally(() => {
-      const url = new URL(window.location.href);
-      url.search = '';
-      window.history.replaceState({}, '', url.toString());
-    });
+    const oauthError = readOAuthError();
+    if (!oauthError) return;
+    const recovery =
+      oauthError.code === 'identity_already_exists'
+        ? recoverFromIdentityExists()
+        : Promise.resolve(false);
+    void recovery.finally(clearOAuthErrorFromUrl);
   }, []);
 
   return (
