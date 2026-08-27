@@ -16,28 +16,36 @@ export const prerender = false;
       const code = params.get('code');
       const mergeToken = params.get('merge');
 
-      // GoTrue may deliver the OAuth failure here in the query string or, when
-      // it rejected the request before any provider hop (e.g. the authorize
-      // phase), back at the site root in the hash fragment.
       const oauthError = readOAuthError();
+      let didRedirect = false;
 
-      if (oauthError?.code === 'identity_already_exists') {
-        // The provider identity belongs to an older account. Stage the
-        // anonymous credits and sign in to that account instead.
-        try {
-          await recoverFromIdentityExists(); // redirects to the provider on success
-        } catch {
-          // fall through to home; staged token simply expires
-        }
-      } else if (!oauthError) {
-        try {
-          if (code) await supabase.auth.exchangeCodeForSession(code);
-          if (mergeToken) await completeMergeIfPending(mergeToken);
-        } catch {
-          // fall through to home
+      async function run() {
+        if (oauthError?.code === 'identity_already_exists') {
+          // Provider identity belongs to another account — stage anon credits
+          // and re-launch OAuth as a plain sign-in.
+          try {
+            didRedirect = await recoverFromIdentityExists();
+          } catch {
+            // fall through to home; staged row simply expires
+          }
+        } else if (!oauthError) {
+          // Normal callback (fresh signup / sign-in): exchange the PKCE code
+          // and, if this is the recovery hop, hand off staged credits.
+          try {
+            if (code) await supabase.auth.exchangeCodeForSession(code);
+            if (mergeToken) await completeMergeIfPending(mergeToken);
+          } catch {
+            // fall through to home
+          }
+        } else {
+          // Other OAuth errors (e.g. access_denied): clean the URL and send home.
+          // No code to exchange.
         }
       }
-      window.location.replace('/');
+
+      await run();
+      // Don't clobber the provider redirect when recovery kicked off.
+      if (!didRedirect) window.location.replace('/');
     </script>
   </body>
 </html>
