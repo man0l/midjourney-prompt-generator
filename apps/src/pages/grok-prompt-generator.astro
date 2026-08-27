@@ -7,17 +7,17 @@ import PricingSection from '../components/PricingSection';
 Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
 ---
 <Layout
-  title="Free Grok Prompt Generator — Standard & Spicy Mode Prompts for Grok AI"
-  description="Generate structured Grok prompts instantly. Free Grok AI prompt generator with spicy mode support — unlock Grok's full personality. No sign-up required."
+  title="Free Grok Spicy Prompt Generator — Bold, Unfiltered Prompts for Grok AI"
+  description="Generate Grok spicy prompts instantly. Free Grok Spicy prompt generator with unfiltered, humor-forward framing — unlock Grok's full personality. No sign-up required."
 >
   <!-- Hero Section -->
   <section class="px-6 pt-14 pb-10 text-center border-b-2 border-[#1c1c1c]">
-    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Grok Prompt Generator</h1>
+    <h1 class="text-5xl font-bold text-[#1a1a1a] leading-tight mb-5">Grok Spicy Prompt Generator</h1>
     <p class="text-[#6b6559] text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-      Grok is built different — direct, unfiltered, and trained on real-time data from X. Our free Grok AI prompt generator turns plain descriptions into structured prompts that unlock Grok's full personality, including spicy mode for responses that skip the hedging and get straight to the point.
+      Grok Spicy is built different — bold, unfiltered, and trained on real-time data from X. Our free Grok Spicy prompt generator turns plain descriptions into spicy prompts that skip the hedging and get Grok's full personality every time.
     </p>
     <a href="#root" class="inline-block px-10 py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
-      Generate Grok Prompt — Free
+      Generate Spicy Grok Prompt — Free
     </a>
     <p class="text-[#6b6559] text-sm mt-3">3 free generations per day — no credit card required</p>
   </section>
@@ -25,10 +25,10 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
   <div id="root">
     <SimplePromptTool
       client:only="react"
-      seoTitle="Grok Prompt Generator"
-      seoDescription="Generate expertly structured Grok prompts — with optional spicy mode for Grok's unfiltered personality."
-      inputPlaceholder="Describe what you need from Grok... e.g. explain why electric vehicles are overrated, or write a brutally honest review of stoicism"
-      buttonLabel="Generate Grok Prompt"
+      seoTitle="Grok Spicy Prompt Generator"
+      seoDescription="Generate bold, unfiltered Grok spicy prompts — humor-forward, direct, and ready to paste."
+      inputPlaceholder="Describe what you need from Grok… e.g. give me the unfiltered, spicy take on why electric vehicles are overrated"
+      buttonLabel="Generate Spicy Grok Prompt"
       toolType="grok"
       showSpicyToggle
     />
@@ -123,7 +123,7 @@ Astro.response.headers.set('Cache-Control', 's-maxage=300, stale-while-revalidat
     </div>
 
     <a href="#root" class="block w-full py-4 bg-[#f0b429] border-2 border-[#1c1c1c] rounded-xl text-center font-bold text-[#1a1a1a] text-lg hover:brightness-95 transition-all">
-      Generate Your Grok Prompt
+      Generate Your Spicy Grok Prompt
     </a>
   </div>
 
