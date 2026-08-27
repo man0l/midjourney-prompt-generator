@@ -1,6 +1,6 @@
 # Grok Spicy — Welcome & Conversion Email Sequence
 
-**Audience:** New signups arriving via the Grok Prompt Generator (spicy mode) at `/grok-prompt-generator`.
+**Audience:** New signups arriving via the Grok Spicy Prompt Generator at `/grok-spicy-prompt-generator` (spicy mode; supports NSFW prompts and Grok Imagine image generation).
 **Goal:** Activate users (generate their first prompts) within 24h → convert free → Starter (€9/mo) by day 7.
 **Platform:** Resend (Audiences + API-triggered sends).
 **Sender:** `Prompt Generator <hello@midjourney-prompt-generator.eu>` (verify domain + SPF/DKIM before sending)
@@ -25,10 +25,10 @@
 
 | # | Timing | Trigger | Goal | CTA destination |
 |---|---|---|---|---|
-| 1 | Immediately | `grok.spicy_signup` event (fired on signup) | Generate first spicy prompt | `/grok-prompt-generator` |
-| 2 | Day 1 | Time since email 1 | Teach spicy-mode technique | `/grok-prompt-generator` |
+| 1 | Immediately | `grok.spicy_signup` event (fired on signup) | Generate first spicy prompt (+ image) | `/grok-spicy-prompt-generator` |
+| 2 | Day 1 | Time since email 1 | Teach spicy-mode technique (+ image mode) | `/grok-spicy-prompt-generator` |
 | 3 | Day 3 | Time since email 1 | Convert: hit the 3/day wall | Pricing (`/#pricing`) |
-| 4 | Day 5 | Time since email 1 | Use cases + social proof | `/grok-prompt-generator` + pricing |
+| 4 | Day 5 | Time since email 1 | Use cases + image previews + social proof | `/grok-spicy-prompt-generator` + pricing |
 | 5 | Day 7 | Time since email 1 | Reply bait + final nudge | mailto reply + pricing |
 
 Simple retention play for free users — no plan segmentation for now (no paid users yet; add skip-if-paid branches when that changes).
@@ -46,9 +46,9 @@ Simple retention play for free users — no plan segmentation for now (no paid u
 >
 > You just grabbed a spot on Prompt Generator — so here's the fastest way to your first win:
 >
-> **[Generate your first spicy Grok prompt →](https://midjourney-prompt-generator.eu/grok-prompt-generator)**
+> **[Generate your first spicy Grok prompt →](https://midjourney-prompt-generator.eu/grok-spicy-prompt-generator)**
 >
-> Pick spicy mode, type what you'd normally ask ChatGPT, and watch the difference. The generator adds everything Grok responds to: personality dial, humor calibration, real-time-data framing.
+> Spicy is on by default — and with Image checked, your prompt is described as an image. Hit **grok -imagine preview (2 credits)** to see it rendered. The generator adds everything Grok responds to: personality dial, humor calibration, real-time-data framing — NSFW supported, no sanitizing.
 >
 > One tip to start: spicy mode isn't about shock value — it's Grok *dropping the corporate hedging*. Best first test? Ask it for a brutally honest take on something you actually care about.
 >
@@ -75,7 +75,7 @@ Simple retention play for free users — no plan segmentation for now (no paid u
 > **2. Anchor to right now.** Grok trains on real-time X data — "what's happening with X this week" unlocks answers other models can't give.
 > **3. Give permission.** Ask for an opinion, not a summary. Grok takes sides when invited.
 >
-> **[Try all three in one prompt →](https://midjourney-prompt-generator.eu/grok-prompt-generator)** — generate something in spicy mode and compare it against your usual style.
+> **[Try all three in one prompt →](https://midjourney-prompt-generator.eu/grok-spicy-prompt-generator)** — generate something in spicy mode and compare it against your usual style.
 >
 > Manol
 
@@ -118,6 +118,7 @@ Simple retention play for free users — no plan segmentation for now (no paid u
 > The most-used spicy prompts this month weren't jokes. They were:
 >
 > - **Roast my idea** — founders stress-testing pitches before investors do
+> - **Spicy image prompts** — NSFW and edgy visuals via Grok Imagine previews
 > - **Contrarian analysis** — the strongest case *against* their own plan
 > - **Honest reviews** — products, portfolios, landing pages
 > - **Devil's advocate debates** — prep for difficult meetings
@@ -125,7 +126,7 @@ Simple retention play for free users — no plan segmentation for now (no paid u
 >
 > Notice the pattern? People use spicy mode to hear what polite AI won't say.
 >
-> **[Generate yours →](https://midjourney-prompt-generator.eu/grok-prompt-generator)** — and if you're doing this daily, [Starter removes the 3/day cap](https://midjourney-prompt-generator.eu/#pricing).
+> **[Generate yours →](https://midjourney-prompt-generator.eu/grok-spicy-prompt-generator)** — and if you're doing this daily, [Starter removes the 3/day cap](https://midjourney-prompt-generator.eu/#pricing).
 >
 > Manol
 

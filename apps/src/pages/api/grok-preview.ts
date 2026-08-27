@@ -25,6 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
   let body: { prompt?: string };
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
   const prompt = (body.prompt || '').trim();
+  // NSFW is supported — forward prompt as-is, no sanitization.
   if (!prompt) return json({ error: 'Missing prompt' }, 400);
 
   const openrouterKey = import.meta.env.OPENROUTER_API_KEY;

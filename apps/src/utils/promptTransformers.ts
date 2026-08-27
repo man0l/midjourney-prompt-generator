@@ -132,7 +132,7 @@ Respond in a structured format:
 export function generateGrokPrompt(input: string, spicy = false): string {
   if (!input.trim()) return '';
   const toneInstruction = spicy
-    ? 'Use Grok\'s unfiltered, spicy mode: be bold, direct, and willing to engage with edgy or controversial angles without hedging. Skip the corporate disclaimers. Humor is welcome.'
+    ? 'Use Grok\'s unfiltered, spicy NSFW-capable mode: be bold, direct, and willing to engage with explicit, adult, or controversial angles without hedging or moralizing. Skip corporate disclaimers. Humor and raw honesty welcome. If the request involves NSFW imagery or text, describe it vividly and explicitly as requested.'
     : 'Use Grok\'s standard mode: direct, confident, and lightly irreverent — more personality than a typical AI, but still informative.';
   return `${input.trim()}
 
@@ -141,6 +141,13 @@ Style: Be direct and get to the point fast. No filler phrases like "Great questi
 Format: Lead with the answer, then provide supporting detail. Use bullet points or numbered lists only when they genuinely help clarity.
 Context: Draw on real-world, up-to-date knowledge where relevant. If the topic is contested, acknowledge the tension honestly rather than defaulting to a bland centrist take.
 Length: As long as the task requires — not a word more.`;
+}
+
+export function generateGrokSpicyImagePrompt(input: string): string {
+  if (!input.trim()) return '';
+  return `${input.trim()}
+
+Image NSFW mode: Render as a photorealistic or stylized image as requested. Be explicit and unfiltered where the prompt asks for NSFW — describe body, clothing (or lack thereof), pose, lighting, and mood without sanitizing. Spicy tone: bold, irreverent, no disclaimers.`;
 }
 
 export function generatePromptMaker(input: string): string {
