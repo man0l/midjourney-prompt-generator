@@ -2,6 +2,16 @@ import type { APIRoute } from 'astro';
 import OpenAI from 'openai';
 import { createClient } from '@supabase/supabase-js';
 
+type OptimizeJob = {
+  id: string;
+  status: 'pending' | 'done' | 'error';
+  optimized?: string;
+  error?: string;
+  creditsRemaining?: number;
+};
+
+const optimizeJobs = new Map<string, OptimizeJob>();
+
 export const prerender = false;
 
 function json(body: unknown, status = 200) {
@@ -163,9 +173,14 @@ export const POST: APIRoute = async ({ request }) => {
   if (creditError) return json({ error: 'Credit check failed' }, 500);
   if (reserved === null || reserved === -1) return json({ error: 'out_of_credits' }, 402);
 
-  try {
-    const openai = new OpenAI({ apiKey });
-    const USER_MESSAGES: Record<string, string> = {
+  const jobId = crypto.randomUUID();
+  const job: OptimizeJob = { id: jobId, status: 'pending', creditsRemaining: reserved as number };
+  optimizeJobs.set(jobId, job);
+
+  const doOptimize = async () => {
+    try {
+      const openai = new OpenAI({ apiKey });
+      const USER_MESSAGES: Record<string, string> = {
       midjourney: `<prompt>${prompt}</prompt> Act as a midjourney prompt expert. Add details and appropriate parameters to create a digital art masterpiece to the following <prompt>. Output the new prompt only. Do not output any tags or anything else.`,
       cursor: `Transform this coding task into a structured Cursor AI prompt that produces error-free, working code:\n\n${prompt}\n\nOutput only the improved prompt.`,
       chatgpt: `Transform this rough idea into an optimized ChatGPT prompt:\n\n${prompt}\n\nOutput only the improved prompt.`,
@@ -232,10 +247,30 @@ export const POST: APIRoute = async ({ request }) => {
       optimized = completion.choices[0]?.message?.content?.trim() || prompt;
     }
 
-    return json({ optimized, creditsRemaining: reserved });
-  } catch (err: any) {
-    // Generation failed — give the reserved credit back.
-    await supabase.rpc('refund_credit', { p_user_id: user.id });
-    return json({ error: err?.message || 'OpenAI error' }, 502);
-  }
+      job.status = 'done';
+      job.optimized = optimized;
+    } catch (err: any) {
+      job.status = 'error';
+      job.error = err?.message || 'Generation failed';
+      await supabase.rpc('refund_credit', { p_user_id: user.id });
+    }
+    setTimeout(() => optimizeJobs.delete(jobId), 5 * 60_000);
+  };
+
+  const waitUntil = (globalThis as any).waitUntil as ((p: Promise<void>) => void) | undefined;
+  if (waitUntil) waitUntil(doOptimize());
+  else void doOptimize();
+
+  return json({ jobId, creditsRemaining: reserved }, 202);
+};
+
+export const GET: APIRoute = async ({ request }) => {
+  const url = new URL(request.url);
+  const jobId = url.searchParams.get('id');
+  if (!jobId) return json({ error: 'Missing id' }, 400);
+  const job = optimizeJobs.get(jobId);
+  if (!job) return json({ error: 'Job not found or expired' }, 404);
+  if (job.status === 'pending') return json({ status: 'pending', creditsRemaining: job.creditsRemaining });
+  if (job.status === 'error') return json({ status: 'error', error: job.error, creditsRemaining: job.creditsRemaining }, 502);
+  return json({ status: 'done', optimized: job.optimized, creditsRemaining: job.creditsRemaining });
 };
