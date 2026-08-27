@@ -4,7 +4,7 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
 const redirectTo = import.meta.env.PROD
-  ? 'https://midjourney-prompt-generator.eu/auth/callback'
+  ? 'https://www.midjourney-prompt-generator.eu/auth/callback'
   : 'http://localhost:4321/auth/callback'
 
 // Guard against server-side initialization — Supabase RealtimeClient requires
