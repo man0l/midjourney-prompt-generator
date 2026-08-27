@@ -12,7 +12,7 @@ const staticPages = [
   { url: '/chatgpt-prompt-optimizer',     lastmod: '2026-04-15', priority: '0.7', changefreq: 'weekly'  },
   { url: '/chatgpt-image-prompt-generator', lastmod: '2026-04-15', priority: '0.7', changefreq: 'weekly' },
   { url: '/gemini-prompt-generator',      lastmod: '2026-04-15', priority: '0.8', changefreq: 'weekly'  },
-  { url: '/grok-prompt-generator',        lastmod: '2026-04-09', priority: '0.7', changefreq: 'weekly'  },
+  { url: '/grok-spicy-prompt-generator', lastmod: '2026-08-27', priority: '0.7', changefreq: 'weekly'  },
   { url: '/cursor-prompt-generator',      lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/bolt-prompt-generator',        lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
   { url: '/lovable-prompt-generator',     lastmod: '2026-04-15', priority: '0.6', changefreq: 'weekly'  },
