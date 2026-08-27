@@ -79,9 +79,30 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
       if (res.status === 402) throw new OutOfCreditsError();
       if (!res.ok || data.error) throw new Error(data.error || 'Preview failed');
       if (typeof data.creditsRemaining === 'number') setCredits(data.creditsRemaining);
+      // Async generation: POST returns 202 with jobId, poll until done (grok-imagine ~70s)
+      const jobId: string | undefined = data.jobId;
+      if (jobId) {
+        let attempts = 0;
+        while (attempts < 60) {
+          await new Promise(r => setTimeout(r, 3000));
+          attempts++;
+          const pollRes = await fetch(`/api/grok-preview?id=${encodeURIComponent(jobId)}`, {
+            headers: { Authorization: `Bearer ${sess.access_token}` },
+          });
+          const pollData = await pollRes.json();
+          if (pollData.status === 'done') {
+            if (pollData.b64_json) setPreviewUrl(`data:image/jpeg;base64,${pollData.b64_json}`);
+            else if (pollData.imageUrl) setPreviewUrl(pollData.imageUrl);
+            if (typeof pollData.creditsRemaining === 'number') setCredits(pollData.creditsRemaining);
+            return;
+          }
+          if (pollData.status === 'error' || pollRes.status >= 400) throw new Error(pollData.error || 'Preview failed');
+        }
+        throw new Error('Preview timed out — please try again.');
+      }
+      // Fallback for direct response (no jobId)
       if (data.b64_json) setPreviewUrl(`data:image/jpeg;base64,${data.b64_json}`);
       else if (data.imageUrl) setPreviewUrl(data.imageUrl);
-      else setPreviewUrl(null);
     } catch (err: any) {
       if (err instanceof OutOfCreditsError) { if (needsSignIn) openAuthModal('limit'); else showLimit("You've used your generations for today. They reset tomorrow."); }
       else showLimit(err?.message || 'Preview failed. Please try again.');
