@@ -69,6 +69,12 @@ export const POST: APIRoute = async ({ request }) => {
       });
       if (!res.ok) {
         const t = await res.text();
+        // xAI moderates image generation upstream: explicit/nude prompts are
+        // refused with 400 before generation starts. Surface a clear message —
+        // credits are refunded below either way.
+        if (t.includes('content moderation')) {
+          throw new Error('Grok Imagine refused this prompt (xAI content policy rejects explicit/nude imagery). Tone the description down — your 2 credits were refunded.');
+        }
         throw new Error(`OpenRouter ${res.status}: ${t.slice(0, 400)}`);
       }
       const data = await res.json() as { data?: Array<{ b64_json?: string; url?: string }>; b64_json?: string; imageUrl?: string };
