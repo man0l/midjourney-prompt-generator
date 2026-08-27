@@ -98,19 +98,14 @@ export default function SimplePromptTool({ seoTitle, seoDescription, inputPlaceh
         return;
       }
 
-      if (credits === 0) {
-        if (needsSignIn) { openAuthModal('limit'); return; }
-        showLimit(plan === 'free'
-          ? "You've used all your free credits for today. They reset tomorrow."
-          : "You've used all your credits for this month. They reset on the 1st.");
-        return;
-      }
-
       const result = await optimizePrompt(input, effectiveToolType);
 
       if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
       setOutput(result.optimized || input);
       setPreviewUrl(null);
+      if (needsSignIn && result.creditsRemaining === 0) {
+        setTimeout(() => openAuthModal('limit'), 700);
+      }
     } catch (err: any) {
       if (err instanceof OutOfCreditsError) {
         if (needsSignIn) {

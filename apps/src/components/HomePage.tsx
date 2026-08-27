@@ -129,23 +129,16 @@ export default function HomePage() {
         return;
       }
 
-      // Soft client-side pre-check for instant feedback; the API enforces it.
-      if (credits === 0) {
-        // The conversion moment for anonymous visitors: hit them with the
-        // benefit-led sign-in modal instead of a toast.
-        if (needsSignIn) { openAuthModal('limit'); return; }
-        showLimit(plan === 'free'
-          ? "You've used all your free credits for today. They reset tomorrow."
-          : "You've used all your credits for this month. They reset on the 1st.");
-        return;
-      }
-
       const result = await optimizePrompt(mainPrompt);
 
       if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
       setMainPrompt(result.optimized);
       setOptimizeSuccess(true);
       setTimeout(() => setOptimizeSuccess(false), 2000);
+      // If this generation just drained anonymous credits, show the sign-up nudge now.
+      if (needsSignIn && result.creditsRemaining === 0) {
+        setTimeout(() => openAuthModal('limit'), 700);
+      }
     } catch (error) {
       if (error instanceof OutOfCreditsError) {
         if (needsSignIn) {
@@ -263,19 +256,14 @@ export default function HomePage() {
         return;
       }
 
-      if (credits === 0) {
-        if (needsSignIn) { openAuthModal('limit'); return; }
-        showLimit(plan === 'free'
-          ? "You've used all your free credits for today. They reset tomorrow."
-          : "You've used all your credits for this month. They reset on the 1st.");
-        return;
-      }
-
       const result = await uploadAndAnalyzeImage(file);
 
       if (result.creditsRemaining !== null) setCredits(result.creditsRemaining);
       setMainPrompt(result.prompt);
       event.target.value = '';
+      if (needsSignIn && result.creditsRemaining === 0) {
+        setTimeout(() => openAuthModal('limit'), 700);
+      }
     } catch (error) {
       if (error instanceof OutOfCreditsError) {
         if (needsSignIn) {
